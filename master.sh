@@ -135,6 +135,25 @@ download(){
 
 }
 
+# README 一、4 / 二、2：与文档完全一致的 ntpdate 定时任务（会替换旧的错误行）
+install_ntp_crontab() {
+    local cron_file
+    local cron_line
+    cron_line='*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '\''+\%Y-\%m-\%d \%H:\%M:\%S'\''` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")'
+
+    if check_sys sysRelease ubuntu || check_sys sysRelease debian;then
+        cron_file=/var/spool/cron/crontabs/root
+    elif check_sys sysRelease centos; then
+        cron_file=/var/spool/cron/root
+    else
+        return
+    fi
+
+    touch "$cron_file"
+    sed -i '/\/usr\/sbin\/ntpdate -u pool.ntp.org/d' "$cron_file"
+    echo "$cron_line" >> "$cron_file"
+}
+
 sync_time(){
     echo "start to sync time and add sync command to cronjob..."
 
@@ -142,12 +161,12 @@ sync_time(){
         apt-get -y update
         apt-get -y install ntpdate wget
         /usr/sbin/ntpdate -u pool.ntp.org || true
-        ! grep -q "/usr/sbin/ntpdate -u pool.ntp.org" /var/spool/cron/crontabs/root > /dev/null 2>&1 && echo '*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '+\%Y-\%m-\%d \%H:\%M:\%S'` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str" )'  >> /var/spool/cron/crontabs/root
+        install_ntp_crontab
         service cron restart
     elif check_sys sysRelease centos; then
         yum -y install ntpdate wget
         /usr/sbin/ntpdate -u pool.ntp.org || true
-        ! grep -q "/usr/sbin/ntpdate -u pool.ntp.org" /var/spool/cron/root > /dev/null 2>&1 && echo '*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '+\%Y-\%m-\%d \%H:\%M:\%S'` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str" )' >> /var/spool/cron/root
+        install_ntp_crontab
         service crond restart
     fi
 
