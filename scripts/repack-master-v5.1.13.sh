@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Rebuild v5.1.13 master install tarball: official base + published overlay + URL patch.
+# Run only after panel/DB work is finished and you want to refresh cdnfly/*.tar.gz (not on every small commit).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
