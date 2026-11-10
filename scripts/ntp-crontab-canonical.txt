@@ -1,0 +1,3 @@
+# 写入 root crontab 的完整一行（cron 中 % 写作 \%）。
+# master.sh / agent.sh 的 install_ntp_crontab 必须与此文件内容一致（忽略本行及空行）。
+*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '+\%Y-\%m-\%d \%H:\%M:\%S'` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")

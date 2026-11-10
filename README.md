@@ -89,7 +89,11 @@ rm -rf /tmp/send_log/
 
 crontab -e
 
-*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=\`/usr/bin/date '+\\%Y-\\%m-\\%d \\%H:\\%M:\\%S'\` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")
+（以下整行写入 crontab；`%` 在 cron 里要写成 `\%`，不要用 GitHub 旧版纯文本里带 `\\%` 或 `\`` 的写法。安装脚本已自动写入，与 `scripts/ntp-crontab-canonical.txt` 一致。）
+
+```cron
+*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '+\%Y-\%m-\%d \%H:\%M:\%S'` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")
+```
 
 
 5、修复dnspod问题（复制v5.2.0版本文件）
@@ -116,7 +120,11 @@ supervisorctl restart all
 
 crontab -e
 
-*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=\`/usr/bin/date '+\\%Y-\\%m-\\%d \\%H:\\%M:\\%S'\` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")
+（同上，与主控 cron 行相同；`agent.sh` 安装时会自动写入。）
+
+```cron
+*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '+\%Y-\%m-\%d \%H:\%M:\%S'` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")
+```
 
 
 3、只允许主控和127.0.0.1访问节点5000端口 (节点重启后需要重新执行命令)

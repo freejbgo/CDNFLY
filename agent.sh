@@ -135,7 +135,7 @@ EOF
 echo `python /tmp/sys_ver.py`
 }
 
-# README 一、4 / 二、2：与文档完全一致的 ntpdate 定时任务（会替换旧的错误行）
+# README 一、4 / 二、2：见 scripts/ntp-crontab-canonical.txt（勿用旧 README 纯文本里的 \\% / \` 转义）
 install_ntp_crontab() {
     local cron_file
     local cron_line
