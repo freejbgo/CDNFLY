@@ -26,6 +26,8 @@ FB="$WORKDIR/$FILEBEAT_REL"
 echo "Applying filebeat.yml mode 0644 (archive owner root)..."
 chmod 0644 "$FB"
 
+"$ROOT/scripts/patch-cdnfly-repo-urls.sh" "$WORKDIR/$PKG_DIR"
+
 echo "Repacking $OUT_TAR ..."
 TMP_OUT="$WORKDIR/out.tar.gz"
 tar --owner=0 --group=0 -czf "$TMP_OUT" -C "$WORKDIR" "$PKG_DIR"

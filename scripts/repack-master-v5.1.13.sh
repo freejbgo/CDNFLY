@@ -94,6 +94,8 @@ with open(path, 'wb') as f:
 print("504 duplicate removed" if second != -1 else "504 already single")
 PY
 
+"$ROOT/scripts/patch-cdnfly-repo-urls.sh" "$WORKDIR/$PKG_DIR"
+
 echo "Repacking $OUT_TAR ..."
 TMP_OUT="$WORKDIR/out.tar.gz"
 tar -czf "$TMP_OUT" -C "$WORKDIR" "$PKG_DIR"

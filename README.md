@@ -1,4 +1,4 @@
-# cdnfly-kaixin
+# CDNFLY
 仅支持CentOS 7.x
 
 web目录为云端验证文件，请自行搭建
