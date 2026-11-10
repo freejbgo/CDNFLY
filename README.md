@@ -56,34 +56,15 @@ curl -fsSL https://github.com/freejbgo/CDNFLY/raw/main/agent.sh -o agent.sh  && 
 
 问题解决--持续更新中：
 
+说明：使用本仓库 `master.sh` 安装的主控/节点，下列 **一、1～3、5** 与 **第三节 1～7** 已写入 `cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz`；**一、2、4、9** 由 `master.sh` 自动处理。**一、4**、**二、2** 的 ntp 行以 `scripts/ntp-crontab-canonical.txt` 为准。
 
-一、主控问题解决：
+一、主控问题解决（手工参考，新装一般可跳过）：
 
-1、普通用户的账户中心中的bug修复
+1、账户中心：安装包内 balance/log/order 已为正确软链
 
-cd /opt/cdnfly/master/panel/src/views/account
+2、删除/tmp/send_log/：`master.sh` 安装成功后自动执行
 
-删除三个文件：balance、log、order
-
-然后用下面命令重新生成软链接
-
-ln -s ../finance/balance/ balance
-
-ln -s ../system/log/ log
-
-ln -s ../finance/order/ order
-
-
-2、删除/tmp/send_log/
-
-rm -rf /tmp/send_log/
-
-
-3、带宽和流量统计若为每秒执行一次任务，可改为每隔 5 分钟执行（本仓库安装包已包含 5 分钟版 bandwidth_monitor.so；若无需调整可不替换）
-
-在/opt/cdnfly/master/tasks目录中覆盖bandwidth_monitor.so(v5.5.7版本)文件
-
-在/opt/cdnfly/master/panel/src/views/system/task/index.html中删除重复代码<option value='504-error-page'>默认504页面</option>
+3、带宽 5 分钟版 bandwidth_monitor、任务页 504 重复项：安装包已处理
 
 4、修改主控cron任务
 
@@ -96,11 +77,7 @@ crontab -e
 ```
 
 
-5、修复dnspod问题（复制v5.2.0版本文件）
-
-cd /opt/cdnfly/master/tasks/dnsapi/
-
-替换文件：dnspod_cn.so 和 dnspod_com.so
+5、dnspod_cn.so / dnspod_com.so：安装包 tasks/dnsapi 已替换
 
 
 
@@ -141,74 +118,7 @@ iptables -nL
 
 
 
-三、以下是给主控增开新功能：（通过本仓库 `cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz` 安装时已内置，一般无需再手工替换）
-
-1、vi /opt/cdnfly/master/panel/src/views/config/default/index.html
-
-增加：ocsp_stapling
-
-` <div class="layui-row layui-col-space10"> `
- `               <div class="layui-col-lg2 layui-col-md4">ocsp_stapling：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-https_listen-ocsp_stapling"  placeholder="请输入"  autocomplete="off" class="layui-input"></div> `
-            `  </div> `
-
-2、vi /opt/cdnfly/master/panel/src/views/config/error/index.html
-
-增加：400错误代码 （修改比较多，请参考5.5.7或以上版本主控对应的文件）
-
-3、vi /opt/cdnfly/master/panel/src/views/site/site/index.html
-
-增加：网站列表中的源IP和添加时间 （修改比较多，请参考5.5.7或以上版本主控对应的文件）
-
-        ,{field:'backend', title:'源IP',align:"center", templet: function(d){
-          var ips = []
-          var backend = JSON.parse(d.backend)
-          for (i in backend) {
-            ips.push(backend[i]["addr"])
-            }
-
-          return ips.join(",")
-
-        }}  
-
-
-        ,{field:'create_at2', title:'添加时间'}  
-
-        
-
-4、vi /opt/cdnfly/master/panel/src/views/site/cert/cert.html
-
-增加：证书列表中的批量修改功能 （修改比较多，请参考5.5.7或以上版本主控对应的文件）
-
-复制update-cert-type.html到/opt/cdnfly/master/panel/src/views/site/cert/中
-
-
-              
-5、vi /opt/cdnfly/master/panel/src/views/site/cert/cert.html
-
-替换文字：次数超限,已取消,请查明原因后重试
-
-替换为： 任务取消,后列查看原因
-
-
-
-6、增加了透明代理功能、增加了批量修改网站的等诸多功能
-
-替换文件：
-
-edit.html(/opt/cdnfly/master/panel/src/views/site/site/)、
-
-update_form.html(/opt/cdnfly/master/panel/src/views/site/site/)、
-
-blackip.html(/opt/cdnfly/master/panel/src/views/site/monitor/)、
-
-index(default目录中的).html(/opt/cdnfly/master/panel/src/views/config/default/)、
-
-index(refresh目录中的).html(/opt/cdnfly/master/panel/src/views/site/refresh/)
-
-
-
-7、替换/opt/cdnfly/master/panel/src/controller/senior.js文件和/opt/cdnfly/master/panel/src/controller/site-usage-senior.js文件
-
+三、主控增开功能（面板/ocsp、400 错误页、网站列表字段、证书批量、透明代理、senior.js 等均已打入上述安装包，无需再覆盖零散 html）
 
 8、修改elasticsearch内存使⽤量
 
