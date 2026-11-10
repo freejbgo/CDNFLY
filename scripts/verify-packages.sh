@@ -9,13 +9,11 @@ scan_legacy_paths() {
   local path="$1"
   if rg -qi 'kaixin' "$path" \
     --glob '!*.tar.gz' \
-    --glob '!cdnfly-全功能.tar.gz' \
     --glob '!scripts/patch-cdnfly-repo-urls.sh' \
     --glob '!scripts/verify-packages.sh' 2>/dev/null; then
     bad "legacy repo slug in $path"
     rg -ni 'kaixin' "$path" \
       --glob '!*.tar.gz' \
-      --glob '!cdnfly-全功能.tar.gz' \
       --glob '!scripts/patch-cdnfly-repo-urls.sh' \
       --glob '!scripts/verify-packages.sh' | head -10
   else

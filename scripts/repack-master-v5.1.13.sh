@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# Merge 全功能 overlay onto the official v5.1.13 master tarball and repack for install.
+# Rebuild v5.1.13 master install tarball: official base + published overlay + URL patch.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-OVERLAY_TAR="$ROOT/cdnfly-全功能.tar.gz"
 OUT_TAR="$ROOT/cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz"
 OFFICIAL_TAR="$ROOT/cdnfly/cdnfly-master-v5.1.13-centos-7.official.tar.gz"
 PKG_DIR="cdnfly-master-v5.1.13"
@@ -12,22 +11,24 @@ TASK_HTML="$PKG_DIR/master/panel/src/views/system/task/index.html"
 WORKDIR="$(mktemp -d)"
 trap 'rm -rf "$WORKDIR"' EXIT
 
-[[ -f "$OVERLAY_TAR" ]] || { echo "missing $OVERLAY_TAR"; exit 1; }
 if [[ ! -f "$OFFICIAL_TAR" ]]; then
   [[ -f "$OUT_TAR" ]] || { echo "missing official $OUT_TAR"; exit 1; }
   echo "Saving pristine official tarball to $OFFICIAL_TAR"
   cp -a "$OUT_TAR" "$OFFICIAL_TAR"
 fi
 
+[[ -f "$OUT_TAR" ]] || { echo "missing published overlay source $OUT_TAR"; exit 1; }
+
 echo "Extracting official package..."
 tar -xzf "$OFFICIAL_TAR" -C "$WORKDIR"
 
-echo "Extracting 全功能 overlay..."
-tar -xzf "$OVERLAY_TAR" -C "$WORKDIR"
-OVERLAY_ROOT="$WORKDIR/cdnfly"
+echo "Extracting published package as feature overlay..."
+mkdir -p "$WORKDIR/overlay"
+tar -xzf "$OUT_TAR" -C "$WORKDIR/overlay"
+OVERLAY_ROOT="$WORKDIR/overlay/$PKG_DIR"
 
 if [[ ! -d "$OVERLAY_ROOT/master" ]]; then
-  echo "overlay missing cdnfly/master"
+  echo "overlay missing $PKG_DIR/master"
   exit 1
 fi
 
@@ -55,7 +56,7 @@ merge_tree() {
   done
 }
 
-echo "Merging master/ and script/ from overlay..."
+echo "Merging master/ and script/ from published package..."
 if [[ -d "$OVERLAY_ROOT/script" ]]; then
   rm -rf "$DST/script"
   mkdir -p "$DST/script"
@@ -86,9 +87,6 @@ if first == -1:
 second = text.find(needle, first + len(needle))
 if second != -1:
     text = text[:second] + text[second + len(needle):]
-    # drop an extra newline if present
-    if text.startswith('\r\n', second):
-        pass
 with open(path, 'wb') as f:
     f.write(text.encode('utf-8'))
 print("504 duplicate removed" if second != -1 else "504 already single")

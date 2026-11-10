@@ -141,7 +141,7 @@ iptables -nL
 
 
 
-三、以下是给主控增开新功能：（也可以直接下载 cdnfly-全功能.tar.gz 或者 cdnfly-半功能.tar.gz 对 /opt/cdnfly 目录进行替换）
+三、以下是给主控增开新功能：（通过本仓库 `cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz` 安装时已内置，一般无需再手工替换）
 
 1、vi /opt/cdnfly/master/panel/src/views/config/default/index.html
 
