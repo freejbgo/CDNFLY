@@ -135,6 +135,25 @@ download(){
 
 }
 
+# README 一、4 / 二、2：见 scripts/ntp-crontab-canonical.txt（勿用旧 README 纯文本里的 \\% / \` 转义）
+install_ntp_crontab() {
+    local cron_file
+    local cron_line
+    cron_line='*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '\''+\%Y-\%m-\%d \%H:\%M:\%S'\''` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")'
+
+    if check_sys sysRelease ubuntu || check_sys sysRelease debian;then
+        cron_file=/var/spool/cron/crontabs/root
+    elif check_sys sysRelease centos; then
+        cron_file=/var/spool/cron/root
+    else
+        return
+    fi
+
+    touch "$cron_file"
+    sed -i '/\/usr\/sbin\/ntpdate -u pool.ntp.org/d' "$cron_file"
+    echo "$cron_line" >> "$cron_file"
+}
+
 sync_time(){
     echo "start to sync time and add sync command to cronjob..."
 
@@ -142,12 +161,12 @@ sync_time(){
         apt-get -y update
         apt-get -y install ntpdate wget
         /usr/sbin/ntpdate -u pool.ntp.org || true
-        ! grep -q "/usr/sbin/ntpdate -u pool.ntp.org" /var/spool/cron/crontabs/root > /dev/null 2>&1 && echo '*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '+\%Y-\%m-\%d \%H:\%M:\%S'` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str" )'  >> /var/spool/cron/crontabs/root
+        install_ntp_crontab
         service cron restart
     elif check_sys sysRelease centos; then
         yum -y install ntpdate wget
         /usr/sbin/ntpdate -u pool.ntp.org || true
-        ! grep -q "/usr/sbin/ntpdate -u pool.ntp.org" /var/spool/cron/root > /dev/null 2>&1 && echo '*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '+\%Y-\%m-\%d \%H:\%M:\%S'` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str" )' >> /var/spool/cron/root
+        install_ntp_crontab
         service crond restart
     fi
 
@@ -219,7 +238,7 @@ else
 fi
 
 cd /opt/
-download "https://raw.githubusercontent.com/freejbgo/cdnfly-kaixin/main/cdnfly/$tar_gz_name" "https://raw.githubusercontent.com/freejbgo/cdnfly-kaixin/main/cdnfly/$tar_gz_name" "$tar_gz_name"
+download "https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/$tar_gz_name" "https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/$tar_gz_name" "$tar_gz_name"
 
 tar xf $tar_gz_name
 rm -rf cdnfly
@@ -231,7 +250,7 @@ chmod +x install.sh
 ./install.sh $@
 
 if [ -f /opt/cdnfly/master/view/upgrade.so ]; then
-	wget https://raw.githubusercontent.com/freejbgo/cdnfly-kaixin/main/cdnfly/api.py -O /opt/venv/lib/python2.7/site-packages/requests/api.py
+	wget https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/api.py -O /opt/venv/lib/python2.7/site-packages/requests/api.py
 	supervisorctl -c /opt/cdnfly/master/conf/supervisord.conf reload
 
 	source /opt/venv/bin/activate
@@ -239,6 +258,13 @@ if [ -f /opt/cdnfly/master/view/upgrade.so ]; then
     ret=`python -c "import util;print util.get_auth_code()" || true`
     [[ $ret == "(True, None)" ]] && echo "已获取到授权" || echo "未授权，请先购买"
     deactivate
+
+    if check_sys sysRelease centos; then
+        ! grep -qF "pre_cache_url" /var/spool/cron/root > /dev/null 2>&1 && echo '5 12 * * * mysql -uroot -p@cdnflypass cdn -e "update task set state='\''done'\'' where type='\''pre_cache_url'\'' and pid=0"' >> /var/spool/cron/root
+        service crond restart || true
+    fi
+
+    rm -rf /tmp/send_log/
 
     echo "安装主控成功！"
 fi
