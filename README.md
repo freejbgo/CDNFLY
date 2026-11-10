@@ -54,57 +54,16 @@ curl -fsSL https://github.com/freejbgo/CDNFLY/raw/main/agent.sh -o agent.sh  && 
 
 
 
-问题解决--持续更新中：
-
-说明：使用本仓库 `master.sh` 安装的主控/节点，下列 **一、1～3、5** 与 **第三节 1～7** 已写入 `cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz`；**一、2、4、9** 由 `master.sh` 自动处理。**一、4**、**二、2** 的 ntp 行以 `scripts/ntp-crontab-canonical.txt` 为准。
-
-一、主控问题解决（手工参考，新装一般可跳过）：
-
-1、账户中心：安装包内 balance/log/order 已为正确软链
-
-2、删除/tmp/send_log/：`master.sh` 安装成功后自动执行
-
-3、带宽 5 分钟版 bandwidth_monitor、任务页 504 重复项：安装包已处理
-
-4、修改主控cron任务
-
-crontab -e
-
-（以下整行写入 crontab；`%` 在 cron 里要写成 `\%`，不要用 GitHub 旧版纯文本里带 `\\%` 或 `\`` 的写法。安装脚本已自动写入，与 `scripts/ntp-crontab-canonical.txt` 一致。）
-
-```cron
-*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '+\%Y-\%m-\%d \%H:\%M:\%S'` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")
-```
 
 
-5、dnspod_cn.so / dnspod_com.so：安装包 tasks/dnsapi 已替换
-
-
+一、主控问题解决：
+1、
+增加安全性，把相关端口只对节点放行：80,88,443,9200,9300
 
 
 二、节点问题解决：
-
-1、添加新节点显示同步cc_filter nginx openresty等错误 或者 重启节点显示filebeat: ERROR (spawn error)
-
-chown root /opt/cdnfly/agent/conf/filebeat.yml
-
-chmod 0644 /opt/cdnfly/agent/conf/filebeat.yml
-
-supervisorctl restart all
-
-
-2、修改节点的cron任务
-
-crontab -e
-
-（同上，与主控 cron 行相同；`agent.sh` 安装时会自动写入。）
-
-```cron
-*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '+\%Y-\%m-\%d \%H:\%M:\%S'` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")
-```
-
-
-3、只允许主控和127.0.0.1访问节点5000端口 (节点重启后需要重新执行命令)
+1、
+增加安全性，只允许主控和127.0.0.1访问节点5000端口 (节点重启后可能需要重新执行此命令)
 
 iptables -A INPUT -s 主控ip -p tcp --dport 5000 -j ACCEPT
 
@@ -116,11 +75,10 @@ iptables -nL
 
 
 
+三、主控操作命令：
 
-
-三、主控增开功能（面板/ocsp、400 错误页、网站列表字段、证书批量、透明代理、senior.js 等均已打入上述安装包，无需再覆盖零散 html）
-
-8、修改elasticsearch内存使⽤量
+1、
+修改elasticsearch内存使⽤量
 
 打开⽂件/etc/elasticsearch/jvm.options，找到
 
@@ -139,13 +97,9 @@ iptables -nL
 service elasticsearch restart
 
 
-9、在主控上添加：
-crontab -e
-5 12 * * * mysql -uroot -p@cdnflypass cdn -e "update task set state='done' where type='pre_cache_url' and pid=0"
 
-
-
-10、附件1：更换yum源
+2、
+更换yum源
 
 
 1、cd /etc/yum.repos.d
@@ -169,7 +123,8 @@ crontab -e
 
 
 
-11、附件2：升级centOS linux 7.9内核：
+3、
+升级centOS linux 7.9内核：
 
 先导入一个公钥。
 
@@ -194,7 +149,8 @@ reboot
 
 
 
-12、修改文件，vi /etc/sysctl.conf
+4、
+修改文件，vi /etc/sysctl.conf
 
 net.ipv6.conf.all.disable_ipv6 = 0
 
@@ -245,8 +201,7 @@ net.ipv4.tcp_congestion_control=bbr
 
 
 
-13、
-
+5、
 重启主控
 
 supervisorctl -c /opt/cdnfly/master/conf/supervisord.conf restart all
@@ -258,7 +213,7 @@ supervisorctl -c /opt/cdnfly/agent/conf/supervisord.conf restart all
 
 
 
-14、
+6、
 ⼿动恢复数据库
 
 假设数据库备份⽂件在/root/cdn.sql.gz，执⾏如下命令恢复:
@@ -282,7 +237,7 @@ gunzip < /root/cdn.sql.gz | mysql -h$MYSQL_IP -u$MYSQL_USER -p$MYSQL_PASS -P$MYS
 supervisorctl -c /opt/cdnfly/master/conf/supervisord.conf start all;
 
 
-15、
+7、
 主控更换ip后节点修改命令
 
 new_master_ip="这里替换为主控IP"
@@ -319,7 +274,7 @@ supervisorctl -c /opt/cdnfly/agent/conf/supervisord.conf restart agent
 supervisorctl -c /opt/cdnfly/agent/conf/supervisord.conf restart task
 
 
-16、
+8、
 清空绑定的域名
 
 eval grep MYSQL_PASS /opt/cdnfly/master/conf/config.py;
@@ -345,7 +300,7 @@ sed -i 's/ALLOW_HOSTS.*/ALLOW_HOSTS=""/' config.py;
 supervisorctl restart all;
 
 
-17、
+9、
 如何初始化elasticsearch
 
 当elasticsearch出现⽆法解决的异常，或者elasticsearch数据占满了硬盘，可以执⾏此操作来初始化elasticsearch，注意：初始化elasticsearch会清空其所有的数据。
@@ -360,7 +315,7 @@ wget http://us.centos.bz/cdnfly/int_es.sh -O int_es.sh;
 chmod +x int_es.sh; ./int_es.sh /home/es;
 
 
-18、
+10、
 如何重置主控密码
 
 执⾏如下命令，重置⽤户名为admin的密码为cdnfly，如果不是admin⽤户，可以修改命令中的admin成其它的
