@@ -10,5 +10,5 @@ legacy_repo_slug_decode() {
 
 # README / UI phrase to forbid in tracked text (base64).
 forbidden_edition_label() {
-  printf '%s' '5b1j5Yi76aaW' | base64 -d
+  printf '%s' '5byA5b+D54mI' | base64 -d
 }
