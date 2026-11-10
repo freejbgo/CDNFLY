@@ -1,57 +1,57 @@
+# 每日更新 GeoIP：先下载到仓库根目录，再复制到 cdnfly/（安装脚本从此路径拉取）
 name: Update GeoIP
 
 on:
   schedule:
-    - cron: '0 19 * * *' # 每天北京时间早上3点执行 (UTC时间19点)
-  push:
-    branches:
-      - main    # 仅在该分支有代码推送时触发
-  workflow_dispatch:     # 允许手动点击按钮触发
+  - cron: '0 19 * * *'
+  workflow_dispatch:
 
-# 解决 Node 20 废弃警告，强行指定使用 Node 24 运行 Actions
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-# 必须显式声明写权限，否则最后一名的 git push 会报错拒绝
 permissions:
   contents: write
 
 jobs:
-  build:
+  update-geoip:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4 
+    - name: Checkout main
+      uses: actions/checkout@v4
+      with:
+        ref: main
 
-      - name: Download GeoIP
-        run: |
-          # 显式清理旧文件，确保如果存在则强行覆盖
-          if [ -f GeoLite2-Country.mmdb ]; then
-            echo "Old file found. Removing to overwrite..."
-            rm -f GeoLite2-Country.mmdb
-          fi
+    - name: Download to repo root, then copy to cdnfly/
+      run: |
+        set -euo pipefail
+        URL="https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-Country.mmdb"
+        ROOT_FILE="GeoLite2-Country.mmdb"
+        CDN_FILE="cdnfly/GeoLite2-Country.mmdb"
 
-          echo "Starting download..."
-          # 修复核心：改用 GitHub 原生 Raw 链接，规避 jsDelivr 404 (exit code 22) 错误
-          curl -fLo GeoLite2-Country.mmdb --connect-timeout 30 --retry 5 https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-Country.mmdb
-          
-          # 验证文件大小，确保下载未静默失败
-          if [ ! -s GeoLite2-Country.mmdb ]; then
-            echo "Error: Downloaded file is empty or download failed."
-            exit 1
-          fi
+        rm -f "$ROOT_FILE"
+        curl -fLo "$ROOT_FILE" --connect-timeout 30 --retry 5 "$URL"
 
-      - name: Commit and Push
-        run: |
-          git config --local user.email "github-actions[bot]@github.com"
-          git config --local user.name "github-actions[bot]"
-          git add GeoLite2-Country.mmdb
-          
-          # 检查文件是否真的有更新，避免无意义的空提交
-          if ! git diff --cached --quiet; then
-            git commit -m "Update GeoIP: $(date +%Y-%m-%d) [skip ci]"
-            git pull --rebase origin main # 推送前先拉取，防止并发冲突
-            git push origin HEAD:main
-          else
-            echo "GeoIP data is already up to date."
-          fi
+        if [ ! -s "$ROOT_FILE" ]; then
+          echo "Download failed or empty file."
+          exit 1
+        fi
+
+        mkdir -p cdnfly
+        cp -f "$ROOT_FILE" "$CDN_FILE"
+        ls -lh "$ROOT_FILE" "$CDN_FILE"
+
+    - name: Commit and push
+      run: |
+        set -euo pipefail
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git add GeoLite2-Country.mmdb cdnfly/GeoLite2-Country.mmdb
+
+        if git diff --cached --quiet; then
+          echo "GeoIP already up to date (root and cdnfly match previous commit)."
+          exit 0
+        fi
+
+        git commit -m "Update GeoIP: $(date -u +%Y-%m-%d) [skip ci]"
+        git pull --rebase origin main
+        git push origin HEAD:main
