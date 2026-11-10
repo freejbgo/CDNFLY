@@ -3,7 +3,7 @@
 
 web目录为云端验证文件，请自行搭建
 
-wget https://raw.githubusercontent.com/freejbgo/cdnfly-kaixin/main/web/web.tar.gz
+wget https://raw.githubusercontent.com/freejbgo/CDNFLY/main/web/web.tar.gz
 
 tar -zxvf web.tar.gz
 
@@ -41,16 +41,16 @@ vi /etc/hosts
 
 v5.1.13主控
 
-curl -fsSL https://github.com/freejbgo/cdnfly-kaixin/raw/main/master.sh -o master.sh && chmod +x master.sh && ./master.sh --es-dir /home/es
+curl -fsSL https://github.com/freejbgo/CDNFLY/raw/main/master.sh -o master.sh && chmod +x master.sh && ./master.sh --es-dir /home/es
 
 或者
 
-curl -fsSL https://github.com/freejbgo/cdnfly-kaixin/raw/main/master.sh -o master.sh && chmod +x master.sh && ./master.sh --ver v5.1.13 --es-dir /home/es
+curl -fsSL https://github.com/freejbgo/CDNFLY/raw/main/master.sh -o master.sh && chmod +x master.sh && ./master.sh --ver v5.1.13 --es-dir /home/es
 
 
 v5.1.16被控
 
-curl -fsSL https://github.com/freejbgo/cdnfly-kaixin/raw/main/agent.sh -o agent.sh  && chmod +x agent.sh && ./agent.sh --master-ver v5.1.13 --master-ip 1.2.3.4 --es-ip 1.2.3.4 --es-pwd 12345678
+curl -fsSL https://github.com/freejbgo/CDNFLY/raw/main/agent.sh -o agent.sh  && chmod +x agent.sh && ./agent.sh --master-ver v5.1.13 --master-ip 1.2.3.4 --es-ip 1.2.3.4 --es-pwd 12345678
 
 
 
