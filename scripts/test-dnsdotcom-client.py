@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import hashlib
+import json
+import os
+import sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+PKG = os.path.join(ROOT, ".veikor-build", "cdnfly-master-v5.1.13", "master", "tasks", "dnsapi")
+sys.path.insert(0, PKG)
+
+import dnsdotcom
+import tencent_dns
+
+
+def test_sign_doc_example():
+    param = {"domain": "51dns.com", "timestamp": "1602734019", "apiKey": "your api_key"}
+    pairs = []
+    for key in sorted(param):
+        pairs.append("{0}={1}".format(key, param[key]))
+    digest = hashlib.md5(("&".join(pairs) + "your api_secret").encode("utf-8")).hexdigest()
+    client = dnsdotcom.Dns(json.dumps({"id": "your api_key", "token": "your api_secret"}))
+    assert client._sign(param) == digest
+
+
+def test_lines_shape():
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    lines, err = client.get_lines("example.com", None)
+    assert err is None
+    tree = json.loads(lines)
+    assert tree[0]["id"] == "0" and tree[0]["name"] == u"默认"
+    assert "pid" in tree[0]
+
+
+class Resp(object):
+    def __init__(self, payload):
+        self.content = json.dumps(payload).encode("utf-8")
+
+
+class FakeAPI(object):
+    def __init__(self):
+        self.urls = []
+
+    def get(self, url, params=None, timeout=None):
+        self.urls.append((url, dict(params or {})))
+        if url.endswith("domain/getsingle/"):
+            return Resp({"code": 0, "data": {"domainID": 99, "domain": "example.com"}})
+        if url.endswith("record/list/"):
+            page = int(params.get("page", "1"))
+            if page == 1:
+                rows = [{
+                    "recordID": 7,
+                    "record": "www",
+                    "type": "A",
+                    "viewID": "285344962",
+                    "value": "1.2.3.4",
+                    "TTL": 600,
+                }]
+                return Resp({"code": 0, "data": {"data": rows, "pageCount": 1}})
+            return Resp({"code": 0, "data": {"data": [], "pageCount": 1}})
+        if url.endswith("record/create/"):
+            return Resp({"code": 0, "data": {"recordID": 55}})
+        if url.endswith("record/modify/"):
+            return Resp({"code": 0, "data": {"recordID": params.get("recordID")}})
+        if url.endswith("record/remove/"):
+            return Resp({"code": 0, "data": {"recordID": params.get("recordID")}})
+        if url.endswith("record/getsingle/"):
+            return Resp({"code": 0, "data": {
+                "recordID": params.get("recordID"),
+                "record": "www",
+                "type": "CNAME",
+                "viewID": "0",
+                "value": "a.example.com.",
+                "TTL": 300,
+            }})
+        raise AssertionError(url)
+
+
+def test_crud_flow():
+    fake = FakeAPI()
+    dnsdotcom.requests = fake
+    tencent_dns.requests = fake
+    client = dnsdotcom.Dns(json.dumps({"id": "key", "token": "sec"}))
+    client.domain_name = "example.com"
+    got, err = client.get_all_record("example.com")
+    assert err is None and got["7"]["sub_domain"] == "www"
+    assert all(url.startswith("https://www.51dns.com/api/") for url, _ in fake.urls)
+    joined = " ".join(url for url, _ in fake.urls)
+    assert "www.dns.com" not in joined
+    rec, err = client.get_record("example.com", "7")
+    assert err is None and rec["value"] == "a.example.com"
+    rid, err = client.add_record("example.com", "@", "A", "0", "9.9.9.9", 600)
+    assert rid == "55"
+    ok, err = client.update_record("example.com", "7", "www", "A", "0", "8.8.8.8", 600, weight=5)
+    assert ok is True and err is None
+    ok, err = client.del_record("example.com", "7")
+    assert ok is True and err is None
+
+
+def test_append_rs():
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    client.domain_name = "example.com"
+    bucket = {}
+    client.append_rs([
+        {"recordID": 1, "record": "@", "type": "A", "viewID": 0, "value": "1.1.1.1"},
+        {"recordID": 2, "record": "cdn", "type": "CNAME", "viewID": "0", "value": "a.example.com."},
+        "bad",
+    ], bucket)
+    assert bucket["1"]["sub_domain"] == "@"
+    assert bucket["2"]["ip"] == "a.example.com"
+
+
+def main():
+    test_sign_doc_example()
+    test_lines_shape()
+    test_crud_flow()
+    test_append_rs()
+    print("ALL PASSED")
+
+
+if __name__ == "__main__":
+    main()
