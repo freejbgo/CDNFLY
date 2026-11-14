@@ -306,6 +306,21 @@ def test_get_record_list_payload():
     assert err is None and rec["sub_domain"] == "www" and rec["value"] == "1.1.1.1"
 
 
+def test_add_record_scalar_payload():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 9}})
+            if url.endswith("record/create/"):
+                return Resp({"code": 0, "data": 77})
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    rid, err = client.add_record("example.com", "@", "TXT", "0", "token", 60)
+    assert err is None and rid == "77"
+
+
 def test_add_record_list_payload():
     class Fake(object):
         def get(self, url, params=None, timeout=None):
@@ -390,6 +405,7 @@ def main():
     test_overstated_record_count_short_tail()
     test_domain_getsingle_list_payload()
     test_get_record_list_payload()
+    test_add_record_scalar_payload()
     test_add_record_list_payload()
     test_add_record_host_normalization()
     test_trailing_empty_page()
