@@ -20,4 +20,3 @@ if grep -rqF "$LEGACY" "$TARGET" 2>/dev/null; then
   grep -rnF "$LEGACY" "$TARGET" | head -20 >&2
   exit 1
 fi
-
