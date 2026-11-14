@@ -181,7 +181,11 @@ def scan_batch_map_gap():
                 continue
             if not re.search(r"type:\s*['\"]checkbox['\"]", text):
                 continue
-            if "CheckedMap" in text or "IdsForBatch" in text:
+            if (
+                "CheckedMap" in text
+                or "IdsForBatch" in text
+                or "veikorLocalBatch" in text
+            ):
                 continue
             if "table.on('toolbar" not in text and 'table.on("toolbar' not in text:
                 continue
