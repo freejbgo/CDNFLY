@@ -51,6 +51,7 @@ for t in \
   else
     ok "$(basename "$t") clean"
   fi
+  
   rm -rf "$w"
 done
 
