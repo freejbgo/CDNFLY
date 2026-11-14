@@ -146,7 +146,8 @@ done
 # 旧的 .so 和同名 .py 同时存在时，Python 会加载 .so。DNSPod、Cloudflare 已改成 .py，这里删掉旧文件。
 rm -f /opt/cdnfly/master/tasks/dnsapi/dnspod_cn.so \
       /opt/cdnfly/master/tasks/dnsapi/dnspod_com.so \
-      /opt/cdnfly/master/tasks/dnsapi/cloudflare.so
+      /opt/cdnfly/master/tasks/dnsapi/cloudflare.so \
+      /opt/cdnfly/master/tasks/dnsapi/dnsdotcom.so
 
 }
 
