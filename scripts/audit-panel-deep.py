@@ -3,7 +3,7 @@
 import os
 import re
 
-PANEL = os.path.join(
+ROOT = os.path.join(
     os.path.dirname(__file__),
     "..",
     ".veikor-build",
@@ -11,8 +11,9 @@ PANEL = os.path.join(
     "master",
     "panel",
     "src",
-    "views",
 )
+PANEL = os.path.join(ROOT, "views")
+CTRL = os.path.join(ROOT, "controller")
 
 ISSUES = []
 
@@ -79,7 +80,9 @@ def scan_file(rel, text):
             )
             guarded = (
                 "Alive()" in body
+                or "Still()" in body
                 or "alive()" in body
+                or "nodeDnsRoot()" in body
                 or "querySelector('#LAY-popup" in body
                 or "getElementById('LAY-popup" in body
                 or "linePageAlive" in body
@@ -104,8 +107,95 @@ def scan_file(rel, text):
                 add(rel, "monitor_req_vs_alive_imbalance", f"req={text.count('admin.req')} alive_checks={text.count('Alive()')}")
 
 
+def scan_controllers():
+    if not os.path.isdir(CTRL):
+        return
+    for fn in os.listdir(CTRL):
+        if not fn.endswith(".js"):
+            continue
+        path = os.path.join(CTRL, fn)
+        text = open(path, encoding="utf-8", errors="replace").read()
+        still_m = re.search(r"function (\w+Still)\s*\(", text)
+        if not still_m and "RealtimeStill" not in text:
+            continue
+        still_names = re.findall(r"function (\w+Still)\s*\(", text)
+        for m in re.finditer(
+            r",done:\s*function\s*\([^)]*\)\s*\{([\s\S]*?)\n\s*\}",
+            text,
+        ):
+            body = m.group(1)[:600]
+            if not re.search(r"setOption|\.val\(|echarts|table\.reload", body):
+                continue
+            if any(s + "()" in body for s in still_names):
+                continue
+            if "Alive()" in body:
+                continue
+            if "layer.msg" in body and ".val(" not in body:
+                continue
+            add(f"controller/{fn}", "controller_done_no_still", body[:70].replace("\n", " "))
+
+
+def _form_on_guarded(text, flt):
+    pat = re.escape(flt)
+    m = re.search(
+        r"form\.on\(\s*['\"]" + pat + r"['\"]\s*,\s*function\s*\([^)]*\)\s*\{",
+        text,
+    )
+    if not m:
+        m = re.search(
+            r'form\.on\(\s*["\']' + pat.replace(r"\(", r"\(") + r'["\']\s*,\s*function',
+            text,
+        )
+    if not m:
+        return True
+    start = m.end() - 1
+    depth = 0
+    end = start
+    for i in range(start, min(start + 500, len(text))):
+        if text[i] == "{":
+            depth += 1
+        elif text[i] == "}":
+            depth -= 1
+            if depth == 0:
+                end = i
+                break
+    body = text[start : end + 1]
+    return bool(
+        re.search(
+            r"Alive\(\)|Still\(\)|contains\(data\.elem\)|nodeDnsRoot\(\)|AddRoot\(\)|getElementById\('LAY-popup|LAY-popup",
+            body,
+        )
+    )
+
+
+def scan_duplicate_form_on():
+    by_filter = {}
+    file_text = {}
+    for dirpath, _, files in os.walk(PANEL):
+        for fn in files:
+            if not fn.endswith(".html"):
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, fn), PANEL)
+            text = open(os.path.join(dirpath, fn), encoding="utf-8", errors="replace").read()
+            file_text[rel] = text
+            for m in re.finditer(r"form\.on\(\s*['\"]([^'\"]+)['\"]", text):
+                by_filter.setdefault(m.group(1), []).append(rel)
+    for flt, files in sorted(by_filter.items()):
+        u = sorted(set(files))
+        if len(u) < 2:
+            continue
+        unguarded = [r for r in u if not _form_on_guarded(file_text[r], flt)]
+        if len(unguarded) >= 2:
+            add(
+                "global",
+                "duplicate_form_on_unguarded",
+                f"{flt} -> {', '.join(unguarded[:5])}",
+            )
+
+
 def main():
     walk()
+    scan_controllers()
     by_kind = {}
     for rel, kind, detail in ISSUES:
         by_kind.setdefault(kind, []).append((rel, detail))
