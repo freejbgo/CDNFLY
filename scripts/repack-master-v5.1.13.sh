@@ -92,6 +92,13 @@ if [[ -f "$ROOT/50113.sh" && -d "$DST/master/upgrade_script" ]]; then
   cp -a "$ROOT/50113.sh" "$DST/master/upgrade_script/50113.sh"
 fi
 
+UPGRADE_DIR="$DST/master/upgrade_script"
+if [[ -d "$UPGRADE_DIR" ]]; then
+  echo "Pruning bundled upgrade scripts (tasks/upgrade.py fetches steps from CDN; ship 50113.sh only)..."
+  find "$UPGRADE_DIR" -maxdepth 1 -type f -name '40*.sh' -delete
+  find "$UPGRADE_DIR" -maxdepth 1 -type f -name '50*.sh' ! -name '50113.sh' -delete
+fi
+
 echo "Stripping AppleDouble metadata files from package tree..."
 find "$DST" -name '._*' -type f -delete
 
