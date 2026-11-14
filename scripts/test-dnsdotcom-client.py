@@ -347,6 +347,36 @@ def test_add_record_list_payload():
     assert err is None and rid == "88"
 
 
+def test_mx_priority_from_weight():
+    captured_create = []
+    captured_modify = []
+
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 1}})
+            if url.endswith("record/create/"):
+                captured_create.append(dict(params or {}))
+                return Resp({"code": 0, "data": {"recordID": 1}})
+            if url.endswith("record/modify/"):
+                captured_modify.append(dict(params or {}))
+                return Resp({"code": 0, "data": {"recordID": "1"}})
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    rid, err = client.add_record(
+        "example.com", "@", "MX", "0", "mail.example.com", 600, weight=20
+    )
+    assert err is None and rid == "1"
+    assert captured_create[0].get("mx") == "20"
+    ok, err = client.update_record(
+        "example.com", "1", "@", "MX", "0", "mail.example.com", 600, weight=15
+    )
+    assert ok is True and err is None
+    assert captured_modify[0].get("newmx") == "15"
+
+
 def test_add_record_host_normalization():
     captured = []
 
@@ -419,6 +449,7 @@ def main():
     test_get_record_list_payload()
     test_add_record_scalar_payload()
     test_add_record_list_payload()
+    test_mx_priority_from_weight()
     test_add_record_host_normalization()
     test_trailing_empty_page()
     test_append_rs()
