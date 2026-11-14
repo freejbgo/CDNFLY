@@ -165,6 +165,75 @@ def test_record_count_past_page_count():
     assert err is None and len(got) == 1500
 
 
+def test_short_first_page():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 1}})
+            if url.endswith("record/list/"):
+                page = int(params.get("page", "1"))
+                if page == 1:
+                    rows = [
+                        {"recordID": i, "record": "a", "type": "A", "viewID": 0, "value": "1.1.1.1"}
+                        for i in range(1, 501)
+                    ]
+                    return Resp({"code": 0, "data": {"data": rows, "recordCount": 1000, "pageCount": 2, "total_page": 2}})
+                if page == 2:
+                    rows = [
+                        {"recordID": i, "record": "b", "type": "A", "viewID": 0, "value": "2.2.2.2"}
+                        for i in range(501, 1001)
+                    ]
+                    return Resp({"code": 0, "data": {"data": rows, "recordCount": 1000}})
+                return Resp({"code": 0, "data": {"data": [], "recordCount": 1000}})
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    got, err = client.get_all_record("example.com")
+    assert err is None and len(got) == 1000
+
+
+def test_overstated_record_count_short_tail():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 1}})
+            if url.endswith("record/list/"):
+                page = int(params.get("page", "1"))
+                if page == 1:
+                    rows = [{"recordID": i, "record": "h", "type": "A", "viewID": 0, "value": "1.1.1.1"} for i in range(1000)]
+                    return Resp({"code": 0, "data": {"data": rows, "recordCount": 5000, "pageCount": 1}})
+                if page == 2:
+                    rows = [{"recordID": i, "record": "h", "type": "A", "viewID": 0, "value": "1.1.1.1"} for i in range(1000, 1500)]
+                    return Resp({"code": 0, "data": {"data": rows, "recordCount": 5000}})
+                return Resp({"code": 0, "data": {"data": [], "recordCount": 5000}})
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    got, err = client.get_all_record("example.com")
+    assert err is None and len(got) == 1500
+
+
+def test_add_record_host_normalization():
+    captured = []
+
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 9}})
+            if url.endswith("record/create/"):
+                captured.append(dict(params or {}))
+                return Resp({"code": 0, "data": {"recordID": 1}})
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    rid, err = client.add_record("example.com", "www.example.com", "A", "0", "1.1.1.1", 600)
+    assert err is None and rid == "1"
+    assert captured[0].get("host") == "www"
+
+
 def test_trailing_empty_page():
     class Fake(object):
         def get(self, url, params=None, timeout=None):
@@ -206,6 +275,9 @@ def main():
     test_auth_aliases()
     test_empty_zone()
     test_record_count_past_page_count()
+    test_short_first_page()
+    test_overstated_record_count_short_tail()
+    test_add_record_host_normalization()
     test_trailing_empty_page()
     test_append_rs()
     print("ALL PASSED")
