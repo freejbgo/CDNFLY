@@ -270,6 +270,42 @@ def test_overstated_record_count_short_tail():
     assert err is None and len(got) == 1500
 
 
+def test_domain_getsingle_list_payload():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            return Resp({"code": 0, "data": [{"domainID": 123, "domain": "example.com"}]})
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    domain_id, err = client._domain_id("example.com")
+    assert err is None and domain_id == "123"
+
+
+def test_get_record_list_payload():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 1}})
+            if url.endswith("record/getsingle/"):
+                return Resp({
+                    "code": 0,
+                    "data": [{
+                        "recordID": 9,
+                        "record": "www",
+                        "type": "A",
+                        "viewID": 0,
+                        "value": "1.1.1.1",
+                        "TTL": 600,
+                    }],
+                })
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    rec, err = client.get_record("example.com", 9)
+    assert err is None and rec["sub_domain"] == "www" and rec["value"] == "1.1.1.1"
+
+
 def test_add_record_list_payload():
     class Fake(object):
         def get(self, url, params=None, timeout=None):
@@ -352,6 +388,8 @@ def main():
     test_record_count_past_page_count()
     test_short_first_page()
     test_overstated_record_count_short_tail()
+    test_domain_getsingle_list_payload()
+    test_get_record_list_payload()
     test_add_record_list_payload()
     test_add_record_host_normalization()
     test_trailing_empty_page()
