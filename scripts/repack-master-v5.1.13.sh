@@ -78,7 +78,13 @@ rm -f \
   "$DST/master/tasks/dnsapi/dnspod_cn.so" \
   "$DST/master/tasks/dnsapi/dnspod_com.so" \
   "$DST/master/tasks/dnsapi/cloudflare.so" \
-  "$DST/master/tasks/dnsapi/dnsdotcom.so"
+  "$DST/master/tasks/dnsapi/dnsdotcom.so" \
+  "$DST/master/tasks/dnsapi/dnsdun.so"
+rm -f "$DST/master/conf/dnsdun.sh"
+
+if [[ -f "$ROOT/50113.sh" && -d "$DST/master/upgrade_script" ]]; then
+  cp -a "$ROOT/50113.sh" "$DST/master/upgrade_script/50113.sh"
+fi
 
 echo "Stripping AppleDouble metadata files from package tree..."
 find "$DST" -name '._*' -type f -delete

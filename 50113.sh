@@ -147,7 +147,9 @@ done
 rm -f /opt/cdnfly/master/tasks/dnsapi/dnspod_cn.so \
       /opt/cdnfly/master/tasks/dnsapi/dnspod_com.so \
       /opt/cdnfly/master/tasks/dnsapi/cloudflare.so \
-      /opt/cdnfly/master/tasks/dnsapi/dnsdotcom.so
+      /opt/cdnfly/master/tasks/dnsapi/dnsdotcom.so \
+      /opt/cdnfly/master/tasks/dnsapi/dnsdun.so
+rm -f /opt/cdnfly/master/conf/dnsdun.sh
 
 }
 
