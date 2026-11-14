@@ -306,7 +306,8 @@ def test_get_record_list_payload():
                         "type": "A",
                         "viewID": 0,
                         "value": "1.1.1.1",
-                        "TTL": 600,
+                        "ttl": 300,
+                        "mx": 8,
                     }],
                 })
             raise AssertionError(url)
@@ -315,6 +316,7 @@ def test_get_record_list_payload():
     client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
     rec, err = client.get_record("example.com", 9)
     assert err is None and rec["sub_domain"] == "www" and rec["value"] == "1.1.1.1"
+    assert rec["ttl"] == "300" and rec["weight"] == "8"
 
 
 def test_add_record_scalar_payload():
