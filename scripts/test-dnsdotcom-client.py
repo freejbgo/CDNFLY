@@ -10,6 +10,7 @@ PKG = os.path.join(ROOT, ".veikor-build", "cdnfly-master-v5.1.13", "master", "ta
 sys.path.insert(0, PKG)
 
 import dnsdotcom
+import dnspod_cn
 import tencent_dns
 
 
@@ -417,6 +418,36 @@ def test_trailing_empty_page():
     assert err is None and "1" in got
 
 
+def test_tencent_append_rs_weight():
+    client = dnspod_cn.Dns(json.dumps({"id": "sid", "token": "key"}))
+    client.domain_name = "example.com"
+    bucket = {}
+    client.append_rs(
+        [
+            {
+                "RecordId": 1,
+                "Name": "www",
+                "Type": "A",
+                "LineId": "10=1",
+                "Value": "1.1.1.1",
+                "TTL": 600,
+                "Weight": 20,
+            },
+            {
+                "RecordId": 2,
+                "Name": "cdn",
+                "Type": "A",
+                "LineId": "0",
+                "Value": "2.2.2.2",
+                "TTL": 300,
+            },
+        ],
+        bucket,
+    )
+    assert bucket["1"]["weight"] == "20"
+    assert "weight" not in bucket["2"]
+
+
 def test_append_rs():
     client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
     client.domain_name = "example.com"
@@ -456,6 +487,7 @@ def main():
     test_mx_priority_from_weight()
     test_add_record_host_normalization()
     test_trailing_empty_page()
+    test_tencent_append_rs_weight()
     test_append_rs()
     print("ALL PASSED")
 
