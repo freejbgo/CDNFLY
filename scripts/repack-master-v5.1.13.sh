@@ -73,6 +73,16 @@ MASTER_EXCLUDES=(
 )
 merge_tree "$OVERLAY_ROOT/master" "$DST/master" "${MASTER_EXCLUDES[@]}"
 
+echo "Removing legacy DNS .so files superseded by Python (official base may still ship them)..."
+rm -f \
+  "$DST/master/tasks/dnsapi/dnspod_cn.so" \
+  "$DST/master/tasks/dnsapi/dnspod_com.so" \
+  "$DST/master/tasks/dnsapi/cloudflare.so" \
+  "$DST/master/tasks/dnsapi/dnsdotcom.so"
+
+echo "Stripping AppleDouble metadata files from package tree..."
+find "$DST" -name '._*' -type f -delete
+
 echo "Fixing duplicate 504-error-page option in task/index.html..."
 python3 - "$WORKDIR/$TASK_HTML" <<'PY'
 import sys
