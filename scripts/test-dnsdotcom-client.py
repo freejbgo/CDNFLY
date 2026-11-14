@@ -97,6 +97,45 @@ def test_crud_flow():
     assert ok is True and err is None
 
 
+def test_auth_aliases():
+    client = dnsdotcom.Dns(json.dumps({"authid": "kid", "authtoken": "sec"}))
+    assert client.api_key == "kid" and client.api_secret == "sec"
+
+
+def test_empty_zone():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 1, "domain": "example.com"}})
+            if url.endswith("record/list/"):
+                return Resp({"code": 0, "data": {"data": [], "recordCount": 0, "total_page": 0, "pageCount": 0}})
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    got, err = client.get_all_record("example.com")
+    assert err is None and got == {}
+
+
+def test_trailing_empty_page():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 1}})
+            if url.endswith("record/list/"):
+                page = int(params.get("page", "1"))
+                if page == 1:
+                    rows = [{"recordID": 1, "record": "www", "type": "A", "viewID": 0, "value": "1.1.1.1"}]
+                    return Resp({"code": 0, "data": {"data": rows, "total_page": 3, "pageCount": 3}})
+                return Resp({"code": 0, "data": {"data": [], "total_page": 3, "pageCount": 3}})
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    got, err = client.get_all_record("example.com")
+    assert err is None and "1" in got
+
+
 def test_append_rs():
     client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
     client.domain_name = "example.com"
@@ -114,6 +153,9 @@ def main():
     test_sign_doc_example()
     test_lines_shape()
     test_crud_flow()
+    test_auth_aliases()
+    test_empty_zone()
+    test_trailing_empty_page()
     test_append_rs()
     print("ALL PASSED")
 
