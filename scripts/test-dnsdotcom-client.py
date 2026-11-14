@@ -102,6 +102,17 @@ def test_auth_aliases():
     assert client.api_key == "kid" and client.api_secret == "sec"
 
 
+def test_success_without_code_field():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            return Resp({"message": "", "data": {"domainID": 42, "domain": "example.com"}})
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    data, err = client.send_request("domain/getsingle", {"domainID": "example.com"})
+    assert err is None and data.get("domainID") == 42
+
+
 def test_api_error_empty_message():
     class Fake(object):
         def get(self, url, params=None, timeout=None):
@@ -284,6 +295,7 @@ def main():
     test_lines_shape()
     test_crud_flow()
     test_auth_aliases()
+    test_success_without_code_field()
     test_api_error_empty_message()
     test_empty_zone()
     test_record_count_past_page_count()
