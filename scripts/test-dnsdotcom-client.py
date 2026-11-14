@@ -420,14 +420,16 @@ def test_append_rs():
     client.domain_name = "example.com"
     bucket = {}
     client.append_rs([
-        {"recordID": 1, "record": "@", "type": "A", "viewID": 0, "value": "1.1.1.1"},
+        {"recordID": 1, "record": "@", "type": "A", "viewID": 0, "value": "1.1.1.1", "mx": 5},
         {"recordID": 2, "record": "cdn", "type": "CNAME", "viewID": "0", "value": "a.example.com."},
         {"recordID": 3, "record": "www.example.com", "type": "A", "viewID": 0, "value": "2.2.2.2"},
         "bad",
     ], bucket)
     assert bucket["1"]["sub_domain"] == "@"
+    assert bucket["1"]["weight"] == "5"
     assert bucket["2"]["ip"] == "a.example.com"
     assert bucket["3"]["sub_domain"] == "www"
+    assert "weight" not in bucket["2"]
 
 
 def main():
