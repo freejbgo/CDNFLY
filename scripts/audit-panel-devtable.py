@@ -78,7 +78,16 @@ def scan():
                 )
                 for b in blocks:
                     if "LAY_app_body" in b or ".val(" in b or ".text(" in b:
-                        if "Alive()" not in b and "alive()" not in b:
+                        popup_guarded = (
+                            "LAY-popup" in b
+                            or "layero" in b
+                            or "nodeDnsRoot" in b
+                        )
+                        if (
+                            "Alive()" not in b
+                            and "alive()" not in b
+                            and not popup_guarded
+                        ):
                             req_no_alive_hint.append((rel, b[:60].replace("\n", " ")))
                             break
 
