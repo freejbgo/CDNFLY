@@ -70,6 +70,6 @@ wget .../cdnfly/api.py -O /opt/venv/lib/python2.7/site-packages/requests/api.py
 
 ## 6. 与本仓库发版的关系
 
-面板审计脚本（`audit-panel-devtable.py` / `audit-panel-deep.py`）检查的是**面板资源 / 开发表**类问题，**不**覆盖二进制 API 鉴权。发版前仍应执行 `verify-packages.sh` 与解压抽查（官方 tar 与 `.veikor-build` 面板一致）。
+安全缓解说明**仅保存在本仓库文档与脚本**，**不**写入主控面板界面或程序内提示。面板审计脚本（`audit-panel-devtable.py` / `audit-panel-deep.py`）检查的是**面板资源 / 开发表**类问题，**不**覆盖二进制 API 鉴权。发版前仍应执行 `verify-packages.sh` 与解压抽查（官方 tar 与 `.veikor-build` 面板一致）。
 
 长期建议：有条件时使用**官方授权 + 新版本**；本 5.1.13 自托管发行适合内网/单租户并落实上述缓解。
