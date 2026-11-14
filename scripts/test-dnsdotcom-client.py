@@ -270,6 +270,21 @@ def test_overstated_record_count_short_tail():
     assert err is None and len(got) == 1500
 
 
+def test_add_record_list_payload():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 9}})
+            if url.endswith("record/create/"):
+                return Resp({"code": 0, "data": [{"recordID": 88}]})
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    rid, err = client.add_record("example.com", "www", "A", "0", "1.1.1.1", 600)
+    assert err is None and rid == "88"
+
+
 def test_add_record_host_normalization():
     captured = []
 
@@ -337,6 +352,7 @@ def main():
     test_record_count_past_page_count()
     test_short_first_page()
     test_overstated_record_count_short_tail()
+    test_add_record_list_payload()
     test_add_record_host_normalization()
     test_trailing_empty_page()
     test_append_rs()
