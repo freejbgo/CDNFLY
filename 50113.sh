@@ -139,9 +139,14 @@ done
 
 update_file() {
 cd /opt/$dir_name/master/
-for i in `find ./ | grep -vE "^./$|^./agent$|^./conf$|conf/config.py|conf/nginx_global.tpl|conf/supervisor_master.conf|conf/nginx_http_default.tpl|conf/nginx_http_vhost.tpl|conf/nginx_stream_vhost.tpl|conf/ssl.cert|conf/ssl.key|^./panel"`;do
+for i in `find ./ | grep -vE "^./$|^./agent$|^./conf$|conf/config.py|conf/nginx_global.tpl|conf/supervisor_master.conf|conf/nginx_http_default.tpl|conf/nginx_http_vhost.tpl|conf/nginx_stream_vhost.tpl|conf/ssl.cert|conf/ssl.key"`;do
     \cp -aT $i /opt/cdnfly/master/$i
 done
+
+# 旧的 .so 和同名 .py 同时存在时，Python 会加载 .so。DNSPod、Cloudflare 已改成 .py，这里删掉旧文件。
+rm -f /opt/cdnfly/master/tasks/dnsapi/dnspod_cn.so \
+      /opt/cdnfly/master/tasks/dnsapi/dnspod_com.so \
+      /opt/cdnfly/master/tasks/dnsapi/cloudflare.so
 
 }
 
