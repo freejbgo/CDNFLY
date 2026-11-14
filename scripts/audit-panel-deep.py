@@ -168,6 +168,26 @@ def _form_on_guarded(text, flt):
     )
 
 
+def scan_batch_map_gap():
+    """Hint: high page-size tables with toolbar bulk but no cross-page CheckedMap."""
+    for dirpath, _, files in os.walk(PANEL):
+        for fn in files:
+            if not fn.endswith(".html"):
+                continue
+            path = os.path.join(dirpath, fn)
+            rel = os.path.relpath(path, PANEL)
+            text = open(path, encoding="utf-8", errors="replace").read()
+            if "limits:" not in text or "500" not in text:
+                continue
+            if not re.search(r"type:\s*['\"]checkbox['\"]", text):
+                continue
+            if "CheckedMap" in text or "IdsForBatch" in text:
+                continue
+            if "table.on('toolbar" not in text and 'table.on("toolbar' not in text:
+                continue
+            add(rel, "limits500_no_checked_map", "limits 500 + bulk toolbar, no CheckedMap")
+
+
 def scan_duplicate_form_on():
     by_filter = {}
     file_text = {}
@@ -196,6 +216,7 @@ def scan_duplicate_form_on():
 def main():
     walk()
     scan_controllers()
+    scan_batch_map_gap()
     by_kind = {}
     for rel, kind, detail in ISSUES:
         by_kind.setdefault(kind, []).append((rel, detail))
