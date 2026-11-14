@@ -117,6 +117,54 @@ def test_empty_zone():
     assert err is None and got == {}
 
 
+def test_record_count_past_page_count():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("domain/getsingle/"):
+                return Resp({"code": 0, "data": {"domainID": 1}})
+            if url.endswith("record/list/"):
+                page = int(params.get("page", "1"))
+                if page == 1:
+                    rows = [
+                        {
+                            "recordID": i,
+                            "record": "h%d" % i,
+                            "type": "A",
+                            "viewID": 0,
+                            "value": "1.1.1.1",
+                        }
+                        for i in range(1000)
+                    ]
+                    return Resp({
+                        "code": 0,
+                        "data": {
+                            "data": rows,
+                            "recordCount": 1500,
+                            "pageCount": 1,
+                            "total_page": 1,
+                        },
+                    })
+                if page == 2:
+                    rows = [
+                        {
+                            "recordID": i,
+                            "record": "h%d" % i,
+                            "type": "A",
+                            "viewID": 0,
+                            "value": "2.2.2.2",
+                        }
+                        for i in range(1000, 1500)
+                    ]
+                    return Resp({"code": 0, "data": {"data": rows, "recordCount": 1500}})
+                return Resp({"code": 0, "data": {"data": [], "recordCount": 1500}})
+            raise AssertionError(url)
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    got, err = client.get_all_record("example.com")
+    assert err is None and len(got) == 1500
+
+
 def test_trailing_empty_page():
     class Fake(object):
         def get(self, url, params=None, timeout=None):
@@ -155,6 +203,7 @@ def main():
     test_crud_flow()
     test_auth_aliases()
     test_empty_zone()
+    test_record_count_past_page_count()
     test_trailing_empty_page()
     test_append_rs()
     print("ALL PASSED")
