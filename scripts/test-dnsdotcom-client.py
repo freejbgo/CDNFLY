@@ -191,10 +191,12 @@ def test_append_rs():
     client.append_rs([
         {"recordID": 1, "record": "@", "type": "A", "viewID": 0, "value": "1.1.1.1"},
         {"recordID": 2, "record": "cdn", "type": "CNAME", "viewID": "0", "value": "a.example.com."},
+        {"recordID": 3, "record": "www.example.com", "type": "A", "viewID": 0, "value": "2.2.2.2"},
         "bad",
     ], bucket)
     assert bucket["1"]["sub_domain"] == "@"
     assert bucket["2"]["ip"] == "a.example.com"
+    assert bucket["3"]["sub_domain"] == "www"
 
 
 def main():
