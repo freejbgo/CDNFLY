@@ -9,6 +9,12 @@ failures=0
 ok() { echo "[OK] $*"; }
 bad() { echo "[FAIL] $*"; failures=$((failures + 1)); }
 
+if ! python3 "$ROOT/scripts/audit-panel-batch-regression.py"; then
+  bad "audit-panel-batch-regression"
+else
+  ok "audit-panel-batch-regression"
+fi
+
 scan_forbidden_terms() {
   local path="$1"
   local exclude_globs=(
