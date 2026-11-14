@@ -113,6 +113,17 @@ def test_success_without_code_field():
     assert err is None and data.get("domainID") == 42
 
 
+def test_api_error_message_without_code():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            return Resp({"message": u"鉴权失败"})
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    _, err = client.send_request("domain/getsingle", {"domainID": "example.com"})
+    assert err == u"鉴权失败"
+
+
 def test_api_error_empty_message():
     class Fake(object):
         def get(self, url, params=None, timeout=None):
@@ -296,6 +307,7 @@ def main():
     test_crud_flow()
     test_auth_aliases()
     test_success_without_code_field()
+    test_api_error_message_without_code()
     test_api_error_empty_message()
     test_empty_zone()
     test_record_count_past_page_count()
