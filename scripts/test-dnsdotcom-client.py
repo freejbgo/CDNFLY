@@ -270,6 +270,17 @@ def test_overstated_record_count_short_tail():
     assert err is None and len(got) == 1500
 
 
+def test_domain_getsingle_scalar_payload():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            return Resp({"code": 0, "data": 456})
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    domain_id, err = client._domain_id("example.com")
+    assert err is None and domain_id == "456"
+
+
 def test_domain_getsingle_list_payload():
     class Fake(object):
         def get(self, url, params=None, timeout=None):
@@ -403,6 +414,7 @@ def main():
     test_record_count_past_page_count()
     test_short_first_page()
     test_overstated_record_count_short_tail()
+    test_domain_getsingle_scalar_payload()
     test_domain_getsingle_list_payload()
     test_get_record_list_payload()
     test_add_record_scalar_payload()
