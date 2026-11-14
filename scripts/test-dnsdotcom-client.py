@@ -124,6 +124,28 @@ def test_api_error_message_without_code():
     assert err == u"鉴权失败"
 
 
+def test_api_error_unparseable_code():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            return Resp({"code": "bad", "message": ""})
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    _, err = client.send_request("domain/getsingle", {"domainID": "example.com"})
+    assert err == u"请求失败"
+
+
+def test_api_error_empty_body():
+    class Fake(object):
+        def get(self, url, params=None, timeout=None):
+            return Resp({})
+
+    dnsdotcom.requests = Fake()
+    client = dnsdotcom.Dns(json.dumps({"id": "k", "token": "s"}))
+    _, err = client.send_request("domain/getsingle", {"domainID": "example.com"})
+    assert err == u"请求失败"
+
+
 def test_api_error_empty_message():
     class Fake(object):
         def get(self, url, params=None, timeout=None):
@@ -308,6 +330,8 @@ def main():
     test_auth_aliases()
     test_success_without_code_field()
     test_api_error_message_without_code()
+    test_api_error_unparseable_code()
+    test_api_error_empty_body()
     test_api_error_empty_message()
     test_empty_zone()
     test_record_count_past_page_count()
