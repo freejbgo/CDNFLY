@@ -82,6 +82,12 @@ rm -f \
   "$DST/master/tasks/dnsapi/dnsdun.so"
 rm -f "$DST/master/conf/dnsdun.sh"
 
+INSTALL_SH="$DST/master/install.sh"
+if [[ -f "$INSTALL_SH" ]]; then
+  echo "Dropping obsolete dnsdun acme dnsapi symlink from install.sh..."
+  sed -i '/ln -s.*conf\/dnsdun\.sh/d' "$INSTALL_SH"
+fi
+
 if [[ -f "$ROOT/50113.sh" && -d "$DST/master/upgrade_script" ]]; then
   cp -a "$ROOT/50113.sh" "$DST/master/upgrade_script/50113.sh"
 fi
