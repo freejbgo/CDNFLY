@@ -83,6 +83,8 @@ def scan_file(rel, text):
                 or "querySelector('#LAY-popup" in body
                 or "getElementById('LAY-popup" in body
                 or "linePageAlive" in body
+                or "$(layero)" in body
+                or "layero" in body and "LAY-popup" in body
             )
             if touches and not guarded and has_alive:
                 add(rel, "req_done_no_alive", body[:90].replace("\n", " "))
