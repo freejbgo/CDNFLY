@@ -97,6 +97,21 @@ FILTER_CLEARS = {
 }
 
 
+def scan_map_reset_on_entry():
+    """Opening a list again must drop checks the user can no longer see."""
+    if not os.path.isfile(TAR):
+        return
+    keep_init = re.compile(r"CheckedMap = window\.__veikor\w+CheckedMap \|\| \{\}")
+    with tarfile.open(TAR) as tf:
+        for member in tf.getmembers():
+            if not member.name.startswith(PREFIX) or not member.name.endswith(".html"):
+                continue
+            text = tf.extractfile(member).read().decode("utf-8", "replace")
+            rel = member.name[len(PREFIX):]
+            if keep_init.search(text) or "window[mapKey] = window[mapKey] || {}" in text:
+                fail(f"{rel}: page entry keeps the previous visit's checked ids")
+
+
 def scan_shared_table_map():
     if not os.path.isfile(TAR):
         return
@@ -162,6 +177,7 @@ def main():
         scan_index_preload()
     else:
         print("panel tree absent, skipped local view scan")
+    scan_map_reset_on_entry()
     scan_shared_table_map()
     scan_filter_clears()
     scan_tar_drift()
