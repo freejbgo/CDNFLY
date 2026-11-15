@@ -118,6 +118,16 @@ def scan_map_reset_on_entry():
             fail("task list reload keeps checks that the refresh cleared on screen")
         if batch is None or "window.__veikorSiteListCheckedMap = {};\n            layui.table.reload('test-table-toolbar')" not in batch.read().decode("utf-8", "replace"):
             fail("batch site update reloads the list without dropping the previous checks")
+        for rel in (
+            "views/site/site/index.html",
+            "views/site/cert/cert.html",
+            "views/stream/stream/index.html",
+            "views/package/sold/index.html",
+        ):
+            member = tf.extractfile(PREFIX + rel)
+            body = "" if member is None else member.read().decode("utf-8", "replace")
+            if 'closest("form").find("button.search").trigger("click")' not in body:
+                fail(rel + ": reset clears the form and leaves the previous filter on the list")
 
 
 def scan_shared_table_map():
@@ -140,6 +150,10 @@ def scan_shared_table_map():
         fail("veikor-local-batch does not re-register after another page takes the checkbox event")
     if "var rawReload = table.reload;" not in text or "maps[tableId] = {}" not in text.split("var rawReload = table.reload;", 1)[-1]:
         fail("reloading a client table keeps checks that are no longer shown")
+    if "#idx:" in text or "#tc:" in text or "#uri:" in text or "#addr:" in text or "#nv:" in text:
+        fail("client row checks use a partial key that collides across rows")
+    if "tableId + '#row:'" not in text:
+        fail("client row checks do not use the full row")
 
 
 SEARCH_PAGES = (
