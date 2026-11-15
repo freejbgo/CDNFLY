@@ -106,9 +106,12 @@ with tarfile.open(master_tar) as tar:
     install = member_text(tar, "cdnfly-master-v5.1.13/master/install.sh")
     upgrade = member_text(tar, "cdnfly-master-v5.1.13/master/tasks/upgrade.py")
     up_sh = member_text(tar, "cdnfly-master-v5.1.13/master/upgrade_script/50113.sh")
+    packaged_master = member_text(tar, "cdnfly-master-v5.1.13/master/master.sh")
+    db_sql = member_text(tar, "cdnfly-master-v5.1.13/master/conf/db.sql")
 with tarfile.open(agent_tar) as tar:
     agent_install = member_text(tar, "cdnfly-agent-v5.1.16/agent/install.sh")
     agent_up = member_text(tar, "cdnfly-agent-v5.1.16/agent/upgrade.py")
+    packaged_agent = member_text(tar, "cdnfly-agent-v5.1.16/agent/agent.sh")
 
 canon = open(os.path.join(root, "scripts", "ntp-crontab-canonical.txt"), encoding="utf-8").read()
 line = [ln for ln in canon.splitlines() if ln and not ln.startswith("#")][0]
@@ -136,6 +139,42 @@ if "ignore-ntp" not in install.split("getopt", 1)[1][:400]:
     bad("master install.sh getopt still rejects --ignore-ntp")
 else:
     ok("master install.sh accepts --ignore-ntp")
+if "if ! grep -q 65535 /etc/security/limits.conf" not in install:
+    bad("kernel_tune still treats grep -q as a string test")
+else:
+    ok("kernel_tune checks limits.conf by exit status")
+if 'echo "目前只支持 CentOS 7' not in install or "exit 1" not in install.split("need_sys()", 1)[1][:500]:
+    bad("master install.sh does not stop on a non-CentOS system")
+else:
+    ok("master install.sh requires CentOS 7")
+if 'echo "目前只支持 CentOS 7' not in agent_install or "exit 1" not in agent_install.split("need_sys()", 1)[1][:500]:
+    bad("agent install.sh does not stop on a non-CentOS system")
+else:
+    ok("agent install.sh requires CentOS 7")
+repo_master = open(os.path.join(root, "master.sh"), encoding="utf-8").read()
+repo_agent = open(os.path.join(root, "agent.sh"), encoding="utf-8").read()
+if packaged_master != repo_master:
+    bad("packaged master.sh differs from the repo installer")
+else:
+    ok("packaged master.sh matches the repo installer")
+if packaged_agent != repo_agent:
+    bad("packaged agent.sh differs from the repo installer")
+else:
+    ok("packaged agent.sh matches the repo installer")
+if '"key":"__OPENRESTY_KEY__"' not in db_sql or "QWOBRGt35Y" in db_sql:
+    bad("db.sql does not leave the openresty key for install.sh to replace")
+elif 's/__OPENRESTY_KEY__/' not in install:
+    bad("install.sh no longer substitutes __OPENRESTY_KEY__")
+else:
+    ok("install.sh substitutes a fresh openresty key")
+if "wait_for_elasticsearch" not in install:
+    bad("elasticsearch setup still continues after a fixed 5 second sleep")
+else:
+    ok("elasticsearch setup waits until it answers")
+if "下载失败" not in install or "下载失败" not in agent_install:
+    bad("download() still ignores a failed wget")
+else:
+    ok("download() fails when the file is empty")
 
 def run_embedded(install_text, start, paths):
     begin = install_text.index(start)
