@@ -110,6 +110,14 @@ def scan_map_reset_on_entry():
             rel = member.name[len(PREFIX):]
             if keep_init.search(text) or "window[mapKey] = window[mapKey] || {}" in text:
                 fail(f"{rel}: page entry keeps the previous visit's checked ids")
+    with tarfile.open(TAR) as tf:
+        task = tf.extractfile(PREFIX + "views/system/task/index.html")
+        batch = tf.extractfile(PREFIX + "views/site/site/update_form.html")
+        task_text = "" if task is None else task.read().decode("utf-8", "replace")
+        if "window.__veikorSystemTaskListCheckedMap = {};\n              table.reload('test-table-toolbar')" not in task_text or "window.__veikorSystemTaskListCheckedMap = {};\n      table.reload('test-table-toolbar')" not in task_text:
+            fail("task list reload keeps checks that the refresh cleared on screen")
+        if batch is None or "window.__veikorSiteListCheckedMap = {};\n            layui.table.reload('test-table-toolbar')" not in batch.read().decode("utf-8", "replace"):
+            fail("batch site update reloads the list without dropping the previous checks")
 
 
 def scan_shared_table_map():
@@ -130,6 +138,8 @@ def scan_shared_table_map():
         fail("veikor-local-batch checkbox listener does not follow the current page")
     if re.search(r"if \(bound\[tableId\]\) \{[\s\S]{0,80}?return;", text):
         fail("veikor-local-batch does not re-register after another page takes the checkbox event")
+    if "var rawReload = table.reload;" not in text or "maps[tableId] = {}" not in text.split("var rawReload = table.reload;", 1)[-1]:
+        fail("reloading a client table keeps checks that are no longer shown")
 
 
 SEARCH_PAGES = (
