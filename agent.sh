@@ -293,9 +293,11 @@ cd /opt/cdnfly/agent
 chmod +x install.sh
 ./install.sh "${FORWARD[@]}"
 
-# filebeat.yml 含 Elasticsearch 密码，只能所有者读写。0644 会把密码暴露给本机其他用户。
+# filebeat 以 filebeat 用户读取这份配置。属主是 root 且权限是 0600 时它读不到，
+# 进程会马上退出，supervisor 报 filebeat: ERROR (spawn error)，新节点同步
+# cc_filter、nginx、openresty 也会失败。保持 root:0644。
 if [[ -f /opt/cdnfly/agent/conf/filebeat.yml ]]; then
     chown root /opt/cdnfly/agent/conf/filebeat.yml
-    chmod 0600 /opt/cdnfly/agent/conf/filebeat.yml
+    chmod 0644 /opt/cdnfly/agent/conf/filebeat.yml
     supervisorctl -c /opt/cdnfly/agent/conf/supervisord.conf restart all || true
 fi
