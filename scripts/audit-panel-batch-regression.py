@@ -126,8 +126,12 @@ def scan_map_reset_on_entry():
         ):
             member = tf.extractfile(PREFIX + rel)
             body = "" if member is None else member.read().decode("utf-8", "replace")
-            if 'closest("form").find("button.search").trigger("click")' not in body:
+            if 'closest("form").find("button.search").first().trigger("click")' not in body:
                 fail(rel + ": reset clears the form and leaves the previous filter on the list")
+        line_page = tf.extractfile(PREFIX + "views/node/group/line.html")
+        line_text = "" if line_page is None else line_page.read().decode("utf-8", "replace")
+        if "encodeURIComponent(search == null ? '' : search)" not in line_text:
+            fail("line search puts the typed text into the query without encoding")
 
 
 def scan_shared_table_map():
