@@ -81,6 +81,61 @@ def scan_index_preload():
         fail("index.js: veikorLocalBatch not preloaded in main define()")
 
 
+# A new search or filter is a different result set. Cross-page ids from the previous query must not stay selected.
+FILTER_CLEARS = {
+    "views/site/site/index.html": "__veikorSiteListCheckedMap = {}",
+    "views/node/node/index.html": "__veikorNodeListCheckedMap = {}",
+    "views/node/group/index.html": "__veikorNodeGroupListCheckedMap = {}",
+    "views/stream/stream/index.html": "__veikorStreamListCheckedMap = {}",
+    "views/system/user/index.html": "__veikorSystemUserListCheckedMap = {}",
+    "views/system/task/index.html": "__veikorSystemTaskListCheckedMap = {}",
+    "views/site/cert/cert.html": "__veikorCertListCheckedMap = {}",
+    "views/site/acl/index.html": "__veikorAclListCheckedMap = {}",
+    "views/package/sold/index.html": "__veikorSoldPackageListCheckedMap = {}",
+    "views/package/basic/index.html": "__veikorBasicPackageListCheckedMap = {}",
+    "views/site/monitor/blackip.html": "veikorLocalBatch.clearMap('test-table-toolbar')",
+}
+
+
+def scan_shared_table_map():
+    if not os.path.isfile(TAR):
+        return
+    name = PREFIX + "lib/veikor-local-batch.js"
+    with tarfile.open(TAR) as tf:
+        member = tf.extractfile(name)
+        if member is None:
+            fail("veikor-local-batch.js missing from master package")
+            return
+        text = member.read().decode("utf-8", "replace")
+    if "maps[tableId] = maps[tableId] || {}" in text:
+        fail("veikor-local-batch keeps another page's checks on a reused table id")
+    if "maps[tableId] = {}" not in text:
+        fail("veikor-local-batch does not reset checks when a page installs the table")
+    if "bound[tableId].alive" not in text:
+        fail("veikor-local-batch stacks a checkbox listener on every page visit")
+
+
+def scan_filter_clears():
+    if not os.path.isfile(TAR):
+        return
+    with tarfile.open(TAR) as tf:
+        for rel, marker in FILTER_CLEARS.items():
+            name = PREFIX + rel
+            member = tf.extractfile(name)
+            if member is None:
+                fail(f"{rel}: missing from master package")
+                continue
+            text = member.read().decode("utf-8", "replace")
+            if marker not in text:
+                fail(f"{rel}: filter reload does not clear cross-page selection")
+                continue
+            for m in re.finditer(r"table\.reload\(\s*['\"]test-table-toolbar['\"][\s\S]{0,220}?where\s*:", text):
+                before = text[max(0, m.start() - 220) : m.start()]
+                if marker not in before:
+                    line = text[: m.start()].count("\n") + 1
+                    fail(f"{rel}:{line}: filtered reload keeps the previous checked ids")
+
+
 def scan_tar_drift():
     if not os.path.isfile(TAR) or not os.path.isdir(PANEL):
         return
@@ -107,6 +162,8 @@ def main():
         scan_index_preload()
     else:
         print("panel tree absent, skipped local view scan")
+    scan_shared_table_map()
+    scan_filter_clears()
     scan_tar_drift()
     if FAILURES:
         print("=== batch regression FAILED ===")
