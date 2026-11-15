@@ -11,30 +11,32 @@ if (function_exists("set_time_limit"))
 	@set_time_limit(0);
 }
 
-$url = $_SERVER['REQUEST_URI'];
-$method = $_SERVER['REQUEST_METHOD'];
+$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+$qpos = strpos($uri, '?');
+if($qpos !== false) $uri = substr($uri, 0, $qpos);
+$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
-if(strpos($url, '/common/timestamp2') !== false && $method=='POST'){
-    $param = parse_input2();
-    $data = ['now'=>time(), 'rnd'=>$param['rnd']];
+if(strpos($uri, '/common/timestamp2') !== false && $method=='POST'){
+    $param = require_param(parse_input2());
+    $data = ['now'=>time(), 'rnd'=>isset($param['rnd']) ? $param['rnd'] : ''];
     echo generate_output2($data);
 }
-elseif(strpos($url, '/auth2') !== false && $method=='POST'){
-    $param = parse_input2();
-    $data = ['nodes'=>10000, 'machine_code'=>$param['machine_code'], 'end_at'=>time()+3600*24*36500];
+elseif(strpos($uri, '/auth2') !== false && $method=='POST'){
+    $param = require_param(parse_input2());
+    $data = ['nodes'=>10000, 'machine_code'=>isset($param['machine_code']) ? $param['machine_code'] : '', 'end_at'=>time()+3600*24*36500];
     echo generate_output2($data);
 }
-elseif(strpos($url, '/common/timestamp') !== false && $method=='POST'){
-    $param = parse_input();
-    $data = ['now'=>time(), 'rnd'=>$param['rnd']];
+elseif(strpos($uri, '/common/timestamp') !== false && $method=='POST'){
+    $param = require_param(parse_input());
+    $data = ['now'=>time(), 'rnd'=>isset($param['rnd']) ? $param['rnd'] : ''];
     echo generate_output($data);
 }
-elseif(strpos($url, '/auth') !== false && $method=='POST'){
-    $param = parse_input();
-    $data = ['nodes'=>10000, 'machine_code'=>$param['machine_code'], 'end_at'=>time()+3600*24*36500];
+elseif(strpos($uri, '/auth') !== false && $method=='POST'){
+    $param = require_param(parse_input());
+    $data = ['nodes'=>10000, 'machine_code'=>isset($param['machine_code']) ? $param['machine_code'] : '', 'end_at'=>time()+3600*24*36500];
     echo generate_output($data);
 }
-elseif(strpos($url, '/check') !== false && $method=='POST'){
+elseif(strpos($uri, '/check') !== false && $method=='POST'){
     require 'config.php';
     require 'monitor.php';
     $post = file_get_contents('php://input');
@@ -43,19 +45,43 @@ elseif(strpos($url, '/check') !== false && $method=='POST'){
     $data = ['msg'=>$result];
     echo json_encode($data);
 }
-elseif(strpos($url, '/common/datetime') !== false && $method=='GET'){
-    return date('Y-m-d H:i:s');
+elseif(strpos($uri, '/common/datetime') !== false && $method=='GET'){
+    header('Content-Type: text/plain; charset=UTF-8');
+    echo date('Y-m-d H:i:s');
 }
-elseif(strpos($url, '/master/upgrades') !== false){
+elseif(strpos($uri, '/agent/upgrades') !== false){
+    $client_ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+    echo json_encode(['code'=>0, 'count'=>0, 'data'=>[], 'ip'=>$client_ip]);
+}
+elseif(strpos($uri, '/master/upgrades') !== false){
     $version_data = file_get_contents('version.json');
-    if(!$version_data) exit(json_encode(['code'=>-1, 'data'=>[], 'ip'=>$_SERVER['REMOTE_ADDR'], 'msg'=>'版本信息文件不存在']));
+    $client_ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+    if(!$version_data) exit(json_encode(['code'=>-1, 'data'=>[], 'ip'=>$client_ip, 'msg'=>'版本信息文件不存在']));
     $version_info = json_decode($version_data, true);
-    if(!$version_info) exit(json_encode(['code'=>-1, 'data'=>[], 'ip'=>$_SERVER['REMOTE_ADDR'], 'msg'=>'解析版本信息文件失败']));
-    $data = ['code'=>0, 'count'=>1, 'data'=>[$version_info], 'ip'=>$_SERVER['REMOTE_ADDR']];
+    if(!$version_info) exit(json_encode(['code'=>-1, 'data'=>[], 'ip'=>$client_ip, 'msg'=>'解析版本信息文件失败']));
+    $rows = upgrade_rows($version_info);
+    $data = ['code'=>0, 'count'=>count($rows), 'data'=>$rows, 'ip'=>$client_ip];
     echo json_encode($data);
 }
 
 
+function require_param($param){
+    return is_array($param) ? $param : [];
+}
+function upgrade_rows($info){
+    $rows = [$info];
+    if(!isset($_GET['version_num']) || $_GET['version_num'] === '') return $rows;
+    $cur = intval($_GET['version_num']);
+    $ver = intval(isset($info['version_num']) ? $info['version_num'] : 0);
+    $op = isset($_GET['op']) ? $_GET['op'] : '=';
+    if($op === '>') $keep = $ver > $cur;
+    elseif($op === '>=') $keep = $ver >= $cur;
+    elseif($op === '<') $keep = $ver < $cur;
+    elseif($op === '<=') $keep = $ver <= $cur;
+    else $keep = ($ver === $cur);
+    if(!$keep) return [];
+    return $rows;
+}
 function parse_input2(){
     $post = file_get_contents('php://input');
     $de_text = text_decrypt($post, get_aes_key());
@@ -69,7 +95,7 @@ function generate_output2($data){
     return json_encode($data);
 }
 function get_aes_key(){
-    $key = trim($_GET['key']);
+    $key = isset($_GET['key']) ? trim($_GET['key']) : '';
     $aes_key = substr(md5($key.KEY_APPEND), 0, 16);
     return $aes_key;
 }

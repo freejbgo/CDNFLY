@@ -102,8 +102,11 @@ def scan_tar_drift():
 
 
 def main():
-    scan_views()
-    scan_index_preload()
+    if os.path.isdir(VIEWS) and os.path.isfile(os.path.join(PANEL, "index.js")):
+        scan_views()
+        scan_index_preload()
+    else:
+        print("panel tree absent, skipped local view scan")
     scan_tar_drift()
     if FAILURES:
         print("=== batch regression FAILED ===")

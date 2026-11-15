@@ -1,6 +1,42 @@
-#!/bin/bash -x
+#!/bin/bash
 
 set -o errexit
+
+usage() {
+    cat <<'EOF'
+用法: ./agent.sh (--master-ver v5.1.13 | --agent-ver v5.1.16) --master-ip IP --es-ip IP --es-pwd PWD [--ignore-ntp]
+
+  --master-ver    按主控版本向 auth.cdnfly.cn 查询对应节点版本
+  --agent-ver     直接安装指定节点版本
+  --master-ip     主控 IP，交给 install.sh
+  --es-ip         Elasticsearch IP，交给 install.sh
+  --es-pwd        Elasticsearch 密码，交给 install.sh
+EOF
+}
+
+# --- parse-install-args agent ---
+parse_install_args() {
+    FORWARD=()
+    MASTER_VER=""
+    AGENT_VER=""
+    local TEMP
+    TEMP=$(getopt -o h --long help,master-ver:,agent-ver:,master-ip:,es-ip:,es-pwd:,ignore-ntp -- "$@") || return 1
+    eval set -- "$TEMP"
+    while true; do
+        case "$1" in
+            -h|--help) return 2 ;;
+            --master-ver) MASTER_VER=$2; shift 2 ;;
+            --agent-ver) AGENT_VER=$2; shift 2 ;;
+            --) shift; break ;;
+            *) FORWARD+=("$1"); shift ;;
+        esac
+    done
+    if [[ $# -gt 0 ]]; then
+        FORWARD+=("$@")
+    fi
+    return 0
+}
+# --- parse-install-args end ---
 
 #判断系统版本
 check_sys(){
@@ -135,11 +171,11 @@ EOF
 echo `python /tmp/sys_ver.py`
 }
 
-# README 一、4 / 二、2：见 scripts/ntp-crontab-canonical.txt（勿用旧 README 纯文本里的 \\% / \` 转义）
+# 与 scripts/ntp-crontab-canonical.txt 的非注释行保持一致。
 install_ntp_crontab() {
     local cron_file
     local cron_line
-    cron_line='*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '\''+\%Y-\%m-\%d \%H:\%M:\%S'\''` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")'
+    cron_line='*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=$(curl -fsSL --max-time 5 http://auth.cdnfly.cn/common/datetime) && printf \%s "$date_str" | grep -Eq "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\$" && timedatectl set-ntp false && timedatectl set-time "$date_str")'
 
     if check_sys sysRelease ubuntu || check_sys sysRelease debian;then
         cron_file=/var/spool/cron/crontabs/root
@@ -183,36 +219,22 @@ sync_time(){
 
 need_sys() {
     SYS_VER=`python -c "import platform;import re;sys_ver = platform.platform();sys_ver = re.sub(r'.*-with-(.*)-.*','\g<1>',sys_ver);print sys_ver;"`
-    if [[ $SYS_VER =~ "Ubuntu-16.04" ]];then
-      echo "$sys_ver"
-    elif [[ $SYS_VER =~ "centos-7" ]]; then
-      SYS_VER="centos-7"
-      echo $SYS_VER
-    else  
-      echo "目前只支持ubuntu-16.04和Centos-7"
-      exit 1
+    if [[ $SYS_VER =~ "centos-7" ]]; then
+      return 0
     fi
+    echo "目前只支持 CentOS 7，当前系统识别为: ${SYS_VER:-unknown}"
+    exit 1
 }
+
+# 先解析参数。--help 和错误参数不要先改系统时间或装包。
+rc=0
+parse_install_args "$@" || rc=$?
+if [[ $rc -eq 2 ]]; then usage; exit 0; fi
+if [[ $rc -ne 0 ]]; then echo "参数解析失败" >&2; exit 1; fi
 
 install_depend
 need_sys
 sync_time
-
-# 解析命令行参数
-TEMP=`getopt -o h --long help,master-ver:,agent-ver:,master-ip:,es-ip:,es-pwd:,ignore-ntp -- "$@"`
-if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
-eval set -- "$TEMP"
-
-while true ; do
-    case "$1" in
-        -h|--help) help ; exit 1 ;;
-        --master-ver) MASTER_VER=$2 ; shift 2 ;;
-        --agent-ver) AGENT_VER=$2 ; shift 2 ;;
-        --) shift ; break ;;
-        *) break ;;
-    esac
-done
-
 
 if [[ $MASTER_VER == "" ]]; then
     if [[ $AGENT_VER == "" ]]; then
@@ -256,6 +278,10 @@ fi
 cd /opt
 
 download "https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/$tar_gz_name" "https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/$tar_gz_name" "$tar_gz_name"
+if [[ ! -s $tar_gz_name ]]; then
+  echo "下载安装包失败: $tar_gz_name"
+  exit 1
+fi
 
 rm -rf $dir_name
 tar xf $tar_gz_name
@@ -265,11 +291,11 @@ mv $dir_name cdnfly
 # 开始安装
 cd /opt/cdnfly/agent
 chmod +x install.sh
-./install.sh $@
+./install.sh "${FORWARD[@]}"
 
-# README 二、1：filebeat 权限（与重打包一致，防止解压后权限丢失）
+# filebeat.yml 含 Elasticsearch 密码，只能所有者读写。0644 会把密码暴露给本机其他用户。
 if [[ -f /opt/cdnfly/agent/conf/filebeat.yml ]]; then
     chown root /opt/cdnfly/agent/conf/filebeat.yml
-    chmod 0644 /opt/cdnfly/agent/conf/filebeat.yml
+    chmod 0600 /opt/cdnfly/agent/conf/filebeat.yml
     supervisorctl -c /opt/cdnfly/agent/conf/supervisord.conf restart all || true
 fi

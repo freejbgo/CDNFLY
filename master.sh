@@ -2,6 +2,40 @@
 
 set -o errexit
 
+usage() {
+    cat <<'EOF'
+用法: ./master.sh [--ver v5.1.13] [交给 install.sh 的参数]
+
+  --ver v5.1.13     安装指定主控版本；省略则向 auth.cdnfly.cn 查询最新版
+  --es-dir DIR      Elasticsearch 数据目录
+  --no-es --es-ip IP --es-pwd PWD
+  --no-mysql --mysql-ip IP --master-ip IP
+  --only-es --only-mysql --ignore-ntp
+EOF
+}
+
+# --- parse-install-args master ---
+parse_install_args() {
+    FORWARD=()
+    VER=""
+    local TEMP
+    TEMP=$(getopt -o h --long help,ver:,no-mysql,only-mysql,no-es,only-es,master-ip:,es-ip:,es-dir:,es-pwd:,mysql-ip:,ignore-ntp -- "$@") || return 1
+    eval set -- "$TEMP"
+    while true; do
+        case "$1" in
+            -h|--help) return 2 ;;
+            --ver) VER=$2; shift 2 ;;
+            --) shift; break ;;
+            *) FORWARD+=("$1"); shift ;;
+        esac
+    done
+    if [[ $# -gt 0 ]]; then
+        FORWARD+=("$@")
+    fi
+    return 0
+}
+# --- parse-install-args end ---
+
 #判断系统版本
 check_sys(){
     local checkType=$1
@@ -135,11 +169,11 @@ download(){
 
 }
 
-# README 一、4 / 二、2：见 scripts/ntp-crontab-canonical.txt（勿用旧 README 纯文本里的 \\% / \` 转义）
+# 与 scripts/ntp-crontab-canonical.txt 的非注释行保持一致。
 install_ntp_crontab() {
     local cron_file
     local cron_line
-    cron_line='*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=`/usr/bin/date '\''+\%Y-\%m-\%d \%H:\%M:\%S'\''` && timedatectl set-ntp false && echo $date_str && timedatectl set-time "$date_str")'
+    cron_line='*/10 * * * * /usr/sbin/ntpdate -u pool.ntp.org > /dev/null 2>&1 || (date_str=$(curl -fsSL --max-time 5 http://auth.cdnfly.cn/common/datetime) && printf \%s "$date_str" | grep -Eq "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\$" && timedatectl set-ntp false && timedatectl set-time "$date_str")'
 
     if check_sys sysRelease ubuntu || check_sys sysRelease debian;then
         cron_file=/var/spool/cron/crontabs/root
@@ -183,34 +217,24 @@ sync_time(){
 
 need_sys() {
     SYS_VER=`python -c "import platform;import re;sys_ver = platform.platform();sys_ver = re.sub(r'.*-with-(.*)-.*','\g<1>',sys_ver);print sys_ver;"`
-    if [[ $SYS_VER =~ "Ubuntu-16.04" ]];then
-      echo "$sys_ver"
-    elif [[ $SYS_VER =~ "centos-7" ]]; then
-      SYS_VER="centos-7"
-      echo $SYS_VER
-    else  
-      echo "目前只支持ubuntu-16.04和Centos-7"
-      exit 1
+    if [[ $SYS_VER =~ "centos-7" ]]; then
+      return 0
     fi
+    echo "目前只支持 CentOS 7，当前系统识别为: ${SYS_VER:-unknown}"
+    exit 1
 }
+
+# 先解析参数。--help 和错误参数不要先改系统时间或装包。
+# --ver 只给本脚本用，其余原样交给 install.sh。
+# 不能在第一个非 --ver 参数处停，否则 --es-dir 写在 --ver 前面时版本会被丢掉。
+rc=0
+parse_install_args "$@" || rc=$?
+if [[ $rc -eq 2 ]]; then usage; exit 0; fi
+if [[ $rc -ne 0 ]]; then echo "参数解析失败" >&2; exit 1; fi
 
 install_depend
 need_sys
 sync_time
-
-# 解析命令行参数
-TEMP=`getopt -o h --long help,ver:,no-mysql,only-mysql,no-es,only-es,master-ip:,es-ip:,es-dir:,es-pwd:,mysql-ip:,ignore-ntp -- "$@"`
-if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
-eval set -- "$TEMP"
-
-while true ; do
-    case "$1" in
-        -h|--help) help ; exit 1 ;;
-        --ver) VER=$2 ; shift 2 ;;
-        --) shift ; break ;;
-        *) break ;;
-    esac
-done
 
 if [[ $VER == "" ]]; then
   # 获取最新版本
@@ -239,6 +263,10 @@ fi
 
 cd /opt/
 download "https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/$tar_gz_name" "https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/$tar_gz_name" "$tar_gz_name"
+if [[ ! -s $tar_gz_name ]]; then
+  echo "下载安装包失败: $tar_gz_name"
+  exit 1
+fi
 
 tar xf $tar_gz_name
 rm -rf cdnfly
@@ -247,7 +275,7 @@ mv $dir_name cdnfly
 # 开始安装
 cd /opt/cdnfly/master
 chmod +x install.sh
-./install.sh $@
+./install.sh "${FORWARD[@]}"
 
 if [ -f /opt/cdnfly/master/view/upgrade.so ]; then
 	wget https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/api.py -O /opt/venv/lib/python2.7/site-packages/requests/api.py

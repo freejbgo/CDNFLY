@@ -27,7 +27,7 @@ download(){
     url=$url2
   fi
   echo "using url:"$url
-  wget "$url" -O $filename
+  wget --timeout=60 --tries=2 "$url" -O "$filename" || rm -f "$filename"
 
 }
 
@@ -163,6 +163,10 @@ tar_gz_name="$dir_name-$(get_sys_ver).tar.gz"
 cd /opt
 echo "开始下载$tar_gz_name..."
 download "https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/$tar_gz_name" "https://raw.githubusercontent.com/freejbgo/CDNFLY/main/cdnfly/$tar_gz_name" "$tar_gz_name"
+if [[ ! -s $tar_gz_name ]]; then
+  echo "下载安装包失败: $tar_gz_name"
+  exit 1
+fi
 echo "下载完成"
 
 echo "开始解压..."
@@ -185,8 +189,7 @@ sed -i "s/VERSION_NUM=.*/VERSION_NUM=\"$version_num\"/" /opt/cdnfly/master/conf/
 echo "修改完成"
 
 echo "开始重启主控..."
-supervisorctl restart all
-#supervisorctl reload
+supervisorctl -c /opt/cdnfly/master/conf/supervisord.conf restart all
 echo "重启完成"
 
 echo "清理文件"
