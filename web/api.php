@@ -7,8 +7,9 @@ include 'monitor.php';
 $post = file_get_contents('php://input');
 $param = json_decode($post, true);
 $result = [];
-if($param && count($param)>0){
+if(is_array($param)){
     foreach($param as $target){
+        if(!is_array($target)) continue;
         $result[] = node_monitor_local('1', $target);
     }
 }

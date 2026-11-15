@@ -15,6 +15,12 @@ else
   ok "audit-panel-batch-regression"
 fi
 
+if ! bash "$ROOT/scripts/test-deep-audit.sh"; then
+  bad "deep audit"
+else
+  ok "deep audit"
+fi
+
 scan_forbidden_terms() {
   local path="$1"
   local exclude_globs=(
