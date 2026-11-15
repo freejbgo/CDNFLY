@@ -127,7 +127,45 @@ def scan_shared_table_map():
     if "maps[tableId] = {}" not in text:
         fail("veikor-local-batch does not reset checks when a page installs the table")
     if "bound[tableId].alive" not in text:
-        fail("veikor-local-batch stacks a checkbox listener on every page visit")
+        fail("veikor-local-batch checkbox listener does not follow the current page")
+    if re.search(r"if \(bound\[tableId\]\) \{[\s\S]{0,80}?return;", text):
+        fail("veikor-local-batch does not re-register after another page takes the checkbox event")
+
+
+SEARCH_PAGES = (
+    "views/node/node/index.html",
+    "views/node/group/index.html",
+    "views/system/user/index.html",
+    "views/site/acl/index.html",
+    "views/site/cert/cert.html",
+)
+
+
+def scan_layui_keeps_handlers():
+    """Tab switch does not re-run the view script. layui 2.5.5 used to keep only the last callback."""
+    if not os.path.isfile(TAR):
+        return
+    layui_name = "cdnfly-master-v5.1.13/master/panel/console/layui/layui.js"
+    with tarfile.open(TAR) as tf:
+        member = tf.extractfile(layui_name)
+        if member is None:
+            fail("layui.js missing from master package")
+            return
+        js = member.read().decode("utf-8", "replace")
+        for rel in SEARCH_PAGES:
+            page = tf.extractfile(PREFIX + rel)
+            if page is None:
+                fail(f"{rel}: missing from master package")
+                continue
+            text = page.read().decode("utf-8", "replace")
+            if "function search (" in text:
+                fail(f"{rel}: search() replaces the other pages' search")
+            if "__veikorPageSearch" not in text:
+                fail(f"{rel}: search is not registered for tab switch")
+    if "o.event[l][s]=[r]" in js:
+        fail("layui keeps only the last table/form callback, so switching tabs drops the page's handlers")
+    if "a[i].toString()===s" not in js:
+        fail("layui does not keep a distinct callback per page")
 
 
 def scan_filter_clears():
@@ -179,6 +217,7 @@ def main():
         print("panel tree absent, skipped local view scan")
     scan_map_reset_on_entry()
     scan_shared_table_map()
+    scan_layui_keeps_handlers()
     scan_filter_clears()
     scan_tar_drift()
     if FAILURES:
