@@ -68,6 +68,22 @@ else
   php "$ROOT/scripts/test-auth-monitor.php"
 fi
 
+web_unpack="$(mktemp -d)"
+tar -xzf "$ROOT/web/web.tar.gz" -C "$web_unpack"
+web_ok=1
+for f in api.php config.php index.php monitor.php update.php version.json .htaccess 'nginx伪静态.txt'; do
+  if cmp -s "$ROOT/web/$f" "$web_unpack/$f"; then
+    :
+  else
+    bad "web.tar.gz $f differs from web/$f"
+    web_ok=0
+  fi
+done
+if [[ "$web_ok" -eq 1 ]]; then
+  ok "web.tar.gz matches the web directory"
+fi
+rm -rf "$web_unpack"
+
 python3 - "$ROOT" <<'PY'
 import io, json, os, tarfile, sys, tempfile, textwrap, shutil
 root = sys.argv[1]
