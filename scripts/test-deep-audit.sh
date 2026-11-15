@@ -175,6 +175,12 @@ if "下载失败" not in install or "下载失败" not in agent_install:
     bad("download() still ignores a failed wget")
 else:
     ok("download() fails when the file is empty")
+if "chmod 0600 /opt/cdnfly/agent/conf/filebeat.yml" in packaged_agent or "chmod 600 /opt/cdnfly/agent/conf/filebeat.yml" in agent_install or "os.chmod(fb, 0o600)" in agent_install:
+    bad("filebeat.yml is forced to 0600")
+elif "chmod 0644 /opt/cdnfly/agent/conf/filebeat.yml" not in packaged_agent or "chmod 0644 /opt/cdnfly/agent/conf/filebeat.yml" not in agent_install or "os.chmod(fb, 0o644)" not in agent_install:
+    bad("filebeat.yml is not left as root-readable 0644")
+else:
+    ok("filebeat.yml stays mode 0644 so the filebeat user can read it")
 
 def run_embedded(install_text, start, paths):
     begin = install_text.index(start)
