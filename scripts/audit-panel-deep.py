@@ -192,6 +192,36 @@ def scan_batch_map_gap():
             add(rel, "limits500_no_checked_map", "limits 500 + bulk toolbar, no CheckedMap")
 
 
+def scan_layer_msg_deferred_reload():
+    """layer.msg end callback may run after navigate; must guard table.reload/render_table."""
+    pat = re.compile(
+        r"layer\.msg\([^;]{0,240}?,\s*function\s*\(\)\s*\{([^}]{0,240})\}",
+        re.DOTALL,
+    )
+    for dirpath, _, files in os.walk(PANEL):
+        for fn in files:
+            if not fn.endswith(".html"):
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, fn), PANEL)
+            text = open(os.path.join(dirpath, fn), encoding="utf-8", errors="replace").read()
+            alive = re.findall(r"function (\w+Alive)\s*\(", text)
+            if not alive:
+                continue
+            primary = alive[0]
+            for m in pat.finditer(text):
+                body = m.group(1)
+                if not re.search(
+                    r"table\.reload|layui\.table\.reload|render_table\s*\(",
+                    body,
+                ):
+                    continue
+                if re.search(rf"{re.escape(primary)}\s*\(", body) or "Alive()" in body:
+                    continue
+                if "querySelector('#LAY-popup" in body or "getElementById('LAY-popup" in body:
+                    continue
+                add(rel, "layer_msg_reload_no_alive", body.strip()[:72])
+
+
 def scan_duplicate_form_on():
     by_filter = {}
     file_text = {}
@@ -221,6 +251,7 @@ def main():
     walk()
     scan_controllers()
     scan_batch_map_gap()
+    scan_layer_msg_deferred_reload()
     by_kind = {}
     for rel, kind, detail in ISSUES:
         by_kind.setdefault(kind, []).append((rel, detail))
@@ -234,7 +265,12 @@ def main():
             seen.add(key)
             print(f"  {rel}: {detail}")
     print("total issues", len(ISSUES))
+    if ISSUES:
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+
+    sys.exit(main())
