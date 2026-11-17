@@ -15,6 +15,12 @@ else
   ok "audit-panel-batch-regression"
 fi
 
+if ! python3 "$ROOT/scripts/audit-panel-monitor-scope.py"; then
+  bad "audit-panel-monitor-scope"
+else
+  ok "audit-panel-monitor-scope"
+fi
+
 if ! bash "$ROOT/scripts/test-deep-audit.sh"; then
   bad "deep audit"
 else
