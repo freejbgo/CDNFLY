@@ -27,6 +27,12 @@ else
   ok "audit-panel-i18n-guards"
 fi
 
+if ! python3 "$ROOT/scripts/audit-panel-mirror-views.py"; then
+  bad "audit-panel-mirror-views"
+else
+  ok "audit-panel-mirror-views"
+fi
+
 if ! bash "$ROOT/scripts/test-deep-audit.sh"; then
   bad "deep audit"
 else
