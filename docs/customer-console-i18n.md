@@ -1,6 +1,8 @@
 # Customer console i18n plan (zh-CN / zh-TW / en)
 
-Source of truth for rollout scope and pitfalls. **U0** is on `main` (#137).
+Source of truth for rollout scope and pitfalls. **Baseline on `main`:** U0 (#137) + plan/CI (#138).
+
+**Scheme review (2026-11-17):** Structural traps (gate, symlinks, markers, tabs, token login, dictionaries) are documented below and enforced by `verify-packages.sh`. Further “full scheme re-review” has low yield unless product scope changes — **execute U2a or U1 next**.
 
 ## Product scope
 
@@ -78,7 +80,7 @@ Layui tab labels use each template’s `<title>` until U2 rewrites titles or add
 
 | Phase | Content |
 |-------|---------|
-| **U0** | Gate, markers, tab ids, `audit-panel-i18n-guards`, view alias audit, plan doc (on `main` after #138) |
+| **U0** | Gate, markers, tab ids, `audit-panel-i18n-guards`, `audit-panel-view-aliases`, this doc (**shipped on `main`**) |
 | **U1** | Customer-only: `layer.msg/confirm` → `veikorI18n.t` / `UI` keys (~**340** calls under U2a view scope + controllers; shrink by module) |
 | **U2** | `data-i18n` + dictionaries |
 | **U2a** | `user_home.html`, `finance/order|balance|recharge`, `account/personal|config|sub`, `system/log/*`, `package/my|buy|upgrade` (not admin-only `package/*` ops views) |
@@ -126,7 +128,9 @@ From `site/site` (all sites), admin may switch into another user: token + `user_
 2. `bash scripts/sync-panel-to-master-tar.sh`
 3. `bash scripts/verify-packages.sh`
 
-**Branching:** U1/U2 PRs should target **`main` after U0** (and after plan doc #138); avoid stacking on stale panel branches.
+**Branching:** U1/U2 PRs target **`main`**; rebase off latest `main` (do not stack on old `cursor/panel-*` i18n branches).
+
+**Repo trap:** Panel source is edited under **`.veikor-build/.../panel/src`** (local, often gitignored), then copied into **`cdnfly/*-master-*.tar.gz`** via `sync-panel-to-master-tar.sh`. CI audits read `.veikor-build`; releases ship the tar — never edit only the tar without syncing.
 
 ## Manual smoke matrix
 
@@ -136,7 +140,8 @@ From `site/site` (all sites), admin may switch into another user: token + `user_
 | Customer | en | Open same log page via `account/log/op` — same content, alive guards OK |
 | Admin | any | Shared site pages 简体; lang select hidden; switching stored lang does not change inner body |
 | Customer | en, clear `user_type` once | Lang select hidden until hydrate; after `/users/:uid`, selector + menu/body align |
+| Customer | token hash login | `access_token` handoff: lands with `user_type` set before `#/user_home` |
 
 ## Supersedes
 
-#133 closed; U0 = #137 on `main`. Plan corrections = #138+.
+#133 closed; #137 + #138 merged on `main`.
