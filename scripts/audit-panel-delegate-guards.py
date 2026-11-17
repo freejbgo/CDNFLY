@@ -15,13 +15,15 @@ VIEWS = os.path.join(
     "views",
 )
 
-TOUCH = re.compile(r"admin\.(?:popup|req)|layer\.prompt|location\.hash")
+TOUCH = re.compile(
+    r"admin\.(?:popup|req)|layer\.prompt|location\.hash|table\.reload|update_stream"
+)
 
 
 def main() -> int:
     issues: list[tuple[str, int]] = []
     pat = re.compile(
-        r'\$\(\s*["\']#LAY_app_body[^"\']*["\']\s*\)\.click\s*\(\s*function',
+        r'\$\(\s*["\']#LAY_app_body[^"\']*["\']\s*\)\.(?:click\s*\(\s*function|on\s*\(\s*["\']click)',
     )
     for dirpath, _, files in os.walk(VIEWS):
         for fn in files:
@@ -29,15 +31,14 @@ def main() -> int:
                 continue
             path = os.path.join(dirpath, fn)
             text = open(path, encoding="utf-8", errors="replace").read()
-            guards = re.findall(r"function (\w+Alive)\s*\(", text)
+            guards = list(dict.fromkeys(re.findall(r"function (\w+Alive)\s*\(", text)))
             if not guards:
                 continue
-            primary = guards[0]
             for m in pat.finditer(text):
                 body = text[m.end() : m.end() + 180]
                 if not TOUCH.search(body):
                     continue
-                if primary + "()" not in body:
+                if not any(g + "()" in body for g in guards):
                     line = text[: m.start()].count("\n") + 1
                     issues.append((os.path.relpath(path, VIEWS), line))
     if issues:
