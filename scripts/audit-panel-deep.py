@@ -192,6 +192,64 @@ def scan_batch_map_gap():
             add(rel, "limits500_no_checked_map", "limits 500 + bulk toolbar, no CheckedMap")
 
 
+def scan_layer_confirm_no_alive():
+    """Confirm OK may run after navigate; block admin.req when page is gone."""
+    pat = re.compile(
+        r"layer\.confirm\([^;]{5,600}?,\s*function\s*\(\s*index[^)]*\)\s*\{(\s*[^}]{0,400})",
+        re.DOTALL,
+    )
+    for dirpath, _, files in os.walk(PANEL):
+        for fn in files:
+            if not fn.endswith(".html"):
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, fn), PANEL)
+            text = open(os.path.join(dirpath, fn), encoding="utf-8", errors="replace").read()
+            alive = re.findall(r"function (\w+Alive)\s*\(", text)
+            if not alive:
+                continue
+            for m in pat.finditer(text):
+                body = m.group(1)
+                if "admin.req" not in body and "$.ajax" not in body:
+                    continue
+                if any(
+                    re.search(rf"if\s*\(!\s*{re.escape(a)}\s*\(\)", body[:220])
+                    for a in alive
+                ):
+                    continue
+                if "thisUpgrade(" in body[:220]:
+                    continue
+                add(rel, "layer_confirm_no_alive", body.strip()[:72].replace("\n", " "))
+
+
+def scan_layer_prompt_no_alive():
+    pat = re.compile(
+        r"layer\.prompt\([\s\S]{0,600}?\},\s*function\s*\([^)]*\)\s*\{(\s*[^}]{0,220})",
+        re.DOTALL,
+    )
+    for dirpath, _, files in os.walk(PANEL):
+        for fn in files:
+            if not fn.endswith(".html"):
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, fn), PANEL)
+            if rel.startswith("user/"):
+                continue
+            text = open(os.path.join(dirpath, fn), encoding="utf-8", errors="replace").read()
+            alive = re.findall(r"function (\w+Alive)\s*\(", text)
+            has_this_upgrade = "function thisUpgrade" in text
+            for m in pat.finditer(text):
+                body = m.group(1)
+                if "admin.req" not in body and "$.ajax" not in body:
+                    continue
+                if any(
+                    re.search(rf"if\s*\(!\s*{re.escape(a)}\s*\(\)", body)
+                    for a in alive
+                ):
+                    continue
+                if has_this_upgrade and "thisUpgrade(" in body:
+                    continue
+                add(rel, "layer_prompt_no_alive", body.strip()[:72].replace("\n", " "))
+
+
 def scan_layer_msg_deferred_reload():
     """layer.msg end callback may run after navigate; must guard table.reload/render_table."""
     pat = re.compile(
@@ -252,6 +310,8 @@ def main():
     scan_controllers()
     scan_batch_map_gap()
     scan_layer_msg_deferred_reload()
+    scan_layer_confirm_no_alive()
+    scan_layer_prompt_no_alive()
     by_kind = {}
     for rel, kind, detail in ISSUES:
         by_kind.setdefault(kind, []).append((rel, detail))
