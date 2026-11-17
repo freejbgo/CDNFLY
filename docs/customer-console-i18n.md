@@ -78,12 +78,13 @@ Layui tab labels use each template’s `<title>` until U2 rewrites titles or add
 
 | Phase | Content |
 |-------|---------|
-| **U0** | Gate, markers, tab ids, `audit-panel-i18n-guards`, view alias audit (**on main**) |
+| **U0** | Gate, markers, tab ids, `audit-panel-i18n-guards`, view alias audit (**on main** — symlink CI in **#138**) |
 | **U1** | Customer-only: `layer.msg/confirm` → `veikorI18n.t` / `UI` keys (~**340** calls under U2a view scope + controllers; shrink by module) |
 | **U2** | `data-i18n` + dictionaries |
 | **U2a** | `user_home.html`, `finance/order|balance|recharge`, `account/personal|config|sub`, `system/log/*`, `package/my|buy|upgrade` (not admin-only `package/*` ops views) |
+| **U2b** (suggested) | High-traffic site customer core: `site/site`, `site/edit`, `site/cert`, `site/acl`, `site/cc`, `package/my` — still gated by `customerI18nActive()` on shared templates |
 
-**Tab rule:** `data-veikor-tab` + `veikorActiveTabIdOr(scope, fallback)` **before** translating tab labels.
+**Tab rule:** `data-veikor-tab` + `veikorActiveTabIdOr(scope, fallback)` **before** translating tab labels. Reference: `site/monitor/blackip.html` (`data-i18n` on tab + `data-veikor-tab` for logic). CI fails customer views that use `curr_tab` without `data-veikor-tab`.
 
 ## Shared templates (admin + customer)
 
@@ -93,6 +94,20 @@ Layui tab labels use each template’s `<title>` until U2 rewrites titles or add
 ## Locale fallback
 
 `veikorI18n.t(key)`: `UI`/`AUTH` for `activeLang()` → `en` block → `zh-CN` → raw key. Customer `activeLang()` uses `panel-lang`; admin inner forced `zh-CN`.
+
+**Dictionary buckets:** `AUTH` (login), `MENU` + `TITLE` (side menu / breadcrumb cite via Chinese→map), `UI` (shared widgets). U2 page copy: prefer `data-i18n` keys backed by **`UI` or a new `PAGE` map** in `veikor-i18n.js` — ad hoc Chinese in `TITLE` only helps breadcrumbs that match exact 简体 source strings.
+
+## Breadcrumb trap
+
+`applyBreadcrumbI18n` only maps text present in `TITLE[lang]`. New breadcrumb `<cite>` strings need dictionary entries or stay Chinese.
+
+## Admin-only debt (do not block customer M1)
+
+`node/monitor/top-res.html` and `controller/node_senior.js` still branch on Chinese tab labels — **admin monitor only**. Customer monitor paths were migrated in U0.
+
+## Impersonation / 切换用户 (admin workflow)
+
+From `site/site` (all sites), admin may switch into another user: token + `user_type` are rewritten, then **full reload** to `#/home` or `#/user_home`. Customer i18n applies on the new session like a normal login (`user_type` already set). Out of customer M1 scope; no extra gate work required.
 
 ## Engineering workflow
 

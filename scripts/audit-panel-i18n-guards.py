@@ -86,9 +86,17 @@ def tab_logic_uses_visible_label(text: str) -> bool:
     return bool(TAB_TEXT_GUARD.search(text))
 
 
+def customer_tab_missing_stable_id(text: str) -> bool:
+    """Tabs driven by curr_tab must use data-veikor-tab before label translation."""
+    if "curr_tab" not in text or "layui-tab-title" not in text:
+        return False
+    return "data-veikor-tab" not in text
+
+
 def main() -> int:
     bad_alive: list[str] = []
     bad_tabs: list[str] = []
+    bad_tab_ids: list[str] = []
     for dirpath, _, files in os.walk(VIEWS):
         for fn in files:
             if not fn.endswith(".html"):
@@ -100,6 +108,8 @@ def main() -> int:
                 bad_alive.append(rel)
             if _is_customer_view(rel) and tab_logic_uses_visible_label(text):
                 bad_tabs.append(rel)
+            if _is_customer_view(rel) and customer_tab_missing_stable_id(text):
+                bad_tab_ids.append(rel)
     for fn in CUSTOMER_CONTROLLERS:
         path = os.path.join(CONTROLLERS, fn)
         if not os.path.isfile(path):
@@ -115,7 +125,11 @@ def main() -> int:
         print("customer tab logic still compares Chinese labels in:", file=sys.stderr)
         for rel in sorted(bad_tabs):
             print(" ", rel, file=sys.stderr)
-    if bad_alive or bad_tabs:
+    if bad_tab_ids:
+        print("customer tabs use curr_tab without data-veikor-tab in:", file=sys.stderr)
+        for rel in sorted(bad_tab_ids):
+            print(" ", rel, file=sys.stderr)
+    if bad_alive or bad_tabs or bad_tab_ids:
         return 1
     print("audit-panel-i18n-guards: ok")
     return 0
