@@ -243,6 +243,18 @@ def main():
         scan_index_preload()
     else:
         print("panel tree absent, skipped local view scan")
+    import subprocess
+
+    shape = os.path.join(os.path.dirname(__file__), "audit-panel-res-data-shape.py")
+    if os.path.isfile(shape):
+        r = subprocess.run(
+            [sys.executable, shape], capture_output=True, text=True
+        )
+        print(r.stdout.rstrip())
+        if r.returncode != 0:
+            if r.stderr:
+                print(r.stderr.rstrip())
+            fail("audit-panel-res-data-shape.py")
     scan_map_reset_on_entry()
     scan_shared_table_map()
     scan_layui_keeps_handlers()
