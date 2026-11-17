@@ -66,6 +66,8 @@ Menu labels come from the **layout API** (`data-name` / `data-jump`) with Chines
 
 `index.js` after each view render calls **`applyBreadcrumbI18n` + `applyDataI18n` only** (both gated by `customerI18nActive()`). Full **`applyConsoleI18n`** (menu, shell, etc.) runs on layout load, language change, and after `user_type` hydration — do not call the full helper on every tab switch (menu labels would re-lock wrong).
 
+On language change, `applyConsoleI18n` also fires **`veikor:lang.<scope>`** for the active tab’s `data-veikor-page` (see `PAGE_LANG_SCOPES` in `veikor-i18n.js`), plus **`balanceForm`** when `#recharge` is present and **`userHomeBalance`** on `#/user_home`.
+
 ## Tab / document titles
 
 Layui tab labels use each template’s `<title>` until U2 rewrites titles or adds `data-i18n`. Expect **Chinese tab text** on en body during early U2.
