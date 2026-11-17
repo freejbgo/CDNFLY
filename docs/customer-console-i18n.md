@@ -20,25 +20,52 @@ Source of truth for rollout scope and pitfalls. **Baseline on `main`:** U0 (#137
 
 `customerI18nActive()` decides whether inner `data-i18n`, menu, and breadcrumb translation run. The same template can serve admin and customer (e.g. site lists).
 
-## Administrators vs customers on shared pages
+## Admin vs customer — two axes (do not conflate)
 
-**Administrators** (`user_type === 1`): inner UI stays **Simplified Chinese** (`activeLang()` → `zh-CN`, lang selector hidden). No separate “admin EN/zh-TW” milestone for M1.
+Shared modules (e.g. `site/site/index.html`) use **two independent signals**. Mixing them causes wrong i18n scope.
 
-**Customers** (`user_type !== 1`): full **zh-CN / zh-TW / en** when `customerI18nActive()`.
+### Axis A — session role (`user_type`, i18n gate)
 
-Many **batch popups are customer-facing** on `site/site` (my sites — no `show_all=1`), for example:
+| `user_type` | `customerI18nActive()` | Language UI | Inner copy (M1) |
+|-------------|------------------------|-------------|-----------------|
+| `1` | `false` | Hidden | **简体 only** (`activeLang()` → `zh-CN`) |
+| known, `!== 1` | `true` | Shown | **zh-CN / zh-TW / en** (`panel-lang`) |
+| unknown / null | `false` | Hidden | 简体 until `/users/:uid` hydrates type |
 
-| Customer toolbar (always) | Popup template |
-|---------------------------|----------------|
-| 修改 | `site/site/update_form.html` |
-| 解锁黑名单 | `site/site/unlock-ip.html` |
-| 申请证书 | (in-list flow / related popups) |
+**Impersonation:** from 所有网站, admin **切换用户** rewrites token + `user_type`, then reloads — the new session follows **customer** rules if `user_type !== 1`.
 
-These **must** get U2 `data-i18n` + `veikor:lang.siteList` (or a dedicated scope) like add form — do **not** treat “batch” as admin-only.
+i18n work is **only required where customers actually read the UI** (`customerI18nActive()` true). Admins do not need dedicated zh-TW/en strings for M1; `veikorI18n.t` still resolves to zh-CN for them.
 
-**Admin-only** on the same list (`show_all=1` toolbar): set site state, CNAME domain/mode, node group → `update-state`, `update-cname-mode`, `update-node-group`. Only admins open them; keys are still fine on shared `PAGE` (admin reads zh-CN). Customer M1 should **prioritize** `update_form` / `unlock-ip` before polishing admin-only batch dialogs.
+### Axis B — view mode (`show_all` hash query)
 
-**Shared template rule:** one HTML file may serve both roles; `customerI18nActive()` gates whether translation runs. Admin-only *buttons* can keep 简体 source in template when the dialog is never opened as a customer.
+Same HTML/JS; Laytpl and `layui.router().search.show_all` choose columns, search rows, API `where.show_all`, and toolbar blocks. **`uid_hide`** in `site/site/index.html` is tied to this (`uid_hide = (show_all !== '1')`), not to `user_type`.
+
+| | Typical URL | Entry | `uid_hide` |
+|---|-------------|-------|------------|
+| **我的网站** | `#/site/site/` | `user_home` → 我的网站 | `true` (hide 用户/区域/线路组列) |
+| **所有网站** | `#/site/site/show_all=1/` | Admin `#/home` quick links only (`home.html`) | `false` |
+
+Customers normally never use `show_all=1`; admins normally use it from the admin home. An admin *could* open `#/site/site/` without `show_all` — still **简体** (Axis A), but sees the **customer toolbar layout**.
+
+### `site/site` toolbar (same template)
+
+| Batch / action | `show_all` absent | `show_all=1` only |
+|----------------|-------------------|-------------------|
+| 新增 / 修改 / 启停 / 删除 | ✓ | ✓ |
+| 申请证书 / 解锁黑名单 / 清缓存 / 清空白名单 | ✓ | ✓ |
+| 设置状态 / CNAME域名 / CNAME模式 / 线路分组 | ✗ | ✓ |
+
+### Batch popups — who opens what (i18n priority)
+
+| Popup | Gated by | Customer M1 |
+|-------|----------|-------------|
+| `addform.html` | Both modes; user picker when `!uid_hide` (all-sites add) | **Yes** — customers use 新增 |
+| `update_form.html` | Both modes; **`.admin-hide` panels shown when `uid_hide`** (my sites) | **Yes** — main customer batch editor |
+| `unlock-ip.html` | Both modes | **Yes** |
+| `update-state.html`, `update-node-group.html`, `update-cname-mode.html` | Toolbar only if `show_all=1` | Low — admin 简体 in practice |
+| Nested forms from `update_form` / `edit` (`cache_form`, …) | Customer paths | **Yes**, with parent page |
+
+**Policy:** localize batch UI that **customers** open under 我的网站 first (`update_form`, `unlock-ip`, add). Do **not** assume “batch = admin-only”. Conversely, do **not** require admin-only EN/zh-TW for `show_all=1` dialogs — Axis A already keeps admins on 简体.
 
 ## View aliases (symlinks — major trap)
 
