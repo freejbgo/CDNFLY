@@ -20,18 +20,25 @@ Source of truth for rollout scope and pitfalls. **Baseline on `main`:** U0 (#137
 
 `customerI18nActive()` decides whether inner `data-i18n`, menu, and breadcrumb translation run. The same template can serve admin and customer (e.g. site lists).
 
-## Admin-only UI — do not localize for M1
+## Administrators vs customers on shared pages
 
-**Product rule:** administrators need **Simplified Chinese only** (`user_type === 1`, language selector hidden, `activeLang()` forced to `zh-CN`). **Do not spend U1/U2 effort on admin-only surfaces** — no `zh-TW`/`en` dictionary entries or `refresh*I18n` for templates only admins can open.
+**Administrators** (`user_type === 1`): inner UI stays **Simplified Chinese** (`activeLang()` → `zh-CN`, lang selector hidden). No separate “admin EN/zh-TW” milestone for M1.
 
-| Signal | Examples | Agent policy |
-|--------|----------|----------------|
-| Route / query | `show_all=1`, admin `#/home`, node/system modules | Skip dedicated i18n PRs |
-| Toolbar blocks | Site list batch: set state, node group, CNAME mode, “所有网站” extra columns | Leave 简体; no new `page.*` keys |
-| Shared template | `site/site/index` (my + all sites) | i18n **customer-visible** rows, search, table, **新增** — admin-only controls may stay Chinese |
-| Runtime | `veikorI18n.t(key)` without gate | Still resolves to **zh-CN** for admin via `activeLang()`; prefer `applyDataI18n` gates for customer body |
+**Customers** (`user_type !== 1`): full **zh-CN / zh-TW / en** when `customerI18nActive()`.
 
-**Customer “普通用户端”** = known `user_type !== 1`, `customerI18nActive()` true, `panel-lang` applied. Prioritize **我的网站**, `user_home`, U2a modules, and customer **site/edit** — not admin batch popups or all-sites-only forms.
+Many **batch popups are customer-facing** on `site/site` (my sites — no `show_all=1`), for example:
+
+| Customer toolbar (always) | Popup template |
+|---------------------------|----------------|
+| 修改 | `site/site/update_form.html` |
+| 解锁黑名单 | `site/site/unlock-ip.html` |
+| 申请证书 | (in-list flow / related popups) |
+
+These **must** get U2 `data-i18n` + `veikor:lang.siteList` (or a dedicated scope) like add form — do **not** treat “batch” as admin-only.
+
+**Admin-only** on the same list (`show_all=1` toolbar): set site state, CNAME domain/mode, node group → `update-state`, `update-cname-mode`, `update-node-group`. Only admins open them; keys are still fine on shared `PAGE` (admin reads zh-CN). Customer M1 should **prioritize** `update_form` / `unlock-ip` before polishing admin-only batch dialogs.
+
+**Shared template rule:** one HTML file may serve both roles; `customerI18nActive()` gates whether translation runs. Admin-only *buttons* can keep 简体 source in template when the dialog is never opened as a customer.
 
 ## View aliases (symlinks — major trap)
 
