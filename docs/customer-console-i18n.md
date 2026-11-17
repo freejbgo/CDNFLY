@@ -8,9 +8,11 @@ Source of truth for rollout scope and pitfalls. **U0** is on `main` (#137).
 |----------|-------------------------|-------------|
 | **Customer** (`user_type` known and `!== 1`) | Follows `panel-lang` when `customerI18nActive()` | Shown |
 | **Administrator** (`user_type === 1`) | **Simplified Chinese** until ADMIN milestone | Hidden |
-| **`user_type` unknown** | Inner copy stays **zh-CN** until `/users/:uid` hydrates type; then `applyConsoleI18n()` runs | Shown (not admin yet); brief EN menu vs 简体内页 possible until type returns |
+| **`user_type` unknown** | Inner copy stays **zh-CN** until `/users/:uid` hydrates type; then `applyConsoleI18n()` runs | **Hidden** until type is known (legacy sessions only — normal login sets `user_type` immediately) |
 
 **M1:** shell + static UI + client dictionaries. **M2 (later):** API `res.msg` / server validation — not required for M1 sign-off.
+
+**Role model:** backend `user_type === 1` is the administrator console; **any other known type** is treated as customer for M1 gating.
 
 ## Scope rule: role gate, not folders
 
@@ -45,7 +47,11 @@ These **relative paths** exist under both `views/site/` and `views/stream/` (sam
 - `group/index.html`, `group/addform.html`
 - `monitor/usage.html`, `monitor/top-res.html`, `monitor/realtime.html`
 
-U2 for site monitor must include the matching `stream/monitor/*` files (or shared dictionary keys only).
+U2 for site monitor must include the matching `stream/monitor/*` files (or shared dictionary keys only). **`site/monitor/attack-rank.html` has no `stream/` twin** — site-only page.
+
+## Side menu (API + dictionary trap)
+
+Menu labels come from the **layout API** (`data-name` / `data-jump`) with Chinese `data-veikor-src` locked on first paint. `menuLabel()` only replaces text when `MENU[lang][key]` exists. Custom menu rows without a dictionary key **stay Chinese** even in en — add keys or accept fallback (do not compare translated text in JS logic).
 
 ## Dashboard entry points (do not conflate)
 
@@ -73,7 +79,7 @@ Layui tab labels use each template’s `<title>` until U2 rewrites titles or add
 | Phase | Content |
 |-------|---------|
 | **U0** | Gate, markers, tab ids, `audit-panel-i18n-guards`, view alias audit (**on main**) |
-| **U1** | Customer-only: `layer.msg/confirm` → `veikorI18n.t` / `UI` keys (~171 call sites) |
+| **U1** | Customer-only: `layer.msg/confirm` → `veikorI18n.t` / `UI` keys (~**340** calls under U2a view scope + controllers; shrink by module) |
 | **U2** | `data-i18n` + dictionaries |
 | **U2a** | `user_home.html`, `finance/order|balance|recharge`, `account/personal|config|sub`, `system/log/*`, `package/my|buy|upgrade` (not admin-only `package/*` ops views) |
 
@@ -103,7 +109,7 @@ Layui tab labels use each template’s `<title>` until U2 rewrites titles or add
 | Customer | en / zh-TW | `user_home`, `finance/order`, `system/log/op`, `site/monitor/top-res` — tables/charts load |
 | Customer | en | Open same log page via `account/log/op` — same content, alive guards OK |
 | Admin | any | Shared site pages 简体; lang select hidden; switching stored lang does not change inner body |
-| Customer | en, clear `user_type` once | After `/users/:uid`, menu/body align |
+| Customer | en, clear `user_type` once | Lang select hidden until hydrate; after `/users/:uid`, selector + menu/body align |
 
 ## Supersedes
 
