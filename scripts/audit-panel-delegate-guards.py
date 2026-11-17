@@ -22,8 +22,11 @@ TOUCH = re.compile(
 
 def main() -> int:
     issues: list[tuple[str, int]] = []
-    pat = re.compile(
-        r'\$\(\s*["\']#LAY_app_body[^"\']*["\']\s*\)\.(?:click\s*\(\s*function|on\s*\(\s*["\']click)',
+    patterns = (
+        re.compile(
+            r'\$\(\s*["\']#LAY_app_body[^"\']*["\']\s*\)\.(?:click\s*\(\s*function|on\s*\(\s*["\']click)',
+        ),
+        re.compile(r'\$\(\s*["\']#recharge["\']\s*\)\.click\s*\(\s*function'),
     )
     for dirpath, _, files in os.walk(VIEWS):
         for fn in files:
@@ -34,13 +37,14 @@ def main() -> int:
             guards = list(dict.fromkeys(re.findall(r"function (\w+Alive)\s*\(", text)))
             if not guards:
                 continue
-            for m in pat.finditer(text):
-                body = text[m.end() : m.end() + 180]
-                if not TOUCH.search(body):
-                    continue
-                if not any(g + "()" in body for g in guards):
-                    line = text[: m.start()].count("\n") + 1
-                    issues.append((os.path.relpath(path, VIEWS), line))
+            for pat in patterns:
+                for m in pat.finditer(text):
+                    body = text[m.end() : m.end() + 180]
+                    if not TOUCH.search(body):
+                        continue
+                    if not any(g + "()" in body for g in guards):
+                        line = text[: m.start()].count("\n") + 1
+                        issues.append((os.path.relpath(path, VIEWS), line))
     if issues:
         print("=== LAY_app_body delegate click guard gaps ===")
         for rel, line in sorted(set(issues)):
