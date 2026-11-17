@@ -35,6 +35,8 @@ CUSTOMER_VIEW_PREFIXES = (
 CUSTOMER_CONTROLLERS = (
     "site-usage-senior.js",
     "stream-usage-senior.js",
+    "senior.js",
+    "stream_senior.js",
 )
 
 
