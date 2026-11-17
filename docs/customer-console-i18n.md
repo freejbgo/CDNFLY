@@ -20,6 +20,19 @@ Source of truth for rollout scope and pitfalls. **Baseline on `main`:** U0 (#137
 
 `customerI18nActive()` decides whether inner `data-i18n`, menu, and breadcrumb translation run. The same template can serve admin and customer (e.g. site lists).
 
+## Admin-only UI — do not localize for M1
+
+**Product rule:** administrators need **Simplified Chinese only** (`user_type === 1`, language selector hidden, `activeLang()` forced to `zh-CN`). **Do not spend U1/U2 effort on admin-only surfaces** — no `zh-TW`/`en` dictionary entries or `refresh*I18n` for templates only admins can open.
+
+| Signal | Examples | Agent policy |
+|--------|----------|----------------|
+| Route / query | `show_all=1`, admin `#/home`, node/system modules | Skip dedicated i18n PRs |
+| Toolbar blocks | Site list batch: set state, node group, CNAME mode, “所有网站” extra columns | Leave 简体; no new `page.*` keys |
+| Shared template | `site/site/index` (my + all sites) | i18n **customer-visible** rows, search, table, **新增** — admin-only controls may stay Chinese |
+| Runtime | `veikorI18n.t(key)` without gate | Still resolves to **zh-CN** for admin via `activeLang()`; prefer `applyDataI18n` gates for customer body |
+
+**Customer “普通用户端”** = known `user_type !== 1`, `customerI18nActive()` true, `panel-lang` applied. Prioritize **我的网站**, `user_home`, U2a modules, and customer **site/edit** — not admin batch popups or all-sites-only forms.
+
 ## View aliases (symlinks — major trap)
 
 Under `views/account/` these entries are **symlinks**, not separate files:
