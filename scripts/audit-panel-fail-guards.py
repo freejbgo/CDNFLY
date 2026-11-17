@@ -26,15 +26,18 @@ def main() -> int:
             text = open(
                 os.path.join(dirpath, fn), encoding="utf-8", errors="replace"
             ).read()
-            alive_m = re.search(r"function (\w+Alive)\s*\(", text)
-            if not alive_m:
+            guards = re.findall(r"function (\w+Alive)\s*\(", text)
+            if re.search(r"function siteBatchOnList\s*\(", text):
+                guards.append("siteBatchOnList")
+            if not guards:
                 continue
-            alive = alive_m.group(1)
             for m in re.finditer(r"function (stop\w+Batch)\s*\(", text):
                 fn_name = m.group(1)
-                body = text[m.end() : m.end() + 200]
-                if alive + "()" not in body.split("}")[0]:
-                    issues.append((rel, fn_name, f"{fn_name} missing {alive}()"))
+                body = text[m.end() : m.end() + 200].split("}")[0]
+                if not any(g + "()" in body for g in guards):
+                    issues.append(
+                        (rel, fn_name, f"{fn_name} missing batch guard ({guards[0]}…)")
+                    )
     if issues:
         print("=== fail / stopBatch guard gaps ===")
         for rel, kind, detail in sorted(set(issues)):
