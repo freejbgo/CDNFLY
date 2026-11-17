@@ -248,6 +248,7 @@ def main():
     for script_name in (
         "audit-panel-res-data-shape.py",
         "audit-panel-req-response.py",
+        "audit-panel-fail-guards.py",
     ):
         script = os.path.join(os.path.dirname(__file__), script_name)
         if not os.path.isfile(script):
