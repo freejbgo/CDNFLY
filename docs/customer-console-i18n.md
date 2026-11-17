@@ -40,7 +40,33 @@ Real directories under `account/`: **`personal/`**, **`config/`**, **`sub/`** on
 
 ## Site vs stream (paired work)
 
-Many customer pages exist under both `views/site/` and `views/stream/` with the same basename (`usage.html`, `top-res.html`, `realtime.html`, …). **U2 monitor/site modules:** change both trees or extract shared keys; do not assume translating site alone covers L4 customers.
+These **relative paths** exist under both `views/site/` and `views/stream/` (same basename, different product line):
+
+- `group/index.html`, `group/addform.html`
+- `monitor/usage.html`, `monitor/top-res.html`, `monitor/realtime.html`
+
+U2 for site monitor must include the matching `stream/monitor/*` files (or shared dictionary keys only).
+
+## Dashboard entry points (do not conflate)
+
+| File | Audience | Notes |
+|------|----------|--------|
+| `user_home.html` | Customer landing after login | i18n priority for U2a |
+| `home.html` | Admin landing | **Out of customer M1** (stays Chinese until ADMIN i18n) |
+
+## Per-route i18n (router hook)
+
+`index.js` after each view render calls **`applyBreadcrumbI18n` + `applyDataI18n` only** (both gated by `customerI18nActive()`). Full **`applyConsoleI18n`** (menu, shell, etc.) runs on layout load, language change, and after `user_type` hydration — do not call the full helper on every tab switch (menu labels would re-lock wrong).
+
+## Tab / document titles
+
+Layui tab labels use each template’s `<title>` until U2 rewrites titles or adds `data-i18n`. Expect **Chinese tab text** on en body during early U2.
+
+`applyConsoleTitle()` uses **`readUserType()`**; if type is unknown, browser tab title is left until `/users/:uid` returns (avoids showing customer title to admin).
+
+## AJAX / layer errors
+
+`view.req` / `view.error` paths still emit Chinese or hard-coded strings for many APIs (`res.msg`). U1 covers deliberate `layer.*` wraps; **M2** covers backend messages.
 
 ## Phases
 
@@ -49,7 +75,7 @@ Many customer pages exist under both `views/site/` and `views/stream/` with the 
 | **U0** | Gate, markers, tab ids, `audit-panel-i18n-guards`, view alias audit (**on main**) |
 | **U1** | Customer-only: `layer.msg/confirm` → `veikorI18n.t` / `UI` keys (~171 call sites) |
 | **U2** | `data-i18n` + dictionaries |
-| **U2a** | `user_home.html`, `finance/order|balance|recharge`, `account/personal|config|sub`, `system/log/*`, high-traffic `package/my|buy|upgrade` as needed |
+| **U2a** | `user_home.html`, `finance/order|balance|recharge`, `account/personal|config|sub`, `system/log/*`, `package/my|buy|upgrade` (not admin-only `package/*` ops views) |
 
 **Tab rule:** `data-veikor-tab` + `veikorActiveTabIdOr(scope, fallback)` **before** translating tab labels.
 

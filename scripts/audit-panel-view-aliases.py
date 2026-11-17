@@ -2,16 +2,17 @@
 """
 Guard customer menu paths that reuse templates via symlinks (see docs/customer-console-i18n.md).
 
-Editing finance/order or system/log is enough — account/order and account/log are aliases.
+Checks both .veikor-build sources and the published master tar (cp -a must preserve links).
 """
 from __future__ import annotations
 
 import os
 import sys
+import tarfile
 
+REPO = os.path.join(os.path.dirname(__file__), "..")
 ROOT = os.path.join(
-    os.path.dirname(__file__),
-    "..",
+    REPO,
     ".veikor-build",
     "cdnfly-master-v5.1.13",
     "master",
@@ -20,6 +21,8 @@ ROOT = os.path.join(
     "views",
     "account",
 )
+TAR = os.path.join(REPO, "cdnfly", "cdnfly-master-v5.1.13-centos-7.tar.gz")
+TAR_PREFIX = "cdnfly-master-v5.1.13/master/panel/src/views/account/"
 
 # link name under views/account/ -> expected target (relative to views/account/)
 EXPECTED_SYMLINKS = {
@@ -36,11 +39,10 @@ def _norm_target(raw: str) -> str:
     return raw
 
 
-def main() -> int:
-    bad: list[str] = []
+def check_build_tree(bad: list[str]) -> None:
     if not os.path.isdir(ROOT):
-        print(f"missing {ROOT}", file=sys.stderr)
-        return 1
+        bad.append(f"missing {ROOT}")
+        return
     for name, want in EXPECTED_SYMLINKS.items():
         path = os.path.join(ROOT, name)
         if not os.path.lexists(path):
@@ -53,6 +55,36 @@ def main() -> int:
         want_norm = _norm_target(want)
         if got != want_norm:
             bad.append(f"account/{name} -> {got!r}, expected {want_norm!r}")
+
+
+def check_tarball(bad: list[str]) -> None:
+    if not os.path.isfile(TAR):
+        bad.append(f"missing tarball {TAR}")
+        return
+    with tarfile.open(TAR, "r:gz") as tf:
+        for name, want in EXPECTED_SYMLINKS.items():
+            member_name = TAR_PREFIX + name
+            try:
+                member = tf.getmember(member_name)
+            except KeyError:
+                bad.append(f"tar missing account/{name}")
+                continue
+            if member.isdir():
+                bad.append(f"tar account/{name} is a directory, expected symlink")
+                continue
+            if not member.issym():
+                bad.append(f"tar account/{name} must be a symlink in the package")
+                continue
+            got = _norm_target(member.linkname)
+            want_norm = _norm_target(want)
+            if got != want_norm:
+                bad.append(f"tar account/{name} -> {got!r}, expected {want_norm!r}")
+
+
+def main() -> int:
+    bad: list[str] = []
+    check_build_tree(bad)
+    check_tarball(bad)
     if bad:
         print("audit-panel-view-aliases:", file=sys.stderr)
         for line in bad:
