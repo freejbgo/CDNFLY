@@ -254,6 +254,7 @@ def main():
         "audit-panel-delegate-guards.py",
         "audit-panel-global-handlers.py",
         "audit-panel-interval-guards.py",
+        "audit-panel-id-click-guards.py",
     ):
         script = os.path.join(os.path.dirname(__file__), script_name)
         if not os.path.isfile(script):
