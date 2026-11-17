@@ -18,6 +18,8 @@ VIEWS = os.path.join(
 
 def guard_names(text: str) -> list[str]:
     names = re.findall(r"function (\w+(?:Alive|StillHere))\s*\(", text)
+    for m in re.finditer(r"veikorLocalBatch\.install\([^,]+,\s*(\w+)\s*\)", text):
+        names.append(m.group(1))
     if re.search(r"function thisUpgrade\s*\(", text):
         names.append("thisUpgrade")
     return list(dict.fromkeys(names))
