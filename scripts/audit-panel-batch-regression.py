@@ -77,7 +77,10 @@ def scan_views():
 def scan_index_preload():
     index_path = os.path.join(PANEL, "index.js")
     text = open(index_path, encoding="utf-8", errors="replace").read()
-    if "define(['setter', 'admin', 'veikorLocalBatch']" not in text:
+    if not re.search(
+        r"define\(\s*\[[^\]]*'veikorLocalBatch'",
+        text,
+    ):
         fail("index.js: veikorLocalBatch not preloaded in main define()")
 
 
