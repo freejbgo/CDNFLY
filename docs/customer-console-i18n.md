@@ -78,7 +78,7 @@ Layui tab labels use each template’s `<title>` until U2 rewrites titles or add
 
 | Phase | Content |
 |-------|---------|
-| **U0** | Gate, markers, tab ids, `audit-panel-i18n-guards`, view alias audit (**on main** — symlink CI in **#138**) |
+| **U0** | Gate, markers, tab ids, `audit-panel-i18n-guards`, view alias audit, plan doc (on `main` after #138) |
 | **U1** | Customer-only: `layer.msg/confirm` → `veikorI18n.t` / `UI` keys (~**340** calls under U2a view scope + controllers; shrink by module) |
 | **U2** | `data-i18n` + dictionaries |
 | **U2a** | `user_home.html`, `finance/order|balance|recharge`, `account/personal|config|sub`, `system/log/*`, `package/my|buy|upgrade` (not admin-only `package/*` ops views) |
@@ -104,6 +104,17 @@ Layui tab labels use each template’s `<title>` until U2 rewrites titles or add
 ## Admin-only debt (do not block customer M1)
 
 `node/monitor/top-res.html` and `controller/node_senior.js` still branch on Chinese tab labels — **admin monitor only**. Customer monitor paths were migrated in U0.
+
+## Cross-domain token login (`access_token` in hash)
+
+Some flows open `/user/login/redirect=.../access_token=.../uid=...` (token mangled in hash). **Must hydrate `user_type` via `/users/:uid` before** entering the console (see `loginPage.js`); otherwise the language gate treats the session as unknown. Destination uses `loginDest()` + admin vs `user_home`.
+
+## Failure modes
+
+| Case | Behavior |
+|------|----------|
+| `/users/:uid` fails after old session (no `user_type`) | Lang select stays hidden; inner UI stays 简体 — user should re-login |
+| Cross-domain token login | `user_type` fetched before redirect when `uid` present |
 
 ## Impersonation / 切换用户 (admin workflow)
 
