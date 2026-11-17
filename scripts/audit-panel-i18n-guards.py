@@ -17,7 +17,25 @@ ROOT = os.path.join(
 )
 
 VIEWS = os.path.join(ROOT, "views")
+CONTROLLERS = os.path.join(ROOT, "controller")
 ALIVE_OPEN = re.compile(r"function\s+(\w+Alive)\s*\([^)]*\)\s*\{")
+
+TAB_TEXT_GUARD = re.compile(
+    r"curr_tab\s*==\s*[\"'][^\"']*[\u4e00-\u9fff]"
+)
+CUSTOMER_VIEW_PREFIXES = (
+    "site",
+    "stream",
+    "account",
+    "finance",
+    os.path.join("package", "my"),
+    os.path.join("package", "buy"),
+    os.path.join("package", "upgrade"),
+)
+CUSTOMER_CONTROLLERS = (
+    "site-usage-senior.js",
+    "stream-usage-senior.js",
+)
 
 
 def _alive_function_body(html: str, start: int) -> str:
@@ -52,22 +70,50 @@ def alive_uses_visible_text(html: str) -> bool:
     return False
 
 
+def _is_customer_view(rel: str) -> bool:
+    rel = rel.replace("\\", "/")
+    for prefix in CUSTOMER_VIEW_PREFIXES:
+        if rel == prefix or rel.startswith(prefix + "/"):
+            return True
+    if rel == "user_home.html":
+        return True
+    return False
+
+
+def tab_logic_uses_visible_label(text: str) -> bool:
+    return bool(TAB_TEXT_GUARD.search(text))
+
+
 def main() -> int:
-    bad: list[str] = []
+    bad_alive: list[str] = []
+    bad_tabs: list[str] = []
     for dirpath, _, files in os.walk(VIEWS):
         for fn in files:
             if not fn.endswith(".html"):
                 continue
             path = os.path.join(dirpath, fn)
+            rel = os.path.relpath(path, VIEWS)
             text = open(path, encoding="utf-8", errors="replace").read()
-            if "Alive" not in text:
-                continue
-            if alive_uses_visible_text(text):
-                bad.append(os.path.relpath(path, VIEWS))
-    if bad:
+            if "Alive" in text and alive_uses_visible_text(text):
+                bad_alive.append(rel)
+            if _is_customer_view(rel) and tab_logic_uses_visible_label(text):
+                bad_tabs.append(rel)
+    for fn in CUSTOMER_CONTROLLERS:
+        path = os.path.join(CONTROLLERS, fn)
+        if not os.path.isfile(path):
+            continue
+        text = open(path, encoding="utf-8", errors="replace").read()
+        if tab_logic_uses_visible_label(text):
+            bad_tabs.append(os.path.join("controller", fn))
+    if bad_alive:
         print("page-alive still depends on visible text in:", file=sys.stderr)
-        for rel in sorted(bad):
+        for rel in sorted(bad_alive):
             print(" ", rel, file=sys.stderr)
+    if bad_tabs:
+        print("customer tab logic still compares Chinese labels in:", file=sys.stderr)
+        for rel in sorted(bad_tabs):
+            print(" ", rel, file=sys.stderr)
+    if bad_alive or bad_tabs:
         return 1
     print("audit-panel-i18n-guards: ok")
     return 0
