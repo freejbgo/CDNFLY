@@ -143,6 +143,7 @@ Layui tab labels use each template’s `<title>` until U2 rewrites titles or add
 
 - Use `data-i18n` + `applyDataI18n` (admin skipped by gate).
 - UI gates: **`customerI18nActive()`**, not `isCustomerConsole()` and not folder name.
+- **Dynamic value nodes:** never put `data-i18n` on containers that JavaScript fills (balance, site/stream edit meta, API-driven stats). Mark the host with `data-veikor-dynamic="1"` and keep loading copy in a child `<span data-i18n="…">`; `applyDataI18n` skips the host. On `veikor:lang`, re-paint from cached API payloads (`window.__veikorSiteEditData`, etc.).
 
 ## Locale fallback
 
