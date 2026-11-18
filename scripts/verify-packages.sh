@@ -27,6 +27,12 @@ else
   ok "audit-panel-i18n-guards"
 fi
 
+if ! python3 "$ROOT/scripts/audit-panel-customer-i18n.py"; then
+  bad "audit-panel-customer-i18n"
+else
+  ok "audit-panel-customer-i18n"
+fi
+
 if ! python3 "$ROOT/scripts/audit-panel-view-aliases.py"; then
   bad "audit-panel-view-aliases"
 else

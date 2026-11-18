@@ -4,6 +4,8 @@ Source of truth for rollout scope and pitfalls. **Baseline on `main`:** U0 (#137
 
 **Scheme review (2026-11-17):** Structural traps (gate, symlinks, markers, tabs, token login, dictionaries) are documented below and enforced by `verify-packages.sh`. Further “full scheme re-review” has low yield unless product scope changes — **execute U2a or U1 next**.
 
+**M1 customer sign-off (2026-11-18, `main` through #237):** Customer console static UI, deliberate `layer.*` wraps, scoped + global `veikor:lang` refresh, and monitor/package popups are in place for **non-admin** sessions. CI: `scripts/audit-panel-customer-i18n.py` (no admin/`package/upgrade` paths). **Management console (`user_type === 1`) stays Simplified Chinese** — do not add zh-TW/en for `node/*`, `config/*`, `package/sold`, `package/upgrade`, etc. **M2** (API `res.msg`) remains optional follow-up.
+
 ## Product scope
 
 | Audience | Inner pages after login | Language UI |
