@@ -35,6 +35,8 @@ CUSTOMER_CONTROLLERS = (
 
 SCOPED_LANG = re.compile(r"\$\(document\)\.on\('veikor:lang\.([^']+)'")
 GLOBAL_LANG = re.compile(r"\$\(document\)\.on\('veikor:lang'")
+FORM_RENDER_NULL = re.compile(r"form\.render\s*\(\s*null")
+LANG_HANDLER = re.compile(r"\$\(document\)\.on\('veikor:lang")
 LAYER_CJK = re.compile(
     r"layer\.(?:msg|alert|confirm)\(\s*['\"]([^'\"]*[\u4e00-\u9fff][^'\"]*)"
 )
@@ -108,6 +110,26 @@ def _audit_dynamic_host_i18n(rel: str, text: str) -> list[str]:
     return bad
 
 
+def _load_page_map() -> dict[str, dict[str, str]] | None:
+    import json
+    import re
+
+    if not os.path.isfile(I18N_JS):
+        return None
+    text = open(I18N_JS, encoding="utf-8", errors="replace").read()
+    m = re.search(
+        r"var PAGE =(\{.*?\});\s*\n\s*var GEO_COUNTRY",
+        text,
+        flags=re.DOTALL,
+    )
+    if not m:
+        return None
+    try:
+        return json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return None
+
+
 def _audit_veikor_i18n_js() -> list[str]:
     """PAGE blob must parse; duplicate locale markers indicate a corrupt merge."""
     bad: list[str] = []
@@ -130,6 +152,21 @@ def _audit_veikor_i18n_js() -> list[str]:
     )
     if r.returncode:
         bad.append("veikor-i18n.js fails node --check (syntax)")
+    page = _load_page_map()
+    if page is None:
+        bad.append("PAGE JSON could not be parsed")
+    else:
+        for loc in REQUIRED_API_LANGS:
+            if loc not in page:
+                bad.append(f"PAGE missing locale {loc}")
+        zh = page.get("zh-CN") or {}
+        for loc in ("en", "zh-TW"):
+            other = page.get(loc) or {}
+            gaps = [k for k in zh if k.startswith("page.") and k not in other]
+            if gaps:
+                bad.append(
+                    f"PAGE {loc} missing {len(gaps)} page.* keys (e.g. {gaps[0]})"
+                )
     return bad
 
 
@@ -138,6 +175,7 @@ def main() -> int:
     bad_layer: list[tuple[str, str]] = []
     bad_res_msg: list[str] = []
     bad_dynamic: list[str] = []
+    form_render_null_advisory: list[str] = []
     bad_i18n_js = _audit_veikor_i18n_js()
 
     for dirpath, _, files in os.walk(VIEWS):
@@ -151,6 +189,8 @@ def main() -> int:
             text = open(path, encoding="utf-8", errors="replace").read()
             if _missing_global_lang(text):
                 bad_lang.append(rel)
+            if LANG_HANDLER.search(text) and FORM_RENDER_NULL.search(text):
+                form_render_null_advisory.append(rel)
             for m in LAYER_CJK.finditer(text):
                 bad_layer.append((rel, m.group(1)[:80]))
             if RAW_RES_MSG.search(text) and "translateResMsg" not in text and "notifyResMsg" not in text:
@@ -196,6 +236,14 @@ def main() -> int:
         print("veikor-i18n.js structural checks:", file=sys.stderr)
         for line in bad_i18n_js:
             print(" ", line, file=sys.stderr)
+
+    if form_render_null_advisory:
+        print(
+            "advisory: customer pages with veikor:lang and form.render(null) (migrate to type-specific render):",
+            file=sys.stderr,
+        )
+        for rel in sorted(form_render_null_advisory):
+            print(" ", rel, file=sys.stderr)
 
     if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic or bad_i18n_js:
         return 1
