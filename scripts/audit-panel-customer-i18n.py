@@ -38,6 +38,7 @@ GLOBAL_LANG = re.compile(r"\$\(document\)\.on\('veikor:lang'")
 LAYER_CJK = re.compile(
     r"layer\.(?:msg|alert|confirm)\(\s*['\"]([^'\"]*[\u4e00-\u9fff][^'\"]*)"
 )
+RAW_RES_MSG = re.compile(r"layer\.msg\(\s*res\.msg\b")
 
 
 def _is_customer_view(rel: str) -> bool:
@@ -61,6 +62,7 @@ def _missing_global_lang(text: str) -> bool:
 def main() -> int:
     bad_lang: list[str] = []
     bad_layer: list[tuple[str, str]] = []
+    bad_res_msg: list[str] = []
 
     for dirpath, _, files in os.walk(VIEWS):
         for fn in files:
@@ -75,6 +77,8 @@ def main() -> int:
                 bad_lang.append(rel)
             for m in LAYER_CJK.finditer(text):
                 bad_layer.append((rel, m.group(1)[:80]))
+            if RAW_RES_MSG.search(text) and "translateResMsg" not in text:
+                bad_res_msg.append(rel)
 
     for fn in CUSTOMER_CONTROLLERS:
         path = os.path.join(CONTROLLERS, fn)
@@ -95,8 +99,12 @@ def main() -> int:
         print("customer layer.* with hardcoded Chinese (use veikorI18n):", file=sys.stderr)
         for rel, msg in bad_layer:
             print(f"  {rel}: {msg!r}", file=sys.stderr)
+    if bad_res_msg:
+        print("customer layer.msg(res.msg) without translateResMsg:", file=sys.stderr)
+        for rel in sorted(bad_res_msg):
+            print(" ", rel, file=sys.stderr)
 
-    if bad_lang or bad_layer:
+    if bad_lang or bad_layer or bad_res_msg:
         return 1
     print("audit-panel-customer-i18n: ok")
     return 0
