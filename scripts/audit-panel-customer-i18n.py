@@ -46,7 +46,7 @@ API_MSG_ENTRY = re.compile(
 )
 I18N_JS = os.path.join(ROOT, "lib", "veikor-i18n.js")
 REQUIRED_API_LANGS = ("zh-CN", "zh-TW", "en")
-MIN_API_MSG_ENTRIES = 115
+MIN_API_MSG_ENTRIES = 135
 
 
 def _is_customer_view(rel: str) -> bool:
@@ -73,12 +73,17 @@ def _audit_api_msg_map() -> list[str]:
         return ["API_MSG_BY_SOURCE unterminated"]
     block = text[start : end + 1]
     bad: list[str] = []
+    seen: dict[str, int] = {}
     for m in API_MSG_ENTRY.finditer(block):
         src = m.group(1)
+        seen[src] = seen.get(src, 0) + 1
         body = m.group(0)
         for loc in REQUIRED_API_LANGS:
             if f'"{loc}":' not in body:
                 bad.append(f"{src} missing {loc}")
+    dup = [k for k, n in seen.items() if n > 1]
+    if dup:
+        bad.append(f"API_MSG_BY_SOURCE duplicate keys: {dup[0]}")
     if not API_MSG_ENTRY.search(block):
         bad.append("API_MSG_BY_SOURCE has no entries")
     else:
