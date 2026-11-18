@@ -87,10 +87,32 @@ def _missing_global_lang(text: str) -> bool:
     return not (GLOBAL_LANG.search(text) or re.search(r"\.on\('veikor:lang'", text))
 
 
+def _audit_dynamic_host_i18n(rel: str, text: str) -> list[str]:
+    """Flag hosts with both id and data-i18n on the same opening tag (buttons/inputs exempt)."""
+    bad: list[str] = []
+    for m in re.finditer(
+        r"<(div|span|td|label)(\s[^>]*?)(/?)>",
+        text,
+        flags=re.IGNORECASE,
+    ):
+        attrs = m.group(2)
+        if 'data-i18n' not in attrs:
+            continue
+        if 'data-veikor-dynamic' in attrs:
+            continue
+        if not re.search(r'\bid\s*=', attrs):
+            continue
+        if 'data-i18n-attr' in attrs or 'data-i18n-placeholder' in attrs:
+            continue
+        bad.append(f"{rel}: <{m.group(1)} id=… data-i18n=…> use data-veikor-dynamic + inner span")
+    return bad
+
+
 def main() -> int:
     bad_lang: list[str] = []
     bad_layer: list[tuple[str, str]] = []
     bad_res_msg: list[str] = []
+    bad_dynamic: list[str] = []
 
     for dirpath, _, files in os.walk(VIEWS):
         for fn in files:
@@ -107,6 +129,7 @@ def main() -> int:
                 bad_layer.append((rel, m.group(1)[:80]))
             if RAW_RES_MSG.search(text) and "translateResMsg" not in text and "notifyResMsg" not in text:
                 bad_res_msg.append(rel)
+            bad_dynamic.extend(_audit_dynamic_host_i18n(rel, text))
 
     for fn in CUSTOMER_CONTROLLERS:
         path = os.path.join(CONTROLLERS, fn)
@@ -138,8 +161,12 @@ def main() -> int:
         print("API_MSG_BY_SOURCE locale gaps:", file=sys.stderr)
         for line in bad_api:
             print(" ", line, file=sys.stderr)
+    if bad_dynamic:
+        print("customer views: id + data-i18n on same host (use data-veikor-dynamic):", file=sys.stderr)
+        for line in sorted(bad_dynamic):
+            print(" ", line, file=sys.stderr)
 
-    if bad_lang or bad_layer or bad_res_msg or bad_api:
+    if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic:
         return 1
     print("audit-panel-customer-i18n: ok")
     return 0

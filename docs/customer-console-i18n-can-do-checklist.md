@@ -39,7 +39,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `lib/veikor-i18n.js` — `applyDataI18n` + `data-veikor-dynamic` | P0 | DYNAMIC | Documented; extend CI to ban risky patterns |
 | `lib/view.js` — customer `reqErrorHtml` | — | Done | Keep mapping table in sync with M2 |
 | `index.js` — Layui **tab title** on lang change | P4 | STATIC | Tabs may keep first-open Chinese label |
-| `scripts/audit-panel-customer-i18n.py` | P4 | CI | Optional: dynamic-id + `res.msg` rules |
+| `scripts/audit-panel-customer-i18n.py` | P0 | CI | Ban `id` + `data-i18n` on same host (exceptions for `button`/`input`) |
 
 ---
 
@@ -82,7 +82,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `package/buy/index.html` | P1 | STATIC, M2 | `notifyResMsg` on purchase fail |
 | `package/buy/duration.html` | P2 | POPUP, STATIC | Duration picker layer |
 | `package/my/index.html` | P1 | STATIC | My plans list |
-| `package/my/detail.html` | P2 | POPUP, DYNAMIC | Usage table cells filled by JS — avoid `data-i18n` on `#traffic_*` etc. |
+| `package/my/detail.html` | P2 | POPUP | Usage cells have no `data-i18n` (OK); `refreshDetailI18n` on `veikor:lang` — polish only |
 | `package/my/renew.html` | P2 | POPUP, STATIC | |
 | `package/my/buy-upgrade.html` | P2 | POPUP, STATIC | |
 | `package/my/up_down.html` | P3 | POPUP, STATIC | |
