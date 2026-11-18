@@ -108,6 +108,26 @@ def _audit_dynamic_host_i18n(rel: str, text: str) -> list[str]:
     return bad
 
 
+def _load_page_map() -> dict[str, dict[str, str]] | None:
+    import json
+    import re
+
+    if not os.path.isfile(I18N_JS):
+        return None
+    text = open(I18N_JS, encoding="utf-8", errors="replace").read()
+    m = re.search(
+        r"var PAGE =(\{.*?\});\s*\n\s*var GEO_COUNTRY",
+        text,
+        flags=re.DOTALL,
+    )
+    if not m:
+        return None
+    try:
+        return json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return None
+
+
 def _audit_veikor_i18n_js() -> list[str]:
     """PAGE blob must parse; duplicate locale markers indicate a corrupt merge."""
     bad: list[str] = []
@@ -130,6 +150,21 @@ def _audit_veikor_i18n_js() -> list[str]:
     )
     if r.returncode:
         bad.append("veikor-i18n.js fails node --check (syntax)")
+    page = _load_page_map()
+    if page is None:
+        bad.append("PAGE JSON could not be parsed")
+    else:
+        for loc in REQUIRED_API_LANGS:
+            if loc not in page:
+                bad.append(f"PAGE missing locale {loc}")
+        zh = page.get("zh-CN") or {}
+        for loc in ("en", "zh-TW"):
+            other = page.get(loc) or {}
+            gaps = [k for k in zh if k.startswith("page.") and k not in other]
+            if gaps:
+                bad.append(
+                    f"PAGE {loc} missing {len(gaps)} page.* keys (e.g. {gaps[0]})"
+                )
     return bad
 
 
