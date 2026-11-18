@@ -206,7 +206,7 @@ Mirror site where paths exist:
 
 ## Suggested PR slices (one branch each)
 
-1. **P0 dynamic sweep** — `acllist-add.html` `#matchers`, package `detail.html` numeric cells, any new `id`+`data-i18n` hosts; CI rule.
+1. **P0 `veikorRenderFormSkins`** — customer `form.render(null)` sweep (CI fails if `veikor:lang` pages regress). **P0 dynamic** — `acllist-add.html` `#matchers`, package `detail.html` numeric cells, any new `id`+`data-i18n` hosts; CI rule.
 2. **P1 finance + home + package my/buy** — M2 samples from recharge/buy/order APIs.
 3. **P1 site/stream list + edit** — remaining `lay-text` / placeholder sweep on edit.
 4. **P1 monitors + 4 senior controllers** — chart labels on `veikor:lang`.
