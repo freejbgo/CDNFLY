@@ -35,6 +35,8 @@ CUSTOMER_CONTROLLERS = (
 
 SCOPED_LANG = re.compile(r"\$\(document\)\.on\('veikor:lang\.([^']+)'")
 GLOBAL_LANG = re.compile(r"\$\(document\)\.on\('veikor:lang'")
+FORM_RENDER_NULL = re.compile(r"form\.render\s*\(\s*null")
+LANG_HANDLER = re.compile(r"\$\(document\)\.on\('veikor:lang")
 LAYER_CJK = re.compile(
     r"layer\.(?:msg|alert|confirm)\(\s*['\"]([^'\"]*[\u4e00-\u9fff][^'\"]*)"
 )
@@ -173,6 +175,7 @@ def main() -> int:
     bad_layer: list[tuple[str, str]] = []
     bad_res_msg: list[str] = []
     bad_dynamic: list[str] = []
+    form_render_null_advisory: list[str] = []
     bad_i18n_js = _audit_veikor_i18n_js()
 
     for dirpath, _, files in os.walk(VIEWS):
@@ -186,6 +189,8 @@ def main() -> int:
             text = open(path, encoding="utf-8", errors="replace").read()
             if _missing_global_lang(text):
                 bad_lang.append(rel)
+            if LANG_HANDLER.search(text) and FORM_RENDER_NULL.search(text):
+                form_render_null_advisory.append(rel)
             for m in LAYER_CJK.finditer(text):
                 bad_layer.append((rel, m.group(1)[:80]))
             if RAW_RES_MSG.search(text) and "translateResMsg" not in text and "notifyResMsg" not in text:
@@ -231,6 +236,14 @@ def main() -> int:
         print("veikor-i18n.js structural checks:", file=sys.stderr)
         for line in bad_i18n_js:
             print(" ", line, file=sys.stderr)
+
+    if form_render_null_advisory:
+        print(
+            "advisory: customer pages with veikor:lang and form.render(null) (migrate to type-specific render):",
+            file=sys.stderr,
+        )
+        for rel in sorted(form_render_null_advisory):
+            print(" ", rel, file=sys.stderr)
 
     if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic or bad_i18n_js:
         return 1
