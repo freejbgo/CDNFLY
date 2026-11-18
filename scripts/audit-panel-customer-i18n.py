@@ -239,13 +239,13 @@ def main() -> int:
 
     if form_render_null_advisory:
         print(
-            "advisory: customer pages with veikor:lang and form.render(null) (migrate to type-specific render):",
+            "customer pages with veikor:lang and form.render(null):",
             file=sys.stderr,
         )
         for rel in sorted(form_render_null_advisory):
             print(" ", rel, file=sys.stderr)
 
-    if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic or bad_i18n_js:
+    if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic or bad_i18n_js or form_render_null_advisory:
         return 1
     print("audit-panel-customer-i18n: ok")
     return 0
