@@ -108,11 +108,37 @@ def _audit_dynamic_host_i18n(rel: str, text: str) -> list[str]:
     return bad
 
 
+def _audit_veikor_i18n_js() -> list[str]:
+    """PAGE blob must parse; duplicate locale markers indicate a corrupt merge."""
+    bad: list[str] = []
+    if not os.path.isfile(I18N_JS):
+        return ["missing veikor-i18n.js"]
+    import subprocess
+
+    for line in open(I18N_JS, encoding="utf-8", errors="replace"):
+        if line.startswith("  var PAGE ="):
+            n_zh = line.count('"zh-CN":')
+            if n_zh != 1:
+                bad.append(f"PAGE line has {n_zh} zh-CN markers (expected 1)")
+            break
+    else:
+        bad.append("PAGE assignment not found in veikor-i18n.js")
+    r = subprocess.run(
+        ["node", "--check", I18N_JS],
+        capture_output=True,
+        text=True,
+    )
+    if r.returncode:
+        bad.append("veikor-i18n.js fails node --check (syntax)")
+    return bad
+
+
 def main() -> int:
     bad_lang: list[str] = []
     bad_layer: list[tuple[str, str]] = []
     bad_res_msg: list[str] = []
     bad_dynamic: list[str] = []
+    bad_i18n_js = _audit_veikor_i18n_js()
 
     for dirpath, _, files in os.walk(VIEWS):
         for fn in files:
@@ -166,7 +192,12 @@ def main() -> int:
         for line in sorted(bad_dynamic):
             print(" ", line, file=sys.stderr)
 
-    if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic:
+    if bad_i18n_js:
+        print("veikor-i18n.js structural checks:", file=sys.stderr)
+        for line in bad_i18n_js:
+            print(" ", line, file=sys.stderr)
+
+    if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic or bad_i18n_js:
         return 1
     print("audit-panel-customer-i18n: ok")
     return 0
