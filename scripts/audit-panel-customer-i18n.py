@@ -46,7 +46,7 @@ API_MSG_ENTRY = re.compile(
 )
 I18N_JS = os.path.join(ROOT, "lib", "veikor-i18n.js")
 REQUIRED_API_LANGS = ("zh-CN", "zh-TW", "en")
-MIN_API_MSG_ENTRIES = 255
+MIN_API_MSG_ENTRIES = 285
 
 
 def _is_customer_view(rel: str) -> bool:
