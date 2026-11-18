@@ -2,6 +2,8 @@
 
 Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel under `.veikor-build/.../panel/src`, then `sync-panel-to-master-tar.sh` + `verify-packages.sh`.
 
+**Batch delivered (checklist slices 2–6, single PR):** global `applyLayerPopupI18n`, `refreshSwitchLayTextIn`, Layui tab title keys (`bindLayuiTabTitleFromBody` / `applyLayuiTabTitlesI18n`), expanded `API_MSG_BY_SOURCE`, stream monitor realtime chrome, pay return `panel-lang` storage listener, balance preorder `notifyResMsg` on fail. **Remaining:** per-page static key gaps, unmapped API phrases from production, backend-authored content (out of scope).
+
 **Legend**
 
 | Tag | Meaning |
