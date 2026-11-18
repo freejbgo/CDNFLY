@@ -46,6 +46,7 @@ API_MSG_ENTRY = re.compile(
 )
 I18N_JS = os.path.join(ROOT, "lib", "veikor-i18n.js")
 REQUIRED_API_LANGS = ("zh-CN", "zh-TW", "en")
+MIN_API_MSG_ENTRIES = 90
 
 
 def _is_customer_view(rel: str) -> bool:
@@ -80,6 +81,12 @@ def _audit_api_msg_map() -> list[str]:
                 bad.append(f"{src} missing {loc}")
     if not API_MSG_ENTRY.search(block):
         bad.append("API_MSG_BY_SOURCE has no entries")
+    else:
+        n_entries = len(API_MSG_ENTRY.findall(block))
+        if n_entries < MIN_API_MSG_ENTRIES:
+            bad.append(
+                f"API_MSG_BY_SOURCE has {n_entries} entries (min {MIN_API_MSG_ENTRIES})"
+            )
     return bad
 
 
