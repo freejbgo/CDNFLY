@@ -30,7 +30,6 @@ CUSTOMER_VIEW_PREFIXES = (
     "finance",
     os.path.join("package", "my"),
     os.path.join("package", "buy"),
-    os.path.join("package", "upgrade"),
 )
 CUSTOMER_CONTROLLERS = (
     "site-usage-senior.js",
