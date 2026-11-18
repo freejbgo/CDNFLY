@@ -39,6 +39,11 @@ LAYER_CJK = re.compile(
     r"layer\.(?:msg|alert|confirm)\(\s*['\"]([^'\"]*[\u4e00-\u9fff][^'\"]*)"
 )
 RAW_RES_MSG = re.compile(r"layer\.msg\(\s*res\.msg\b")
+API_MSG_ENTRY = re.compile(
+    r'"([^"\\]+)":\s*\{("zh-CN"|"zh-TW"|"en"):[^}]+\}'
+)
+I18N_JS = os.path.join(ROOT, "lib", "veikor-i18n.js")
+REQUIRED_API_LANGS = ("zh-CN", "zh-TW", "en")
 
 
 def _is_customer_view(rel: str) -> bool:
@@ -51,6 +56,29 @@ def _is_customer_view(rel: str) -> bool:
     if rel.startswith("system/message/"):
         return True
     return False
+
+
+def _audit_api_msg_map() -> list[str]:
+    if not os.path.isfile(I18N_JS):
+        return ["missing veikor-i18n.js"]
+    text = open(I18N_JS, encoding="utf-8", errors="replace").read()
+    start = text.find("var API_MSG_BY_SOURCE = {")
+    if start < 0:
+        return ["API_MSG_BY_SOURCE not found"]
+    end = text.find("};", start)
+    if end < 0:
+        return ["API_MSG_BY_SOURCE unterminated"]
+    block = text[start : end + 1]
+    bad: list[str] = []
+    for m in API_MSG_ENTRY.finditer(block):
+        src = m.group(1)
+        body = m.group(0)
+        for loc in REQUIRED_API_LANGS:
+            if f'"{loc}":' not in body:
+                bad.append(f"{src} missing {loc}")
+    if not API_MSG_ENTRY.search(block):
+        bad.append("API_MSG_BY_SOURCE has no entries")
+    return bad
 
 
 def _missing_global_lang(text: str) -> bool:
@@ -77,7 +105,7 @@ def main() -> int:
                 bad_lang.append(rel)
             for m in LAYER_CJK.finditer(text):
                 bad_layer.append((rel, m.group(1)[:80]))
-            if RAW_RES_MSG.search(text) and "translateResMsg" not in text:
+            if RAW_RES_MSG.search(text) and "translateResMsg" not in text and "notifyResMsg" not in text:
                 bad_res_msg.append(rel)
 
     for fn in CUSTOMER_CONTROLLERS:
@@ -87,6 +115,8 @@ def main() -> int:
         text = open(path, encoding="utf-8", errors="replace").read()
         if _missing_global_lang(text):
             bad_lang.append(os.path.join("controller", fn))
+
+    bad_api = _audit_api_msg_map()
 
     if bad_lang:
         print(
@@ -104,7 +134,12 @@ def main() -> int:
         for rel in sorted(bad_res_msg):
             print(" ", rel, file=sys.stderr)
 
-    if bad_lang or bad_layer or bad_res_msg:
+    if bad_api:
+        print("API_MSG_BY_SOURCE locale gaps:", file=sys.stderr)
+        for line in bad_api:
+            print(" ", line, file=sys.stderr)
+
+    if bad_lang or bad_layer or bad_res_msg or bad_api:
         return 1
     print("audit-panel-customer-i18n: ok")
     return 0
