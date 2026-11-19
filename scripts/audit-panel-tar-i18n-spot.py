@@ -423,6 +423,16 @@ SPOTS = (
         "ACL match-item select chrome after add/delete",
     ),
     (
+        "views/stream/stream/acl-add.html",
+        "repaintStreamAclMatchSelectChrome",
+        "stream ACL match-item select chrome after add",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "refreshStreamAclAddFormI18n",
+        "stream edit ACL rule popup refresh after prefill",
+    ),
+    (
         "views/package/buy/index.html",
         "reloadBuyPackageI18n",
         "package buy page lang reload",
