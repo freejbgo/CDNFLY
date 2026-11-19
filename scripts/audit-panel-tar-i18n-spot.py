@@ -488,6 +488,21 @@ SPOTS = (
         "site edit nested popup select sync after prefill",
     ),
     (
+        "views/site/site/edit.html",
+        "fn(true)",
+        "site edit open layers call nested refresh langOnly",
+    ),
+    (
+        "views/site/site/backend_form.html",
+        "refreshSiteBackendFormI18n(true)",
+        "site backend partial lang handler langOnly",
+    ),
+    (
+        "views/stream/stream/backend_form.html",
+        "refreshStreamBackendFormI18n(true)",
+        "stream backend partial lang handler langOnly",
+    ),
+    (
         "views/stream/stream/edit.html",
         "refreshStreamEditOpenLayers",
         "stream edit nested popup titles",
@@ -509,8 +524,13 @@ SPOTS = (
     ),
     (
         "views/site/cc/rule-add.html",
-        "refreshCcRulelistAddI18n();",
-        "CC rulelist edit prefill uses refresh helper",
+        "refreshCcRulelistAddI18n(true)",
+        "CC rulelist AJAX/prefill refresh langOnly",
+    ),
+    (
+        "views/site/cc/match-add.html",
+        "refreshCcMatchlistAddI18n(true)",
+        "CC matchlist child popup refresh langOnly",
     ),
     (
         "views/site/acl/acl-add.html",
