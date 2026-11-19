@@ -359,8 +359,23 @@ SPOTS = (
     ),
     (
         "views/site/site/edit.html",
-        "veikorSyncLayuiSelectTitles",
-        "site edit lang refresh sync selects",
+        "window.repaintSiteEditFormLangSkins",
+        "site edit AJAX/prefill form lang skins export",
+    ),
+    (
+        "views/site/site/edit.html",
+        "repaintSiteEditFormLangSkins",
+        "site edit page sync after AJAX and site load",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "window.repaintStreamEditFormLangSkins",
+        "stream edit form lang skins export",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "repaintStreamEditFormLangSkins",
+        "stream edit port form and nested popup sync",
     ),
     (
         "views/site/site/update_form.html",
