@@ -633,6 +633,16 @@ SPOTS = (
         "package my renew open-layer guard",
     ),
     (
+        "views/site/group/index.html",
+        "LAY-popup-site-group-form') && window.refreshSiteGroupAddFormI18n",
+        "site group open-layer guard",
+    ),
+    (
+        "views/site/acl/acl-add.html",
+        "getElementById('LAY-popup-acllist-add')",
+        "ACL rule child popup lang guard",
+    ),
+    (
         "views/site/cc/rule-add.html",
         "refreshCcRulelistAddI18n(true)",
         "CC rulelist AJAX/prefill refresh langOnly",
