@@ -177,7 +177,7 @@ Mirror site where paths exist:
 | `stream/group/index.html` | P2 | STATIC | |
 | `stream/group/addform.html` | P2 | POPUP | `refreshStreamGroupAddFormI18n` + `stream/group/index.html` layer title |
 | `stream/monitor/realtime.html` | P1 | CHART | |
-| `stream/monitor/usage.html` | P1 | CHART | |
+| `stream/monitor/usage.html` | P1 | CHART | Delegates `refreshStreamUsageSeniorI18n` on lang (#339) |
 | `stream/monitor/top-res.html` | P1 | CHART | |
 
 ---
@@ -195,10 +195,10 @@ Mirror site where paths exist:
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `senior.js` | P1 | CHART | Site monitor charts / polling UI |
-| `site-usage-senior.js` | P1 | CHART | Usage charts |
-| `stream_senior.js` | P1 | CHART | Stream monitor |
-| `stream-usage-senior.js` | P1 | CHART | Stream usage |
+| `senior.js` | P1 | CHART | `refreshSiteMonitorChartsI18n` (tar spot #339) |
+| `site-usage-senior.js` | P1 | CHART | `refreshSiteUsageSeniorI18n` |
+| `stream_senior.js` | P1 | CHART | `refreshStreamMonitorChartsI18n` |
+| `stream-usage-senior.js` | P1 | CHART | `refreshStreamUsageSeniorI18n` |
 
 **Not customer scope:** `node_senior.js` (admin).
 
