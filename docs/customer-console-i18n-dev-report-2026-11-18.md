@@ -1,13 +1,24 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `985ba62`（面板 @ `8c7eeca`）；含 **#298–#390**  
+**主线：** `main` @ `b2e2486`（面板 @ `8c7eeca`）；含 **#298–#391**  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
 ---
 
 ## 1. 本轮复核与合并结论
+
+### 2026-11-19 复核（#391 后）
+
+| 项 | 结果 |
+|----|------|
+| `origin/main` | `b2e2486`（#391）← `8c7eeca`（#387 面板） |
+| 开放 PR | **0** |
+| 双审计 + deep | **全绿** |
+| 审计成功行 | `API_MSG_BY_SOURCE 332 entries, min 285` |
+| **M1** | **已签收** |
+| **下一开发** | **P3** — `res.msg` 样本；可用 `audit-customer-notify-resmsg-index.py` 列客户 API 路径 |
 
 ### 2026-11-19 复核（#390 后）
 
@@ -201,6 +212,7 @@
 cd /workspace   # 或本机 CDNFLY 根目录
 python3 scripts/audit-panel-customer-i18n.py
 python3 scripts/audit-panel-tar-i18n-spot.py
+python3 scripts/audit-customer-notify-resmsg-index.py   # P3：客户页 notifyResMsg 涉及的 url
 bash scripts/sync-panel-to-master-tar.sh   # panel 改动后
 bash scripts/verify-packages.sh          # 发版前（需 php 时 deep audit 才全绿）
 ```
@@ -320,6 +332,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #389 | 交接报告 main @ bdede9b（#388 closeout） |
 | #390 | M1 签收标注 + 交接 main @ 0a5eb63 |
 | #391 | `audit-panel-customer-i18n` 成功行打印 API_MSG 条数；计划文档 M1 更新 |
+| #392 | P3 客户 `notifyResMsg` API 路径索引脚本 + #391 后交接 |
 
 ---
 
