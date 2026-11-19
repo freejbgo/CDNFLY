@@ -2,7 +2,7 @@
 
 Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel under `.veikor-build/.../panel/src`, then `sync-panel-to-master-tar.sh` + `verify-packages.sh`.
 
-**Batch delivered (slices through 2026-11-19, PR #298–#306):** U2B scope; P0 `acllist-add` dynamic lang; `up_down` / `/jobs` alive guards; `siteRefresh` lang scope; cache edit popup title; `API_MSG` samples; CI rule for `/jobs` done + `*Alive()`. Plus earlier: `applyLayerPopupI18n`, tab title i18n, monitor chrome, pay return `panel-lang` storage. **Remaining:** production-only `res.msg` samples (P3), P4 polish, backend-authored API text (out of scope).
+**Batch delivered (through 2026-11-19, PR #298–#371):** U2B + alive guards (#298–#306); nested popup titles (#307–#323); finance/package/monitor (#325–#347); **78** tar i18n spots + partial export fixes `up_down` / `acl-add` / `acllist-add` (#349–#370); handoff doc (#371–#372). **Remaining:** P3 production `res.msg` → `API_MSG_BY_SOURCE`; P4 admin popups (out of scope); API-authored titles (out of scope).
 
 **Legend**
 
