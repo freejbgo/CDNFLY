@@ -403,6 +403,26 @@ SPOTS = (
         "CC rule page lang reload",
     ),
     (
+        "views/site/cc/rule.html",
+        "veikorSyncLayuiSelectTitles(filterPopRoot)",
+        "CC filter edit popup select sync after prefill",
+    ),
+    (
+        "views/site/cc/rule-add.html",
+        "veikorSyncLayuiSelectTitles(root)",
+        "CC rulelist edit popup select sync after prefill",
+    ),
+    (
+        "views/site/acl/acl-add.html",
+        "window.refreshRuleMatchFormI18n",
+        "ACL rule add/edit nested popup refresh after prefill",
+    ),
+    (
+        "views/site/acl/acllist-add.html",
+        "repaintAclMatchSelectChrome",
+        "ACL match-item select chrome after add/delete",
+    ),
+    (
         "views/package/buy/index.html",
         "reloadBuyPackageI18n",
         "package buy page lang reload",
