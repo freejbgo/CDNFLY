@@ -574,8 +574,38 @@ SPOTS = (
     ),
     (
         "views/system/log/login.html",
-        "veikorSyncLayuiSelectTitles",
-        "login log search lang sync selects",
+        "form.render('select', 'login-log-search')",
+        "login log search control skins on first load",
+    ),
+    (
+        "views/system/log/op.html",
+        "form.render('select', 'op-log-search')",
+        "operation log search control skins on first load",
+    ),
+    (
+        "views/system/log/msg_send.html",
+        "form.render('select', 'log-msg-send-search')",
+        "message send log search control skins on first load",
+    ),
+    (
+        "views/finance/order/index.html",
+        "renderOrderListForm(true)",
+        "finance order list lang-only search sync",
+    ),
+    (
+        "views/system/message/index.html",
+        "form.render('select', 'system-message-search')",
+        "system message search control skins on first load",
+    ),
+    (
+        "views/site/monitor/access-log.html",
+        "form.render('select', 'site-access-log-search')",
+        "access log search control skins on first load",
+    ),
+    (
+        "views/site/group/addform.html",
+        "refreshSiteGroupAddFormI18n();",
+        "site group add opens via refresh only",
     ),
     (
         "views/system/log/op.html",
