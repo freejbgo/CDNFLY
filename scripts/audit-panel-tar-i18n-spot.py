@@ -362,6 +362,26 @@ SPOTS = (
         "reloadRechargePageI18n",
         "finance recharge page lang reload",
     ),
+    (
+        "views/system/log/login.html",
+        "reloadLoginLogPageI18n",
+        "customer login log page reload",
+    ),
+    (
+        "views/system/log/op.html",
+        "reloadOpLogPageI18n",
+        "customer operation log page reload",
+    ),
+    (
+        "views/system/log/backup.html",
+        "reloadBackupLogPageI18n",
+        "customer backup log page reload",
+    ),
+    (
+        "views/system/log/msg_send.html",
+        "reloadMsgSendLogPageI18n",
+        "customer message send log page reload",
+    ),
 )
 
 
