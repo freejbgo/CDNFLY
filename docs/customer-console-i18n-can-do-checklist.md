@@ -82,7 +82,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | File | P | Types | Notes |
 |------|---|-------|-------|
 | `package/buy/index.html` | P1 | STATIC, M2 | `notifyResMsg` on purchase fail |
-| `package/buy/duration.html` | P2 | POPUP, STATIC | Duration picker layer |
+| `package/buy/duration.html` | P2 | POPUP, STATIC | `window.refreshPackageBuyDurationPopupI18n` (#343); parent `LAY-popup-acl-add` |
 | `package/my/index.html` | P1 | STATIC | Open layers + prompt; delegates detail/renew/up_down (#335) |
 | `package/my/detail.html` | P2 | POPUP | `window.refreshPackageDetailI18n` dynamic quota labels |
 | `package/my/renew.html` | P2 | POPUP, STATIC | `window.refreshPackageRenewPopupI18n` |
@@ -101,7 +101,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/site/edit.html` | P1 | DYNAMIC, STATIC | `rememberSiteEditPopupTitle` + nested partial refresh on lang |
 | `site/site/addform.html` | P2 | POPUP, STATIC | New site |
 | `site/site/update_form.html` | P1 | POPUP, STATIC, M2 | Nested layer titles on `veikor:lang` (#317) |
-| `site/site/unlock-ip.html` | P2 | POPUP, M2 | |
+| `site/site/unlock-ip.html` | P2 | POPUP, M2 | `window.refreshSiteUnlockIpI18n`; title via `site/index` open layers |
 | `site/site/update-state.html` | P4 | POPUP | Mostly `show_all` admin toolbar |
 | `site/site/update-cname-mode.html` | P4 | POPUP | Admin toolbar |
 | `site/site/update-node-group.html` | P4 | POPUP | Admin toolbar |

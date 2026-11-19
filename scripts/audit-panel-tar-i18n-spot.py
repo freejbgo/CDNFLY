@@ -127,6 +127,36 @@ SPOTS = (
         "refreshStreamUsageSeniorI18n",
         "stream usage charts i18n",
     ),
+    (
+        "views/package/buy/index.html",
+        "refreshBuyPackageOpenLayers",
+        "package buy duration popup title/body",
+    ),
+    (
+        "views/package/buy/duration.html",
+        "window.refreshPackageBuyDurationPopupI18n",
+        "package buy duration partial hook (#343)",
+    ),
+    (
+        "views/site/site/unlock-ip.html",
+        "window.refreshSiteUnlockIpI18n",
+        "site unlock-ip popup i18n",
+    ),
+    (
+        "views/site/monitor/domain-rank.html",
+        "window.refreshDomainRankI18n",
+        "site monitor domain rank",
+    ),
+    (
+        "views/site/monitor/attack-rank.html",
+        "window.refreshAttackRankI18n",
+        "site monitor attack rank",
+    ),
+    (
+        "views/site/monitor/access-log.html",
+        "window.refreshAccessLogI18n",
+        "site monitor access log",
+    ),
 )
 
 
