@@ -453,6 +453,26 @@ SPOTS = (
         "dnsapi popup refresh without full form skins on open",
     ),
     (
+        "views/site/site/addform.html",
+        "window.repaintSiteAddSelectChrome",
+        "site add form AJAX select chrome helper",
+    ),
+    (
+        "views/site/site/index.html",
+        "repaintSiteAddSelectChrome",
+        "site add popup package/user select sync after AJAX",
+    ),
+    (
+        "views/stream/stream/addform.html",
+        "window.repaintStreamAddSelectChrome",
+        "stream add form AJAX select chrome helper",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "repaintStreamAddSelectChrome",
+        "stream add popup package/user select sync after AJAX",
+    ),
+    (
         "views/package/buy/index.html",
         "reloadBuyPackageI18n",
         "package buy page lang reload",
