@@ -33,6 +33,12 @@ else
   ok "audit-panel-customer-i18n"
 fi
 
+if ! python3 "$ROOT/scripts/audit-panel-tar-i18n-spot.py"; then
+  bad "audit-panel-tar-i18n-spot"
+else
+  ok "audit-panel-tar-i18n-spot"
+fi
+
 if ! python3 "$ROOT/scripts/audit-panel-view-aliases.py"; then
   bad "audit-panel-view-aliases"
 else

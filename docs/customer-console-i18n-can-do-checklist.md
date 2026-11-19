@@ -98,7 +98,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | File | P | Types | Notes |
 |------|---|-------|-------|
 | `site/site/index.html` | P1 | STATIC, M2 | List, batch actions, certs/cache/unlock |
-| `site/site/edit.html` | P1 | DYNAMIC, STATIC | Meta header replay (#242); `lay-text` switches via `refreshSiteEditSwitchLayText`; geo `title` on lang |
+| `site/site/edit.html` | P1 | DYNAMIC, STATIC | `rememberSiteEditPopupTitle` + nested partial refresh on lang |
 | `site/site/addform.html` | P2 | POPUP, STATIC | New site |
 | `site/site/update_form.html` | P1 | POPUP, STATIC, M2 | Nested layer titles on `veikor:lang` (#317) |
 | `site/site/unlock-ip.html` | P2 | POPUP, M2 | |
