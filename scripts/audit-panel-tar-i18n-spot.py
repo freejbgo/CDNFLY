@@ -48,6 +48,11 @@ SPOTS = (
         "CC rule/match nested popup titles (#323)",
     ),
     (
+        "views/site/cc/rule-add.html",
+        "renderCcRuleGroupSwitchI18n",
+        "CC rule group visible switch lang re-skin",
+    ),
+    (
         "views/package/my/buy-upgrade.html",
         "window.refreshPackageBuyUpgradeI18n",
         "package my buy-upgrade i18n hook (#337)",
