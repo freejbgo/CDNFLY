@@ -115,6 +115,8 @@ Menu labels come from the **layout API** (`data-name` / `data-jump`) with Chines
 
 `index.js` after each view render calls **`applyBreadcrumbI18n` + `applyDataI18n` only** (both gated by `customerI18nActive()`). Full **`applyConsoleI18n`** (menu, shell, etc.) runs on layout load, language change, and after `user_type` hydration — do not call the full helper on every tab switch (menu labels would re-lock wrong).
 
+`applyConsoleI18n` / per-tab view render apply `data-i18n` only on the **active** `layadmin-tabsbody-item.layui-show` (not every cached tab). Scope resolution uses the same active tab, not the first marker in `#LAY_app_body`. Sub-routes such as `package/my/detail` and `package/my/up_down` have their own `data-veikor-page` and map to `packageMy`.
+
 On language change, `applyConsoleI18n` fires **`veikor:lang.<scope>`** for the active tab’s `data-veikor-page` (see `PAGE_LANG_SCOPES` in `veikor-i18n.js`), then **`veikor:lang.veikorForms`** (radio/checkbox only — not selects), **`veikor:lang.shell`** (layout profile popup), plus **`balanceForm`** when `#recharge` is present and **`userHomeBalance`** on `#/user_home`. It does **not** broadcast bare **`veikor:lang`** (that duplicated scoped handlers and double-reloaded tables).
 
 ## Tab / document titles
