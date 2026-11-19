@@ -568,6 +568,21 @@ SPOTS = (
         "CC rule page lang reload",
     ),
     (
+        "views/site/cc/rule.html",
+        "$(document).on('veikor:lang.ccRule', reloadCcRulePageI18n);",
+        "CC rule page scoped lang only",
+    ),
+    (
+        "views/site/site/edit.html",
+        "$(document).on('veikor:lang.siteList', refreshSiteEditI18n);",
+        "site edit scoped lang only",
+    ),
+    (
+        "views/package/my/index.html",
+        "$(document).on('veikor:lang.packageMy', reloadMyPackageI18n);",
+        "package my scoped lang only",
+    ),
+    (
         "views/site/cc/rule-add.html",
         "refreshCcRulelistAddI18n(true)",
         "CC rulelist AJAX/prefill refresh langOnly",
