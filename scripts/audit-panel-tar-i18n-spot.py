@@ -277,6 +277,21 @@ SPOTS = (
         "reloadMessageQueryPageI18n",
         "customer message list i18n",
     ),
+    (
+        "views/site/site/index.html",
+        "refreshSiteListOpenLayers",
+        "site list nested popup titles",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "refreshStreamListOpenLayers",
+        "stream list nested popup titles",
+    ),
+    (
+        "views/system/message/detail.html",
+        "LAY-popup-message-detail-pane",
+        "message detail popup static labels",
+    ),
 )
 
 

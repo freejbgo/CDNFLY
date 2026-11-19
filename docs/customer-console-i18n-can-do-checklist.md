@@ -97,7 +97,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `site/site/index.html` | P1 | STATIC, M2 | List, batch actions; CNAME `layer.prompt` title (#329) |
+| `site/site/index.html` | P1 | STATIC, M2 | `refreshSiteListOpenLayers` + CNAME prompt (#329, tar #355) |
 | `site/site/edit.html` | P1 | DYNAMIC, STATIC | `rememberSiteEditPopupTitle` + nested partial refresh on lang |
 | `site/site/addform.html` | P2 | POPUP, STATIC | New site |
 | `site/site/update_form.html` | P1 | POPUP, STATIC, M2 | Nested layer titles on `veikor:lang` (#317) |
@@ -165,7 +165,7 @@ Mirror site where paths exist:
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `stream/stream/index.html` | P1 | STATIC, M2 | CNAME `layer.prompt` title (#329) |
+| `stream/stream/index.html` | P1 | STATIC, M2 | `refreshStreamListOpenLayers` + CNAME prompt (#329, tar #355) |
 | `stream/stream/edit.html` | P1 | DYNAMIC, STATIC | Meta replay (#242) |
 | `stream/stream/addform.html` | P2 | POPUP | `refreshStreamAddFormI18n`; title via list `refreshStreamListOpenLayers` |
 | `stream/stream/update_form.html` | P2 | POPUP | Batch edit layer title on `veikor:lang` (#319) |
@@ -187,7 +187,7 @@ Mirror site where paths exist:
 | File | P | Types | Notes |
 |------|---|-------|-------|
 | `system/message/index.html` | P2 | STATIC | List chrome i18n; **titles from API** |
-| `system/message/detail.html` | P2 | POPUP, STATIC | Body from API |
+| `system/message/detail.html` | P2 | POPUP, STATIC | Static `data-i18n` labels (tar #355); body from API |
 
 ---
 
