@@ -1,2 +1,3 @@
 # Local unpack/edit trees — not committed; repack only when you ask for a release tarball.
 .veikor-build/
+__pycache__/
