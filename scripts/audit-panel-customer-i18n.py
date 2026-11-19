@@ -66,17 +66,24 @@ def _is_customer_view(rel: str) -> bool:
     return False
 
 
-def _audit_api_msg_map() -> list[str]:
+def _api_msg_source_block() -> tuple[str | None, list[str]]:
     if not os.path.isfile(I18N_JS):
-        return ["missing veikor-i18n.js"]
+        return None, ["missing veikor-i18n.js"]
     text = open(I18N_JS, encoding="utf-8", errors="replace").read()
     start = text.find("var API_MSG_BY_SOURCE = {")
     if start < 0:
-        return ["API_MSG_BY_SOURCE not found"]
+        return None, ["API_MSG_BY_SOURCE not found"]
     end = text.find("};", start)
     if end < 0:
-        return ["API_MSG_BY_SOURCE unterminated"]
-    block = text[start : end + 1]
+        return None, ["API_MSG_BY_SOURCE unterminated"]
+    return text[start : end + 1], []
+
+
+def _audit_api_msg_map() -> list[str]:
+    block, err = _api_msg_source_block()
+    if err:
+        return err
+    assert block is not None
     bad: list[str] = []
     seen: dict[str, int] = {}
     for m in API_MSG_ENTRY.finditer(block):
@@ -308,7 +315,12 @@ def main() -> int:
         or bad_jobs_done
     ):
         return 1
-    print("audit-panel-customer-i18n: ok")
+    block, _ = _api_msg_source_block()
+    n_api = len(API_MSG_ENTRY.findall(block)) if block else 0
+    print(
+        f"audit-panel-customer-i18n: ok "
+        f"(API_MSG_BY_SOURCE {n_api} entries, min {MIN_API_MSG_ENTRIES})"
+    )
     return 0
 
 
