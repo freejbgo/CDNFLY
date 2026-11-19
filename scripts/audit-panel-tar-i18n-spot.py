@@ -299,8 +299,18 @@ SPOTS = (
     ),
     (
         "views/package/my/index.html",
-        "refreshPackageRenewPopupI18n",
-        "package renew popup open uses refresh partial",
+        "refreshPackageRenewPopupI18n(true)",
+        "package my renew open layer langOnly",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "refreshStreamAclAddFormI18n(true)",
+        "stream edit ACL edit prefill langOnly refresh",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "LAY-popup-rulegroup-add",
+        "CC rule open layers scoped rule/match refresh",
     ),
     (
         "views/package/my/up_down.html",
