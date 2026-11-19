@@ -382,6 +382,26 @@ SPOTS = (
         "reloadMsgSendLogPageI18n",
         "customer message send log page reload",
     ),
+    (
+        "views/account/config/api.html",
+        "reloadAccountApiI18n",
+        "account API config page reload",
+    ),
+    (
+        "views/site/cert/dnsapi.html",
+        "refreshDnsApiI18n",
+        "cert DNS API page i18n",
+    ),
+    (
+        "views/site/monitor/realtime.html",
+        "refreshSiteMonitorRealtimeChrome",
+        "site monitor realtime chrome",
+    ),
+    (
+        "views/stream/monitor/realtime.html",
+        "applyStreamMonitorRealtimeChrome",
+        "stream monitor realtime chrome",
+    ),
 )
 
 
