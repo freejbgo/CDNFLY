@@ -72,7 +72,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | File | P | Types | Notes |
 |------|---|-------|-------|
 | `account/personal/index.html` | P1 | STATIC, DYNAMIC, M2 | Captcha radios/checkboxes `title`; `lastPersonalUser` replay; `layer.prompt` titles (#331); `reloadPersonalPageI18n` (tar #349) |
-| `account/config/api.html` | P2 | STATIC | `updateApiSwitchLayText` + `reloadAccountApiI18n` (tar #349) |
+| `account/config/api.html` | P2 | STATIC | `reloadAccountApiI18n` (tar #368); `updateApiSwitchLayText` (#349) |
 | `account/sub/index.html` | P2 | STATIC | `reloadAccountSubI18n` (tar #347) |
 
 ---
@@ -119,7 +119,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | File | P | Types | Notes |
 |------|---|-------|-------|
 | `site/cert/cert.html` | P1 | STATIC, M2 | `reloadCertListPageI18n` + `refreshCertListOpenLayers` (tar #364/#345) |
-| `site/cert/dnsapi.html` | P2 | STATIC | `refreshDnsApiOpenLayer` + partial hook (tar #345) |
+| `site/cert/dnsapi.html` | P2 | STATIC | `refreshDnsApiI18n` + open layer (tar #368/#345) |
 | `site/cert/addform.html` | P2 | POPUP, STATIC | |
 | `site/cert/dnsapi-add.html` | P2 | POPUP, STATIC | DNS type names = brands (keep) |
 | `site/cert/update-cert-type.html` | P2 | POPUP | `refreshCertUpdateTypeI18n` + `cert.html` layer titles |
@@ -149,7 +149,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `site/monitor/realtime.html` | P1 | STATIC, CHART | Delegates `refreshSiteMonitorChartsI18n` on lang (#341) |
+| `site/monitor/realtime.html` | P1 | STATIC, CHART | `refreshSiteMonitorRealtimeChrome` + charts (#341, tar #368) |
 | `site/monitor/usage.html` | P1 | STATIC, CHART | |
 | `site/monitor/top-res.html` | P1 | STATIC, CHART | `window.refreshSiteTopResI18n` (tar #345) |
 | `site/monitor/domain-rank.html` | P2 | STATIC, CHART | |
@@ -176,7 +176,7 @@ Mirror site where paths exist:
 | `stream/stream/acl-add.html` | P2 | POPUP | Content i18n; acl layer title via `stream/edit.html` |
 | `stream/group/index.html` | P2 | STATIC | `window.refreshStreamGroupI18n` (tar #350) |
 | `stream/group/addform.html` | P2 | POPUP | `refreshStreamGroupAddFormI18n` + `stream/group/index.html` layer title |
-| `stream/monitor/realtime.html` | P1 | CHART | Delegates `refreshStreamMonitorChartsI18n` on lang (#341) |
+| `stream/monitor/realtime.html` | P1 | CHART | `applyStreamMonitorRealtimeChrome` + charts (#341, tar #368) |
 | `stream/monitor/usage.html` | P1 | CHART | Delegates `refreshStreamUsageSeniorI18n` on lang (#339) |
 | `stream/monitor/top-res.html` | P1 | CHART | `window.refreshStreamTopResI18n` (tar #345) |
 
