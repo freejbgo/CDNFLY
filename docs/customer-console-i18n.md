@@ -119,6 +119,8 @@ Menu labels come from the **layout API** (`data-name` / `data-jump`) with Chines
 
 List pages use **`veikorTableReloadI18nCols`** on language refresh so filters and pagination are preserved. **`site/group`** / **`stream/group`** use `siteGroup` / `streamGroup`; **`site/cert/dnsapi`** uses `certDnsApi` (not `certList`). Log/message/CC/blackip pages follow the same table-reload pattern. Monitor rankings (**`top-res`**, **`domain-rank`**, **`attack-rank`**, **`access-log`**), **`site/refresh`**, site/stream **edit** sub-tables, and list popups (**unlock IP**, batch **update**, ACL/CC add) use the same helper on scoped `veikor:lang` handlers.
 
+Language refresh on popups with **AJAX- or region-filled `<select>`** must not call `form.render('select')` (options go blank). Use **`veikorRenderFormControlSkins`** plus **`veikorSyncLayuiSelectTitles`** to repaint labels and the Layui skin only. **`site/cert/dnsapi-add`** listens to **`certDnsApi`** as well as **`certList`**.
+
 On language change, `applyConsoleI18n` fires **`veikor:lang.<scope>`** for the active tab’s `data-veikor-page` (see `PAGE_LANG_SCOPES` in `veikor-i18n.js`), then **`veikor:lang.veikorForms`** (radio/checkbox only — not selects), **`veikor:lang.shell`** (layout profile popup), plus **`balanceForm`** when `#recharge` is present and **`userHomeBalance`** on `#/user_home`. It does **not** broadcast bare **`veikor:lang`** (that duplicated scoped handlers and double-reloaded tables).
 
 ## Tab / document titles
