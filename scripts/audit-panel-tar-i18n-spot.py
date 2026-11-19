@@ -67,6 +67,11 @@ SPOTS = (
         "__veikorPersonalPromptTitleKey",
         "account personal prompt title refresh",
     ),
+    (
+        "views/user_home.html",
+        "refreshUserHomeAnnouncementLayer",
+        "user home announcement layer btn refresh",
+    ),
 )
 
 

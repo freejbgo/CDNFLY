@@ -49,7 +49,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `views/user_home.html` | P1 | STATIC, DYNAMIC | Overview replay done (#242); announcements are **API title text** (display only; true tri-lang needs backend) |
+| `views/user_home.html` | P1 | STATIC, DYNAMIC | Overview replay done (#242); announcement **title/body** stay API text; layer **buttons** refresh on `veikor:lang` (#333) |
 
 ---
 
@@ -71,7 +71,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `account/personal/index.html` | P1 | STATIC, DYNAMIC, M2 | Captcha radios/checkboxes `title`; `lastPersonalUser` replay on lang |
+| `account/personal/index.html` | P1 | STATIC, DYNAMIC, M2 | Captcha radios/checkboxes `title`; `lastPersonalUser` replay on lang; `layer.prompt` titles (#331) |
 | `account/config/api.html` | P2 | STATIC | API key switch / labels |
 | `account/sub/index.html` | P2 | STATIC | Sub-account list/forms |
 
@@ -154,7 +154,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/monitor/top-res.html` | P1 | STATIC, CHART | |
 | `site/monitor/domain-rank.html` | P2 | STATIC, CHART | |
 | `site/monitor/attack-rank.html` | P2 | STATIC, CHART | Site-only |
-| `site/monitor/blackip.html` | P2 | STATIC | Tabs + `data-veikor-tab` |
+| `site/monitor/blackip.html` | P2 | STATIC | Tabs + `data-veikor-tab`; unlock-site `layer.prompt` title (#331) |
 | `site/monitor/access-log.html` | P2 | STATIC, M2 | Apply/download flows |
 
 ---
