@@ -433,6 +433,26 @@ SPOTS = (
         "stream edit ACL rule popup refresh after prefill",
     ),
     (
+        "views/site/cert/addform.html",
+        "window.repaintCertAddSelectChrome",
+        "cert add form AJAX select chrome helper",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "repaintCertAddSelectChrome",
+        "cert add popup user/dnsapi select sync after AJAX",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "refreshCertAddFormI18n()",
+        "cert edit popup refresh after cert detail prefill",
+    ),
+    (
+        "views/site/cert/dnsapi.html",
+        "refreshDnsApiAddFormI18n",
+        "dnsapi popup refresh without full form skins on open",
+    ),
+    (
         "views/package/buy/index.html",
         "reloadBuyPackageI18n",
         "package buy page lang reload",
