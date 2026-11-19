@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `9627ee4`（含 **#298–#333**）  
+**主线：** `main` @ `553681f`（含 **#298–#334**；进行中 **#335**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -185,6 +185,8 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #331 | 黑名单解锁站点 / 账户资料 `layer.prompt` 标题随语言刷新 |
 | #332 | 交接报告主线 SHA |
 | #333 | 用户首页公告 `layer.open` 按钮文案随语言刷新 |
+| #334 | 交接报告主线 SHA |
+| #335 | 我的套餐列表委托 detail/renew i18n；tar spot CNAME prompt；checklist 扫尾 |
 
 ---
 

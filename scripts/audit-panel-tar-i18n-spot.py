@@ -72,6 +72,21 @@ SPOTS = (
         "refreshUserHomeAnnouncementLayer",
         "user home announcement layer btn refresh",
     ),
+    (
+        "views/site/site/index.html",
+        "__veikorSiteListCnamePromptIndex",
+        "site list CNAME prompt (#329)",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "__veikorStreamListCnamePromptIndex",
+        "stream list CNAME prompt (#329)",
+    ),
+    (
+        "views/package/my/index.html",
+        "refreshPackageDetailI18n",
+        "package my list delegates detail/renew i18n",
+    ),
 )
 
 

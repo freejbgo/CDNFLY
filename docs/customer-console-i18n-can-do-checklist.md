@@ -83,9 +83,9 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 |------|---|-------|-------|
 | `package/buy/index.html` | P1 | STATIC, M2 | `notifyResMsg` on purchase fail |
 | `package/buy/duration.html` | P2 | POPUP, STATIC | Duration picker layer |
-| `package/my/index.html` | P1 | STATIC | My plans list |
-| `package/my/detail.html` | P2 | POPUP | `refreshDetailI18n` + parent refreshes layer title on lang (#309) |
-| `package/my/renew.html` | P2 | POPUP, STATIC | |
+| `package/my/index.html` | P1 | STATIC | Open layers + prompt; delegates detail/renew/up_down (#335) |
+| `package/my/detail.html` | P2 | POPUP | `window.refreshPackageDetailI18n` dynamic quota labels |
+| `package/my/renew.html` | P2 | POPUP, STATIC | `window.refreshPackageRenewPopupI18n` |
 | `package/my/buy-upgrade.html` | P2 | POPUP, STATIC | |
 | `package/my/up_down.html` | P3 | POPUP, STATIC | |
 
@@ -97,7 +97,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `site/site/index.html` | P1 | STATIC, M2 | List, batch actions, certs/cache/unlock |
+| `site/site/index.html` | P1 | STATIC, M2 | List, batch actions; CNAME `layer.prompt` title (#329) |
 | `site/site/edit.html` | P1 | DYNAMIC, STATIC | `rememberSiteEditPopupTitle` + nested partial refresh on lang |
 | `site/site/addform.html` | P2 | POPUP, STATIC | New site |
 | `site/site/update_form.html` | P1 | POPUP, STATIC, M2 | Nested layer titles on `veikor:lang` (#317) |
@@ -105,12 +105,12 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/site/update-state.html` | P4 | POPUP | Mostly `show_all` admin toolbar |
 | `site/site/update-cname-mode.html` | P4 | POPUP | Admin toolbar |
 | `site/site/update-node-group.html` | P4 | POPUP | Admin toolbar |
-| `site/site/backend_form.html` | P2 | POPUP | |
+| `site/site/backend_form.html` | P2 | POPUP | Content i18n; layer title via `edit.html` `refreshSiteEditOpenLayers` |
 | `site/site/cache_form.html` | P2 | POPUP | Switch `lay-text` |
-| `site/site/req_header_form.html` | P2 | POPUP | |
-| `site/site/resp_header_form.html` | P2 | POPUP | |
-| `site/site/url_ratelimit_form.html` | P2 | POPUP | |
-| `site/site/url_rewrite_form.html` | P2 | POPUP | |
+| `site/site/req_header_form.html` | P2 | POPUP | Same parent refresh as `backend_form` |
+| `site/site/resp_header_form.html` | P2 | POPUP | Same parent refresh as `backend_form` |
+| `site/site/url_ratelimit_form.html` | P2 | POPUP | Same parent refresh as `backend_form` |
+| `site/site/url_rewrite_form.html` | P2 | POPUP | Same parent refresh as `backend_form` |
 
 ---
 
@@ -122,7 +122,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/cert/dnsapi.html` | P2 | STATIC | |
 | `site/cert/addform.html` | P2 | POPUP, STATIC | |
 | `site/cert/dnsapi-add.html` | P2 | POPUP, STATIC | DNS type names = brands (keep) |
-| `site/cert/update-cert-type.html` | P2 | POPUP | |
+| `site/cert/update-cert-type.html` | P2 | POPUP | `refreshCertUpdateTypeI18n` + `cert.html` layer titles |
 
 ---
 
@@ -135,12 +135,12 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/acl/acllist-add.html` | P0 | POPUP, DYNAMIC | **Done #299** — `#matchers` lang replay |
 | `site/cc/rule.html` | P1 | STATIC | Open layer titles + nested partials on `veikor:lang` (#315) |
 | `site/cc/rule-add.html` | P2 | POPUP | Nested rulelist/matchlist layer titles (#323) |
-| `site/cc/rulelist-add.html` | P2 | POPUP | Switch `lay-text` |
+| `site/cc/rulelist-add.html` | P2 | POPUP | `refreshCcRulelistAddI18n` switch `lay-text`; title via `rule-add` (#323) |
 | `site/cc/match-add.html` | P2 | POPUP | Nested matchlist layer titles (#323) |
-| `site/cc/matchlist-add.html` | P2 | POPUP | |
-| `site/cc/filter-add.html` | P2 | POPUP | |
+| `site/cc/matchlist-add.html` | P2 | POPUP | Content i18n; title via `match-add` (#323) |
+| `site/cc/filter-add.html` | P2 | POPUP | Content i18n; filter layer title via `rule.html` (#315) |
 | `site/group/index.html` | P2 | STATIC | |
-| `site/group/addform.html` | P2 | POPUP | |
+| `site/group/addform.html` | P2 | POPUP | `refreshSiteGroupAddFormI18n` + `site/group/index.html` layer title |
 | `site/refresh/index.html` | P2 | STATIC | Clear cache |
 
 ---
@@ -165,17 +165,17 @@ Mirror site where paths exist:
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `stream/stream/index.html` | P1 | STATIC, M2 | |
+| `stream/stream/index.html` | P1 | STATIC, M2 | CNAME `layer.prompt` title (#329) |
 | `stream/stream/edit.html` | P1 | DYNAMIC, STATIC | Meta replay (#242) |
-| `stream/stream/addform.html` | P2 | POPUP | |
+| `stream/stream/addform.html` | P2 | POPUP | `refreshStreamAddFormI18n`; title via list `refreshStreamListOpenLayers` |
 | `stream/stream/update_form.html` | P2 | POPUP | Batch edit layer title on `veikor:lang` (#319) |
 | `stream/stream/update-state.html` | P4 | POPUP | Admin skew |
 | `stream/stream/update-cname-mode.html` | P4 | POPUP | |
 | `stream/stream/update-node-group.html` | P4 | POPUP | |
-| `stream/stream/backend_form.html` | P2 | POPUP | |
-| `stream/stream/acl-add.html` | P2 | POPUP | |
+| `stream/stream/backend_form.html` | P2 | POPUP | Content i18n; titles via `stream/edit.html` `refreshStreamEditOpenLayers` |
+| `stream/stream/acl-add.html` | P2 | POPUP | Content i18n; acl layer title via `stream/edit.html` |
 | `stream/group/index.html` | P2 | STATIC | |
-| `stream/group/addform.html` | P2 | POPUP | |
+| `stream/group/addform.html` | P2 | POPUP | `refreshStreamGroupAddFormI18n` + `stream/group/index.html` layer title |
 | `stream/monitor/realtime.html` | P1 | CHART | |
 | `stream/monitor/usage.html` | P1 | CHART | |
 | `stream/monitor/top-res.html` | P1 | CHART | |
