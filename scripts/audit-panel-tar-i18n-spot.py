@@ -368,9 +368,24 @@ SPOTS = (
         "site list nested popup titles",
     ),
     (
+        "views/site/site/index.html",
+        "refreshSiteAddFormI18n(true)",
+        "site list open layers add popup langOnly",
+    ),
+    (
         "views/stream/stream/index.html",
         "refreshStreamListOpenLayers",
         "stream list nested popup titles",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "refreshStreamAddFormI18n(true)",
+        "stream list open layers add popup langOnly",
+    ),
+    (
+        "views/site/acl/index.html",
+        "refreshAclAddFormI18n(true)",
+        "ACL list open layer langOnly",
     ),
     (
         "views/system/message/detail.html",
