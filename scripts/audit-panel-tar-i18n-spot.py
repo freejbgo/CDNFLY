@@ -603,6 +603,21 @@ SPOTS = (
         "site list scoped lang only",
     ),
     (
+        "views/site/site/index.html",
+        "getElementById('LAY-popup-node-add') && window.refreshSiteAddFormI18n",
+        "site list open-layer add guard",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "getElementById('LAY-popup-stream-add') && window.refreshStreamAddFormI18n",
+        "stream list open-layer add guard",
+    ),
+    (
+        "views/site/site/edit.html",
+        "LAY-popup-backend-add', 'refreshSiteBackendFormI18n'",
+        "site edit nested open-layer guard",
+    ),
+    (
         "views/site/cc/rule-add.html",
         "refreshCcRulelistAddI18n(true)",
         "CC rulelist AJAX/prefill refresh langOnly",
