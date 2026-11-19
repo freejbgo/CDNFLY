@@ -97,8 +97,8 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `site/site/index.html` | P1 | STATIC, M2 | `refreshSiteListOpenLayers` + CNAME prompt (#329, tar #355) |
-| `site/site/edit.html` | P1 | DYNAMIC, STATIC | `rememberSiteEditPopupTitle` + nested partial refresh on lang |
+| `site/site/index.html` | P1 | STATIC, M2 | `reloadSiteListPageI18n` + `refreshSiteListOpenLayers` (#329, tar #355/#360) |
+| `site/site/edit.html` | P1 | DYNAMIC, STATIC | `refreshSiteEditOpenLayers` + `rememberSiteEditPopupTitle` (tar #360) |
 | `site/site/addform.html` | P2 | POPUP, STATIC | New site |
 | `site/site/update_form.html` | P1 | POPUP, STATIC, M2 | Nested layer titles on `veikor:lang` (#317) |
 | `site/site/unlock-ip.html` | P2 | POPUP, M2 | `window.refreshSiteUnlockIpI18n`; title via `site/index` open layers |
@@ -165,8 +165,8 @@ Mirror site where paths exist:
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `stream/stream/index.html` | P1 | STATIC, M2 | `refreshStreamListOpenLayers` + CNAME prompt (#329, tar #355) |
-| `stream/stream/edit.html` | P1 | DYNAMIC, STATIC | Meta replay (#242) |
+| `stream/stream/index.html` | P1 | STATIC, M2 | `reloadStreamListPageI18n` + `refreshStreamListOpenLayers` (#329, tar #355/#360) |
+| `stream/stream/edit.html` | P1 | DYNAMIC, STATIC | `refreshStreamEditOpenLayers` (tar #360); meta replay (#242) |
 | `stream/stream/addform.html` | P2 | POPUP | `refreshStreamAddFormI18n`; title via list `refreshStreamListOpenLayers` |
 | `stream/stream/update_form.html` | P2 | POPUP | Batch edit layer title on `veikor:lang` (#319) |
 | `stream/stream/update-state.html` | P4 | POPUP | **Out of scope** — admin skew |

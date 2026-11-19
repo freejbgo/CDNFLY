@@ -307,6 +307,26 @@ SPOTS = (
         "LAY-popup-message-detail-pane",
         "message detail popup static labels",
     ),
+    (
+        "views/site/site/index.html",
+        "reloadSiteListPageI18n",
+        "site list page lang reload",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "reloadStreamListPageI18n",
+        "stream list page lang reload",
+    ),
+    (
+        "views/site/site/edit.html",
+        "refreshSiteEditOpenLayers",
+        "site edit nested popup titles",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "refreshStreamEditOpenLayers",
+        "stream edit nested popup titles",
+    ),
 )
 
 
