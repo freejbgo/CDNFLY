@@ -732,6 +732,31 @@ SPOTS = (
         "refreshStreamAddFormI18n(true)",
         "stream add popup lang-only sync",
     ),
+    (
+        "views/site/cc/rulelist-add.html",
+        "refreshCcRulelistAddI18n(true)",
+        "CC rulelist add lang-only sync",
+    ),
+    (
+        "views/site/cc/matchlist-add.html",
+        "refreshCcMatchlistAddI18n(true)",
+        "CC matchlist add lang-only sync",
+    ),
+    (
+        "views/site/cc/filter-add.html",
+        "refreshCcFilterAddFormI18n(true)",
+        "CC filter add lang-only sync",
+    ),
+    (
+        "views/site/cert/dnsapi-add.html",
+        "refreshDnsApiAddFormI18n(true)",
+        "DNS API add lang-only sync",
+    ),
+    (
+        "views/site/group/addform.html",
+        "refreshSiteGroupAddFormI18n(true)",
+        "site group add lang-only sync",
+    ),
 )
 
 
