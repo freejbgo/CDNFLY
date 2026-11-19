@@ -2,7 +2,7 @@
 
 Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel under `.veikor-build/.../panel/src`, then `sync-panel-to-master-tar.sh` + `verify-packages.sh`.
 
-**Batch delivered (checklist slices 2–6, single PR):** global `applyLayerPopupI18n`, `refreshSwitchLayTextIn`, Layui tab title keys (`bindLayuiTabTitleFromBody` / `applyLayuiTabTitlesI18n`), expanded `API_MSG_BY_SOURCE`, stream monitor realtime chrome, pay return `panel-lang` storage listener, balance preorder `notifyResMsg` on fail. **Remaining:** per-page static key gaps, unmapped API phrases from production, backend-authored content (out of scope).
+**Batch delivered (slices through 2026-11-19, PR #298–#304):** U2B scope; P0 `acllist-add` dynamic lang; `up_down` / `/jobs` alive guards; `siteRefresh` lang scope; cache edit popup title; `API_MSG` samples; CI rule for `/jobs` done + `*Alive()`. Plus earlier: `applyLayerPopupI18n`, tab title i18n, monitor chrome, pay return `panel-lang` storage. **Remaining:** production-only `res.msg` samples (P3), P4 polish, backend-authored API text (out of scope).
 
 **Legend**
 
@@ -132,7 +132,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 |------|---|-------|-------|
 | `site/acl/index.html` | P1 | STATIC | |
 | `site/acl/acl-add.html` | P2 | POPUP | |
-| `site/acl/acllist-add.html` | P0 | POPUP, DYNAMIC | **`#matchers`** + `data-i18n` — lang switch risk |
+| `site/acl/acllist-add.html` | P0 | POPUP, DYNAMIC | **Done #299** — `#matchers` lang replay |
 | `site/cc/rule.html` | P1 | STATIC | |
 | `site/cc/rule-add.html` | P2 | POPUP | |
 | `site/cc/rulelist-add.html` | P2 | POPUP | Switch `lay-text` |
