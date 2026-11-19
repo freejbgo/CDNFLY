@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `1d62d6f`（含 **#298–#374**）  
+**主线：** `main` @ `b7ae701`（含 **#298–#375**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -128,10 +128,11 @@
 ## 5. 接手命令速查
 
 ```bash
-cd /agent/repos/CDNFLY
+cd /workspace   # 或本机 CDNFLY 根目录
 python3 scripts/audit-panel-customer-i18n.py
-bash scripts/sync-panel-to-master-tar.sh
-bash scripts/verify-packages.sh
+python3 scripts/audit-panel-tar-i18n-spot.py
+bash scripts/sync-panel-to-master-tar.sh   # panel 改动后
+bash scripts/verify-packages.sh          # 发版前（需 php 时 deep audit 才全绿）
 ```
 
 客户视图 `$('#LAY_app_body` 回归：
@@ -147,7 +148,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 
 | 断言 | 核证方式 | 结论 |
 |------|----------|------|
-| #298 已合并 | `git log -1 main` → `248562b` | ✓ |
+| 主线含 #298–#375 | `git rev-parse --short main` → 与报告表头 SHA 一致 | ✓ |
 | U2B jQuery 全局选择器为 0 | Python 扫描客户 views | ✓ |
 | 客户 i18n 审计 ok | `audit-panel-customer-i18n.py` | ✓ |
 | layer 硬编码中文（客户） | Python `LAYER_CJK` 扫描 | ✓ 0 处 |
@@ -233,6 +234,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #373 | 交接报告主线 SHA |
 | #374 | P3 接手说明 + 切片 1–5 收口标注 |
 | #375 | 交接报告主线 SHA |
+| #376 | 接手命令 + 自核表头更新 |
 
 ---
 
