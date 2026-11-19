@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `c54e6aa`（含 **#298–#368**）  
+**主线：** `main` @ `62f7df3`（含 **#298–#369**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -43,6 +43,8 @@
 
 **源码编辑路径：** `.veikor-build/cdnfly-master-v5.1.13/master/panel/src/`（gitignore）→ `scripts/sync-panel-to-master-tar.sh` → 仅提交 `cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz`。
 
+**Tar 回归地标（#321 起）：** `scripts/audit-panel-tar-i18n-spot.py` 当前 **78** 条 needle（客户页 `reload*` / `window.refresh*` / 关键 open layer）；与 `audit-panel-customer-i18n.py` 一并由 `scripts/verify-packages.sh` 在发版前执行。
+
 **分支命名：** `cursor/panel-u2b-<topic>-8f9f` 或 checklist 中的 P1/P2 切片名。
 
 ---
@@ -55,7 +57,7 @@
 
 | 工作 | 说明 |
 |------|------|
-| `site/acl/acllist-add.html` `#matchers` | 动态 DOM + `data-i18n` 同宿主，**语言切换有清空风险**（checklist 标注） |
+| `site/acl/acllist-add.html` `#matchers` | **Done #299 / #358** — 动态 replay + `window.refreshAclListAddPopupsI18n` |
 | `form.render(null)` + `veikor:lang` | 审计当前客户页为 **0**；新 PR 勿引入；可做 CI 硬化 |
 | `id` + `data-i18n` 同标签 | `audit-panel-customer-i18n.py` 已检；新页用 `data-veikor-dynamic` |
 
@@ -221,6 +223,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #367 | 交接报告主线 SHA |
 | #368 | account API / dnsapi / monitor realtime tar spot |
 | #369 | 交接报告主线 SHA |
+| #370 | tar spot 覆盖摘要 + P0 acllist 状态更新 |
 
 ---
 
