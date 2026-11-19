@@ -100,7 +100,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/site/index.html` | P1 | STATIC, M2 | List, batch actions, certs/cache/unlock |
 | `site/site/edit.html` | P1 | DYNAMIC, STATIC | Meta header replay (#242); `lay-text` switches via `refreshSiteEditSwitchLayText`; geo `title` on lang |
 | `site/site/addform.html` | P2 | POPUP, STATIC | New site |
-| `site/site/update_form.html` | P1 | POPUP, STATIC, M2 | Main customer batch editor |
+| `site/site/update_form.html` | P1 | POPUP, STATIC, M2 | Nested layer titles on `veikor:lang` (#317) |
 | `site/site/unlock-ip.html` | P2 | POPUP, M2 | |
 | `site/site/update-state.html` | P4 | POPUP | Mostly `show_all` admin toolbar |
 | `site/site/update-cname-mode.html` | P4 | POPUP | Admin toolbar |
