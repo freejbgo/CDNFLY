@@ -149,7 +149,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `site/monitor/realtime.html` | P1 | STATIC, CHART | Pair with `stream/monitor/realtime.html` |
+| `site/monitor/realtime.html` | P1 | STATIC, CHART | Delegates `refreshSiteMonitorChartsI18n` on lang (#341) |
 | `site/monitor/usage.html` | P1 | STATIC, CHART | |
 | `site/monitor/top-res.html` | P1 | STATIC, CHART | |
 | `site/monitor/domain-rank.html` | P2 | STATIC, CHART | |
@@ -176,7 +176,7 @@ Mirror site where paths exist:
 | `stream/stream/acl-add.html` | P2 | POPUP | Content i18n; acl layer title via `stream/edit.html` |
 | `stream/group/index.html` | P2 | STATIC | |
 | `stream/group/addform.html` | P2 | POPUP | `refreshStreamGroupAddFormI18n` + `stream/group/index.html` layer title |
-| `stream/monitor/realtime.html` | P1 | CHART | |
+| `stream/monitor/realtime.html` | P1 | CHART | Delegates `refreshStreamMonitorChartsI18n` on lang (#341) |
 | `stream/monitor/usage.html` | P1 | CHART | Delegates `refreshStreamUsageSeniorI18n` on lang (#339) |
 | `stream/monitor/top-res.html` | P1 | CHART | |
 

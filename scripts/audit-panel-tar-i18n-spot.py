@@ -88,6 +88,16 @@ SPOTS = (
         "package my list delegates detail/renew i18n",
     ),
     (
+        "views/site/monitor/realtime.html",
+        "refreshSiteMonitorChartsI18n",
+        "site realtime chart refresh delegate",
+    ),
+    (
+        "views/stream/monitor/realtime.html",
+        "refreshStreamMonitorChartsI18n",
+        "stream realtime chart refresh delegate",
+    ),
+    (
         "views/site/monitor/usage.html",
         "refreshSiteUsageSeniorI18n",
         "site usage chart refresh delegate",
