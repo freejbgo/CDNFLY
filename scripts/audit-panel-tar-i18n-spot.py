@@ -692,6 +692,21 @@ SPOTS = (
         "refreshPackageBuyDurationPopupI18n(true)",
         "package buy duration popup lang-only sync",
     ),
+    (
+        "views/site/monitor/usage.html",
+        "renderSiteUsageUsers(true)",
+        "site monitor usage AJAX user filter lang sync",
+    ),
+    (
+        "views/stream/monitor/usage.html",
+        "renderStreamUsageUsers(true)",
+        "stream monitor usage AJAX user filter lang sync",
+    ),
+    (
+        "views/site/acl/acl-add.html",
+        "refreshAclAddFormI18n(true)",
+        "ACL add popup lang-only radio chrome",
+    ),
 )
 
 
