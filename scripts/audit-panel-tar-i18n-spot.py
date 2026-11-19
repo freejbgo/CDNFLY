@@ -618,6 +618,21 @@ SPOTS = (
         "site edit nested open-layer guard",
     ),
     (
+        "views/site/cert/cert.html",
+        "LAY-popup-set-cert-type') && window.refreshCertUpdateTypeI18n",
+        "cert list batch-type open-layer guard",
+    ),
+    (
+        "views/site/site/update_form.html",
+        "LAY-popup-cache-add') && window.refreshSiteCacheFormI18n",
+        "site batch update nested open-layer guard",
+    ),
+    (
+        "views/package/my/index.html",
+        "LAY-popup-package-renew') && window.refreshPackageRenewPopupI18n",
+        "package my renew open-layer guard",
+    ),
+    (
         "views/site/cc/rule-add.html",
         "refreshCcRulelistAddI18n(true)",
         "CC rulelist AJAX/prefill refresh langOnly",
