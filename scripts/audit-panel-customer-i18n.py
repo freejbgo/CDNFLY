@@ -35,6 +35,7 @@ CUSTOMER_CONTROLLERS = (
 
 SCOPED_LANG = re.compile(r"\$\(document\)\.on\('veikor:lang\.([^']+)'")
 GLOBAL_LANG = re.compile(r"\$\(document\)\.on\('veikor:lang'")
+BARE_LANG_LISTENER = re.compile(r"\$\(document\)\.on\('veikor:lang'(?!\.)\s*,")
 FORM_RENDER_NULL = re.compile(r"form\.render\s*\(\s*null")
 FORM_RENDER_BARE = re.compile(r"form\.render\s*\(\s*\)")
 LANG_HANDLER = re.compile(r"\$\(document\)\.on\('veikor:lang")
@@ -215,6 +216,7 @@ def main() -> int:
     bad_res_msg: list[str] = []
     bad_dynamic: list[str] = []
     bad_jobs_done: list[str] = []
+    bad_bare_lang: list[str] = []
     form_render_null_advisory: list[str] = []
     form_render_bare_advisory: list[str] = []
     bad_i18n_js = _audit_veikor_i18n_js()
@@ -228,6 +230,8 @@ def main() -> int:
             if not _is_customer_view(rel):
                 continue
             text = open(path, encoding="utf-8", errors="replace").read()
+            if BARE_LANG_LISTENER.search(text):
+                bad_bare_lang.append(rel)
             if _missing_global_lang(text):
                 bad_lang.append(rel)
             if LANG_HANDLER.search(text) and FORM_RENDER_NULL.search(text):
@@ -246,10 +250,20 @@ def main() -> int:
         if not os.path.isfile(path):
             continue
         text = open(path, encoding="utf-8", errors="replace").read()
+        if BARE_LANG_LISTENER.search(text):
+            bad_bare_lang.append(os.path.join("controller", fn))
         if _missing_global_lang(text):
             bad_lang.append(os.path.join("controller", fn))
 
     bad_api = _audit_api_msg_map()
+
+    if bad_bare_lang:
+        print(
+            "customer views/controllers must not use bare veikor:lang listeners:",
+            file=sys.stderr,
+        )
+        for rel in sorted(bad_bare_lang):
+            print(" ", rel, file=sys.stderr)
 
     if bad_lang:
         print(
@@ -303,7 +317,8 @@ def main() -> int:
             print(" ", line, file=sys.stderr)
 
     if (
-        bad_lang
+        bad_bare_lang
+        or bad_lang
         or bad_layer
         or bad_res_msg
         or bad_api

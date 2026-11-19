@@ -573,6 +573,11 @@ SPOTS = (
         "CC rule page scoped lang only",
     ),
     (
+        "views/site/cc/rule.html",
+        "LAY-popup-rulelist-edit')) && window.refreshCcRulelistAddI18n",
+        "CC rule open layer rulelist guard",
+    ),
+    (
         "views/site/site/edit.html",
         "$(document).on('veikor:lang.siteList', refreshSiteEditI18n);",
         "site edit scoped lang only",
