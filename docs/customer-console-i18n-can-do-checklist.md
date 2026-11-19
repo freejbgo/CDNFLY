@@ -168,7 +168,7 @@ Mirror site where paths exist:
 | `stream/stream/index.html` | P1 | STATIC, M2 | |
 | `stream/stream/edit.html` | P1 | DYNAMIC, STATIC | Meta replay (#242) |
 | `stream/stream/addform.html` | P2 | POPUP | |
-| `stream/stream/update_form.html` | P2 | POPUP | |
+| `stream/stream/update_form.html` | P2 | POPUP | Batch edit layer title on `veikor:lang` (#319) |
 | `stream/stream/update-state.html` | P4 | POPUP | Admin skew |
 | `stream/stream/update-cname-mode.html` | P4 | POPUP | |
 | `stream/stream/update-node-group.html` | P4 | POPUP | |
