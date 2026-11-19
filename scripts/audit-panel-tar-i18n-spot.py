@@ -364,13 +364,23 @@ SPOTS = (
     ),
     (
         "views/site/site/update_form.html",
+        "window.refreshSiteUpdatePopupFormLangSkins",
+        "site batch update lang form skins export",
+    ),
+    (
+        "views/site/site/index.html",
         "refreshSiteUpdatePopupFormLangSkins",
-        "site batch update lang form skins",
+        "site batch update AJAX select sync after render",
     ),
     (
         "views/stream/stream/update_form.html",
+        "window.refreshStreamUpdatePopupFormLangSkins",
+        "stream batch update lang form skins export",
+    ),
+    (
+        "views/stream/stream/index.html",
         "refreshStreamUpdatePopupFormLangSkins",
-        "stream batch update lang form skins",
+        "stream batch update AJAX select sync after render",
     ),
     (
         "views/site/site/edit.html",
