@@ -413,6 +413,21 @@ SPOTS = (
         "cert list search scoped first render",
     ),
     (
+        "views/site/cert/cert.html",
+        "veikorRenderFormControlSkins(flt, $form)",
+        "cert list lang skins use control skins",
+    ),
+    (
+        "views/site/cc/filter-add.html",
+        "refreshCcFilterAddFormI18n();",
+        "CC filter add opens via refresh only",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "refreshCcFilterAddFormI18n();",
+        "CC filter edit prefill uses refresh helper",
+    ),
+    (
         "views/finance/recharge/index.html",
         "form.render('radio', 'finance-admin-recharge-form')",
         "finance recharge form control skins pattern",
@@ -493,14 +508,9 @@ SPOTS = (
         "CC rule page lang reload",
     ),
     (
-        "views/site/cc/rule.html",
-        "veikorSyncLayuiSelectTitles(filterPopRoot)",
-        "CC filter edit popup select sync after prefill",
-    ),
-    (
         "views/site/cc/rule-add.html",
-        "veikorSyncLayuiSelectTitles(root)",
-        "CC rulelist edit popup select sync after prefill",
+        "refreshCcRulelistAddI18n();",
+        "CC rulelist edit prefill uses refresh helper",
     ),
     (
         "views/site/acl/acl-add.html",
