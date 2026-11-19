@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+"""Spot-check committed panel tarball for customer i18n landmarks (tar must match releases)."""
+from __future__ import annotations
+
+import os
+import sys
+import tarfile
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TAR = os.path.join(ROOT, "cdnfly", "cdnfly-master-v5.1.13-centos-7.tar.gz")
+PREFIX = "cdnfly-master-v5.1.13/master/panel/src/"
+
+# (path under panel/src, substring that must appear)
+SPOTS = (
+    (
+        "views/package/my/index.html",
+        "refreshMyPackageOpenLayer('LAY-popup-package-detail'",
+        "package/my popup title refresh (#313)",
+    ),
+    (
+        "views/finance/balance/index.html",
+        "__veikorBalancePayTitleKey",
+        "balance pay QR popup title (#311)",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "refreshCcRuleOpenLayers",
+        "CC rule open popup titles (#315)",
+    ),
+    (
+        "views/site/site/update_form.html",
+        "refreshSiteUpdateNestedOpenLayers",
+        "site batch update nested popups (#317)",
+    ),
+    (
+        "views/stream/stream/update_form.html",
+        "veikorI18n.t('page.stream.stream.popup.updateForm')",
+        "stream batch update popup title (#319)",
+    ),
+    (
+        "views/site/site/edit.html",
+        "rememberSiteEditPopupTitle",
+        "site edit nested popup title map",
+    ),
+)
+
+
+def read_member(tf: tarfile.TarFile, rel: str) -> str | None:
+    name = PREFIX + rel
+    try:
+        member = tf.getmember(name)
+    except KeyError:
+        return None
+    if not member.isfile():
+        return None
+    return tf.extractfile(member).read().decode("utf-8", "replace")
+
+
+def main() -> int:
+    if not os.path.isfile(TAR):
+        print(f"audit-panel-tar-i18n-spot: missing {TAR}", file=sys.stderr)
+        return 1
+    bad: list[str] = []
+    with tarfile.open(TAR) as tf:
+        for rel, needle, label in SPOTS:
+            text = read_member(tf, rel)
+            if text is None:
+                bad.append(f"{rel}: not in tar ({label})")
+                continue
+            if needle not in text:
+                bad.append(f"{rel}: missing {needle!r} ({label})")
+    if bad:
+        print("audit-panel-tar-i18n-spot: failed", file=sys.stderr)
+        for line in bad:
+            print(" ", line, file=sys.stderr)
+        return 1
+    print("audit-panel-tar-i18n-spot: ok")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
