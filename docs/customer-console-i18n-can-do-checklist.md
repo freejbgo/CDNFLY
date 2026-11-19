@@ -71,7 +71,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `account/personal/index.html` | P1 | STATIC, DYNAMIC, M2 | Captcha radios/checkboxes `title`; `lastPersonalUser` replay on lang; `layer.prompt` titles (#331) |
+| `account/personal/index.html` | P1 | STATIC, DYNAMIC, M2 | Captcha radios/checkboxes `title`; `lastPersonalUser` replay; `layer.prompt` titles (#331); `reloadPersonalPageI18n` (tar #349) |
 | `account/config/api.html` | P2 | STATIC | `updateApiSwitchLayText` + `reloadAccountApiI18n` (tar #349) |
 | `account/sub/index.html` | P2 | STATIC | `reloadAccountSubI18n` (tar #347) |
 
@@ -174,7 +174,7 @@ Mirror site where paths exist:
 | `stream/stream/update-node-group.html` | P4 | POPUP | |
 | `stream/stream/backend_form.html` | P2 | POPUP | Content i18n; titles via `stream/edit.html` `refreshStreamEditOpenLayers` |
 | `stream/stream/acl-add.html` | P2 | POPUP | Content i18n; acl layer title via `stream/edit.html` |
-| `stream/group/index.html` | P2 | STATIC | |
+| `stream/group/index.html` | P2 | STATIC | `window.refreshStreamGroupI18n` (tar #350) |
 | `stream/group/addform.html` | P2 | POPUP | `refreshStreamGroupAddFormI18n` + `stream/group/index.html` layer title |
 | `stream/monitor/realtime.html` | P1 | CHART | Delegates `refreshStreamMonitorChartsI18n` on lang (#341) |
 | `stream/monitor/usage.html` | P1 | CHART | Delegates `refreshStreamUsageSeniorI18n` on lang (#339) |
