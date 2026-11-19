@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `afc1ae5`（面板末 commit；文档 squash `1635911`）；含 **#298–#384**  
+**主线：** `main` @ `afc1ae5`（面板末 commit；文档 squash `21f8d25`）；含 **#298–#385**  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -9,16 +9,16 @@
 
 ## 1. 本轮复核与合并结论
 
-### 2026-11-19 复核（#384 后）
+### 2026-11-19 复核（#385 后）
 
 | 项 | 结果 |
 |----|------|
-| `origin/main` | `1635911`（#384 文档）← `afc1ae5`（#383 面板） |
+| `origin/main` | `21f8d25`（#385 文档）← `afc1ae5`（#383 面板） |
 | 开放 PR | **0** |
 | `audit-panel-customer-i18n.py` | **ok** |
 | `audit-panel-tar-i18n-spot.py` | **ok**（78 needles） |
 | `audit-panel-deep.py` | **0 issues** |
-| **合并** | 无待合并项；**#384** 已入主 |
+| **合并** | 无待合并面板项；**#385** 已入主 |
 | **下一开发** | **P3** — 须提供真实 `res.msg` 样本后扩 `API_MSG_BY_SOURCE`（禁止臆造） |
 
 ### PR #298（U2B 作用域扫尾）
@@ -255,6 +255,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #382 | 交接报告主线 SHA |
 | #383 | package detail 切换语言时重算剩余额度 |
 | #384 | 交接报告主线 SHA |
+| #385 | #384 后复核表 + checklist 收口至 #384 |
 
 ---
 
