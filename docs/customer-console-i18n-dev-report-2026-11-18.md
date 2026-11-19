@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `ba5da56`（含 **#298–#372**）  
+**主线：** `main` @ `b10343d`（含 **#298–#373**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -38,7 +38,7 @@
 | 客户页 `veikor:lang` 全局 + 作用域事件 | 主流程页已覆盖；审计无 regression |
 | 客户页 `layer.*` 硬编码中文 | 客户视图盘点 **0** 处（`audit` 同类规则） |
 | `layer.msg(res.msg)` 未翻译 | 客户视图 **0** 处（须 `translateResMsg` / `notifyResMsg`） |
-| `API_MSG_BY_SOURCE` | **~332** 条（脚本下限 285）；未命中 API 文案仍回退简体 |
+| `API_MSG_BY_SOURCE` | **332** 条（`MIN_API_MSG_ENTRIES` 285）；未命中 API 文案仍回退简体 |
 | 管理端 `node/*`、`config/*`、`package/sold` 等 | **明确不做** 三语 |
 
 **源码编辑路径：** `.veikor-build/cdnfly-master-v5.1.13/master/panel/src/`（gitignore）→ `scripts/sync-panel-to-master-tar.sh` → 仅提交 `cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz`。
@@ -92,6 +92,13 @@
 | `notifyResMsg` 扫尾 | 新接口失败路径接入 |
 | `lib/veikor-i18n.js` — `MENU`/`TITLE` | 自定义菜单、新面包屑 cite |
 
+**P3 操作约束（禁止臆造文案）：**
+
+1. 在客户会话复现未翻译 toast → 记录原始 `res.msg` 与 URL/`view.req` 来源。
+2. 在 `.veikor-build/.../lib/veikor-i18n.js` 的 `API_MSG_BY_SOURCE` 增加 **zh-CN / zh-TW / en** 同键（键为 API 原文）。
+3. `bash scripts/sync-panel-to-master-tar.sh` → 仅提交 `cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz`。
+4. 跑 `audit-panel-customer-i18n.py`（条数 ≥285，三语齐全）。
+
 ### P4 — 抛光
 
 | 项 | 说明 |
@@ -112,12 +119,9 @@
 
 ## 4. 建议的下一批 PR 切片（来自 checklist §Suggested PR slices）
 
-1. **P0** — `acllist-add` dynamic + `veikorRenderFormSkins` 规范  
-2. **P1** — finance + home + package my/buy 的 M2 样本  
-3. **P1** — site/stream list + edit 剩余开关/placeholder  
-4. **P1** — monitors + 四个 `*-senior.js` 图表文案  
-5. **P2** — addform / `update_form` / cert|acl|cc 弹窗批量  
-6. **P3** — 仅改 `veikor-i18n.js` 与跨页 `notifyResMsg`
+**已交付：** 切片 **1–5** 对应 **#298–#371**（含 tar spot 与 partial export 修复）。**开放：**
+
+6. **P3** — 仅改 `veikor-i18n.js`（+ 必要时 `notifyResMsg` 接线）；每条映射需真实 `res.msg` 样本
 
 ---
 
@@ -227,6 +231,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #371 | 交接报告主线 SHA |
 | #372 | checklist / 结论段落同步 #349–#371 |
 | #373 | 交接报告主线 SHA |
+| #374 | P3 接手说明 + 切片 1–5 收口标注 |
 
 ---
 
