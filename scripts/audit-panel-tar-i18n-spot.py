@@ -293,6 +293,21 @@ SPOTS = (
         "site group add popup partial i18n",
     ),
     (
+        "views/site/group/index.html",
+        "refreshSiteGroupAddFormI18n",
+        "site group popup without full skins on open",
+    ),
+    (
+        "views/stream/group/index.html",
+        "refreshStreamGroupAddFormI18n",
+        "stream group popup without full skins on open",
+    ),
+    (
+        "views/site/site/update_form.html",
+        "refreshSiteCacheFormI18n",
+        "batch update cache edit popup sync after prefill",
+    ),
+    (
         "views/site/cert/addform.html",
         "window.refreshCertAddFormI18n",
         "cert add popup partial i18n",
