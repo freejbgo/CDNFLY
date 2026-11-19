@@ -398,9 +398,29 @@ SPOTS = (
         "stream list search lang sync selects",
     ),
     (
+        "views/stream/stream/index.html",
+        "form.render('select', 'stream-list-search')",
+        "stream list search scoped first render",
+    ),
+    (
         "views/site/cert/cert.html",
         "veikorSyncLayuiSelectTitles",
         "cert list search lang sync selects",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "form.render('select', 'cert-list-search')",
+        "cert list search scoped first render",
+    ),
+    (
+        "views/finance/recharge/index.html",
+        "form.render('radio', 'finance-admin-recharge-form')",
+        "finance recharge form control skins pattern",
+    ),
+    (
+        "views/site/site/index.html",
+        "refreshSiteUpdatePopupFormLangSkins();\n                    }",
+        "site batch update render uses refresh only",
     ),
     (
         "views/site/site/edit.html",
