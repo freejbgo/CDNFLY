@@ -2,7 +2,7 @@
 
 Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel under `.veikor-build/.../panel/src`, then `sync-panel-to-master-tar.sh` + `verify-packages.sh`.
 
-**Batch delivered (through 2026-11-19, PR #298–#384):** U2B + alive guards (#298–#306); nested popup titles (#307–#323); finance/package/monitor (#325–#347); **78** tar i18n spots + partial export fixes `up_down` / `acl-add` / `acllist-add` (#349–#370); handoff doc (#371–#374); `site/refresh` lang scope (#381); package detail remain cells (#383). **Remaining:** P3 production `res.msg` → `API_MSG_BY_SOURCE`（见 dev report §P3 操作约束，禁止臆造）；P4 admin popups (out of scope); API-authored titles (out of scope).
+**Batch delivered (through 2026-11-19, PR #298–#385):** U2B + alive guards (#298–#306); nested popup titles (#307–#323); finance/package/monitor (#325–#347); **78** tar i18n spots + partial export fixes `up_down` / `acl-add` / `acllist-add` (#349–#370); handoff doc (#371–#374); `site/refresh` lang scope (#381); package detail remain cells (#383). **Remaining:** P3 production `res.msg` → `API_MSG_BY_SOURCE`（见 dev report §P3 操作约束，禁止臆造）；P4 admin popups (out of scope); API-authored titles (out of scope).
 
 **Legend**
 
@@ -36,7 +36,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | Item | P | Types | Notes |
 |------|---|-------|-------|
-| `lib/veikor-i18n.js` — `API_MSG_BY_SOURCE` | P3 | M2 | ~42 entries; grow from prod/test `res.msg` samples |
+| `lib/veikor-i18n.js` — `API_MSG_BY_SOURCE` | P3 | M2 | **332** entries（`MIN_API_MSG_ENTRIES` 285）；新条仅从生产/测试 `res.msg` 样本追加 |
 | `lib/veikor-i18n.js` — `MENU` / `TITLE` | P2 | STATIC | Custom menu rows; new breadcrumb cite strings |
 | `lib/veikor-i18n.js` — `applyDataI18n` + `data-veikor-dynamic` | P0 | DYNAMIC | Documented; extend CI to ban risky patterns |
 | `lib/view.js` — customer `reqErrorHtml` | — | Done | Keep mapping table in sync with M2 |
