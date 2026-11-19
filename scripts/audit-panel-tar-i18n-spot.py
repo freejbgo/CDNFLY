@@ -327,6 +327,26 @@ SPOTS = (
         "refreshStreamEditOpenLayers",
         "stream edit nested popup titles",
     ),
+    (
+        "views/finance/balance/index.html",
+        "reloadBalancePageI18n",
+        "finance balance page lang reload",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "reloadCcRulePageI18n",
+        "CC rule page lang reload",
+    ),
+    (
+        "views/package/buy/index.html",
+        "reloadBuyPackageI18n",
+        "package buy page lang reload",
+    ),
+    (
+        "views/user_home.html",
+        "reloadUserHomeI18n",
+        "user home overview lang reload",
+    ),
 )
 
 
