@@ -554,8 +554,23 @@ SPOTS = (
     ),
     (
         "views/stream/stream/edit.html",
-        "refreshStreamAclAddFormI18n",
-        "stream edit ACL rule popup refresh after prefill",
+        "refreshStreamAclAddFormI18n(true)",
+        "stream edit ACL rule edit prefill langOnly",
+    ),
+    (
+        "views/site/site/url_ratelimit_form.html",
+        "refreshUrlRateLimitFormI18n(true)",
+        "URL rate-limit sendParams and match select langOnly",
+    ),
+    (
+        "views/site/site/edit.html",
+        "refreshUrlRateLimitFormI18n(true)",
+        "site edit URL rate-limit state prefill langOnly",
+    ),
+    (
+        "views/site/group/index.html",
+        "refreshSiteGroupAddFormI18n(true)",
+        "site group edit popup langOnly after prefill",
     ),
     (
         "views/site/cert/addform.html",
