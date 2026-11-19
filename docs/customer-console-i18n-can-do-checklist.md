@@ -84,7 +84,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `package/buy/index.html` | P1 | STATIC, M2 | `notifyResMsg` on purchase fail |
 | `package/buy/duration.html` | P2 | POPUP, STATIC | Duration picker layer |
 | `package/my/index.html` | P1 | STATIC | My plans list |
-| `package/my/detail.html` | P2 | POPUP | Usage cells have no `data-i18n` (OK); `refreshDetailI18n` on `veikor:lang` — polish only |
+| `package/my/detail.html` | P2 | POPUP | `refreshDetailI18n` + parent refreshes layer title on lang (#309) |
 | `package/my/renew.html` | P2 | POPUP, STATIC | |
 | `package/my/buy-upgrade.html` | P2 | POPUP, STATIC | |
 | `package/my/up_down.html` | P3 | POPUP, STATIC | |
