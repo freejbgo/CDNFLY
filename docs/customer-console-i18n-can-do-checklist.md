@@ -2,7 +2,7 @@
 
 Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel under `.veikor-build/.../panel/src`, then `sync-panel-to-master-tar.sh` + `verify-packages.sh`.
 
-**Batch delivered (through 2026-11-19, PR #298–#387):** U2B + alive guards (#298–#306); nested popup titles (#307–#323); finance/package/monitor (#325–#347); **78** tar i18n spots + partial export fixes `up_down` / `acl-add` / `acllist-add` (#349–#370); handoff doc (#371–#374); `site/refresh` lang scope (#381); package detail remain cells (#383); list lang scoped form render (#387). **Remaining:** P3 production `res.msg` → `API_MSG_BY_SOURCE`（见 dev report §P3 操作约束，禁止臆造）；P4 admin popups (out of scope); API-authored titles (out of scope).
+**Batch delivered (through 2026-11-19, PR #298–#388):** U2B + alive guards (#298–#306); nested popup titles (#307–#323); finance/package/monitor (#325–#347); **78** tar i18n spots + partial export fixes `up_down` / `acl-add` / `acllist-add` (#349–#370); handoff doc (#371–#374); `site/refresh` lang scope (#381); package detail remain cells (#383); list lang scoped form render (#387). **Remaining:** P3 production `res.msg` → `API_MSG_BY_SOURCE`（见 dev report §P3 操作约束，禁止臆造）；P4 admin popups (out of scope); API-authored titles (out of scope).
 
 **Legend**
 

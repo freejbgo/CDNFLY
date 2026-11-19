@@ -1,13 +1,25 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `8c7eeca`（含 **#298–#387**）  
+**主线：** `main` @ `bdede9b`（面板 @ `8c7eeca`）；含 **#298–#388**  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
 ---
 
 ## 1. 本轮复核与合并结论
+
+### 2026-11-19 复核（#388 后）
+
+| 项 | 结果 |
+|----|------|
+| `origin/main` | `bdede9b`（#388 文档）← `8c7eeca`（#387 面板） |
+| 开放 PR | **0** |
+| `audit-panel-customer-i18n.py` | **ok** |
+| `audit-panel-tar-i18n-spot.py` | **ok**（78 needles） |
+| `audit-panel-deep.py` | **0 issues** |
+| **合并** | 无待合并项；**#388** 已入主 |
+| **下一开发** | **P3** — 真实 `res.msg` 样本 → `API_MSG_BY_SOURCE` |
 
 ### 2026-11-19 复核（#387 后）
 
@@ -282,6 +294,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #385 | #384 后复核表 + checklist 收口至 #384 |
 | #386 | checklist `API_MSG` 条数修正 + #385 后复核 |
 | #387 | 网站/转发/证书列表 lang 刷新 scoped form render；审计拒绝无参 `form.render()` |
+| #388 | 交接报告 main @ 8c7eeca（#387 closeout） |
 
 ---
 
