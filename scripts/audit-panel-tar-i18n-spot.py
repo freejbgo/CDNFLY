@@ -489,8 +489,8 @@ SPOTS = (
     ),
     (
         "views/site/site/edit.html",
-        "veikorSyncLayuiSelectTitles(popRoot)",
-        "site edit nested popup select sync after prefill",
+        "refreshSiteUrlRewriteFormI18n(true)",
+        "site edit url-rewrite code prefill langOnly",
     ),
     (
         "views/site/site/edit.html",
@@ -566,6 +566,16 @@ SPOTS = (
         "views/site/site/edit.html",
         "refreshUrlRateLimitFormI18n(true)",
         "site edit URL rate-limit state prefill langOnly",
+    ),
+    (
+        "views/site/site/edit.html",
+        "refreshSiteBackendFormI18n(true)",
+        "site edit backend state prefill langOnly",
+    ),
+    (
+        "views/site/cert/dnsapi.html",
+        "refreshDnsApiAddFormI18n(true)",
+        "DNS API open layer and edit prefill langOnly",
     ),
     (
         "views/site/group/index.html",
