@@ -218,6 +218,16 @@ SPOTS = (
         "site ACL list popup titles",
     ),
     (
+        "views/site/acl/index.html",
+        "reloadAclListI18n",
+        "site ACL list page i18n",
+    ),
+    (
+        "views/site/acl/acl-add.html",
+        "window.refreshAclAddFormI18n",
+        "site ACL add popup partial hook (#357)",
+    ),
+    (
         "views/site/refresh/index.html",
         "refreshSiteRefreshI18n",
         "site cache refresh page",
