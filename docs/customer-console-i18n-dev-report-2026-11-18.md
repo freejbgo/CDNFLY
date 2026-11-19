@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `3b055a9`（含 **#298–#304**）  
+**主线：** `main` @ `ece837a`（含 **#298–#305**；进行中 **#306** P3 API 样本）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -38,7 +38,7 @@
 | 客户页 `veikor:lang` 全局 + 作用域事件 | 主流程页已覆盖；审计无 regression |
 | 客户页 `layer.*` 硬编码中文 | 客户视图盘点 **0** 处（`audit` 同类规则） |
 | `layer.msg(res.msg)` 未翻译 | 客户视图 **0** 处（须 `translateResMsg` / `notifyResMsg`） |
-| `API_MSG_BY_SOURCE` | **~326** 条（脚本下限 285）；未命中 API 文案仍回退简体 |
+| `API_MSG_BY_SOURCE` | **~332** 条（脚本下限 285）；未命中 API 文案仍回退简体 |
 | 管理端 `node/*`、`config/*`、`package/sold` 等 | **明确不做** 三语 |
 
 **源码编辑路径：** `.veikor-build/cdnfly-master-v5.1.13/master/panel/src/`（gitignore）→ `scripts/sync-panel-to-master-tar.sh` → 仅提交 `cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz`。
@@ -148,7 +148,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | 剩余工作以 checklist P0–P4 为准 | 与 `customer-console-i18n-can-do-checklist.md` 交叉 | ✓ 一致 |
 | 管理端未纳入剩余项 | `customer-console-i18n.md` scope | ✓ |
 
-**结论（2026-11-19 更新）：** U2B 已收口；**#299–#304** 已交付 P0–P3 扫尾（含 `acllist-add` 动态 lang、`up_down`/`jobs` alive、`siteRefresh` scope、缓存弹窗标题、`API_MSG` 样本、**`/jobs` done 回归审计**）。**客户静态/弹窗三语 + `audit-panel-customer-i18n.py` 已绿**；剩余主要为 **P3 生产 `res.msg` 增量映射**、P4 低流量页（如独立 `finance/balance/return.html` 仅靠 `panel-lang` storage），非 `#LAY_app_body` 清扫。
+**结论（2026-11-19 更新）：** U2B 已收口；**#299–#306** 已交付 P0–P4 增量（含 `acllist-add` 动态 lang、`up_down`/`jobs` alive、`siteRefresh` scope、缓存弹窗标题、`API_MSG` 样本、**`/jobs` done 回归审计**、缓存/URL 三条 API 映射、`return.html` `veikor:lang`）。**客户静态/弹窗三语 + `audit-panel-customer-i18n.py` 已绿**；剩余主要为 **P3 生产 `res.msg` 增量映射**、P4 Layui tab 标题等低流量抛光。
 
 | PR | 摘要 |
 |----|------|
@@ -158,6 +158,8 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #302 | refresh jobs `done` alive；3 条 `API_MSG_BY_SOURCE` |
 | #303 | site list / blackip `/jobs` 成功 toast alive |
 | #304 | `audit-panel-customer-i18n` 锁定 `/jobs` done `*Alive()` |
+| #305 | 交接报告 + checklist 同步 #298–#304 |
+| #306 | +3 `API_MSG`；`return.html` `veikor:lang` |
 
 ---
 
