@@ -253,6 +253,11 @@ SPOTS = (
         "site cache refresh page",
     ),
     (
+        "views/site/refresh/index.html",
+        "veikorSyncLayuiSelectTitles",
+        "site refresh op-log search lang sync",
+    ),
+    (
         "views/site/group/index.html",
         "window.refreshSiteGroupI18n",
         "site group list popups",
