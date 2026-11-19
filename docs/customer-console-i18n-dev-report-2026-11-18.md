@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `494f64d`（含 **#298–#370**）  
+**主线：** `main` @ `e29e51c`（含 **#298–#371**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -150,7 +150,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | 剩余工作以 checklist P0–P4 为准 | 与 `customer-console-i18n-can-do-checklist.md` 交叉 | ✓ 一致 |
 | 管理端未纳入剩余项 | `customer-console-i18n.md` scope | ✓ |
 
-**结论（2026-11-19 更新）：** U2B 已收口；**#299–#306** 已交付 P0–P4 增量（含 `acllist-add` 动态 lang、`up_down`/`jobs` alive、`siteRefresh` scope、缓存弹窗标题、`API_MSG` 样本、**`/jobs` done 回归审计**、缓存/URL 三条 API 映射、`return.html` `veikor:lang`）。**客户静态/弹窗三语 + `audit-panel-customer-i18n.py` 已绿**；剩余主要为 **P3 生产 `res.msg` 增量映射**、P4 Layui tab 标题等低流量抛光。
+**结论（2026-11-19 更新）：** U2B 已收口；**#299–#306** 已交付 P0–P4 增量（含 `acllist-add` 动态 lang、`up_down`/`jobs` alive、`siteRefresh` scope、缓存弹窗标题、`API_MSG` 样本、**`/jobs` done 回归审计**、缓存/URL 三条 API 映射、`return.html` `veikor:lang`）。**#307–#371** 主要是 tar spot（**78** 条）与 partial **`window.refresh*I18n`** 委托修复（`up_down` / `acl-add` / `acllist-add`）。**客户静态/弹窗三语 + 双审计已绿**；剩余主要为 **P3 生产 `res.msg` 增量映射**、P4 管理向弹窗等低流量项（checklist 已标 out-of-scope）。
 
 | PR | 摘要 |
 |----|------|
@@ -225,6 +225,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #369 | 交接报告主线 SHA |
 | #370 | tar spot 覆盖摘要 + P0 acllist 状态更新 |
 | #371 | 交接报告主线 SHA |
+| #372 | checklist / 结论段落同步 #349–#371 |
 
 ---
 
