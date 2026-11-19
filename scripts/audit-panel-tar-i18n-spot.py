@@ -157,6 +157,31 @@ SPOTS = (
         "window.refreshAccessLogI18n",
         "site monitor access log",
     ),
+    (
+        "views/site/monitor/top-res.html",
+        "window.refreshSiteTopResI18n",
+        "site monitor top resources",
+    ),
+    (
+        "views/stream/monitor/top-res.html",
+        "window.refreshStreamTopResI18n",
+        "stream monitor top resources",
+    ),
+    (
+        "views/site/cert/dnsapi.html",
+        "refreshDnsApiOpenLayer",
+        "cert dnsapi popup titles",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "refreshCertListOpenLayers",
+        "cert list open popup titles",
+    ),
+    (
+        "views/system/message/index.html",
+        "refreshMessageDetailOpenLayer",
+        "customer message detail popup",
+    ),
 )
 
 

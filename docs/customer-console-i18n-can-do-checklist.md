@@ -118,8 +118,8 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `site/cert/cert.html` | P1 | STATIC, M2 | |
-| `site/cert/dnsapi.html` | P2 | STATIC | |
+| `site/cert/cert.html` | P1 | STATIC, M2 | `refreshCertListOpenLayers` batch/popup titles (tar #345) |
+| `site/cert/dnsapi.html` | P2 | STATIC | `refreshDnsApiOpenLayer` + partial hook (tar #345) |
 | `site/cert/addform.html` | P2 | POPUP, STATIC | |
 | `site/cert/dnsapi-add.html` | P2 | POPUP, STATIC | DNS type names = brands (keep) |
 | `site/cert/update-cert-type.html` | P2 | POPUP | `refreshCertUpdateTypeI18n` + `cert.html` layer titles |
@@ -151,7 +151,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 |------|---|-------|-------|
 | `site/monitor/realtime.html` | P1 | STATIC, CHART | Delegates `refreshSiteMonitorChartsI18n` on lang (#341) |
 | `site/monitor/usage.html` | P1 | STATIC, CHART | |
-| `site/monitor/top-res.html` | P1 | STATIC, CHART | |
+| `site/monitor/top-res.html` | P1 | STATIC, CHART | `window.refreshSiteTopResI18n` (tar #345) |
 | `site/monitor/domain-rank.html` | P2 | STATIC, CHART | |
 | `site/monitor/attack-rank.html` | P2 | STATIC, CHART | Site-only |
 | `site/monitor/blackip.html` | P2 | STATIC | Tabs + `data-veikor-tab`; unlock-site `layer.prompt` title (#331) |
@@ -178,7 +178,7 @@ Mirror site where paths exist:
 | `stream/group/addform.html` | P2 | POPUP | `refreshStreamGroupAddFormI18n` + `stream/group/index.html` layer title |
 | `stream/monitor/realtime.html` | P1 | CHART | Delegates `refreshStreamMonitorChartsI18n` on lang (#341) |
 | `stream/monitor/usage.html` | P1 | CHART | Delegates `refreshStreamUsageSeniorI18n` on lang (#339) |
-| `stream/monitor/top-res.html` | P1 | CHART | |
+| `stream/monitor/top-res.html` | P1 | CHART | `window.refreshStreamTopResI18n` (tar #345) |
 
 ---
 

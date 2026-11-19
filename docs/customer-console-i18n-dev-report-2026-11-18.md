@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `25e6f9c`（含 **#298–#343**）  
+**主线：** `main` @ `0e2d9f4`（含 **#298–#344**；进行中 **#345**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -195,6 +195,8 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #341 | realtime 页图表委托 tar spot；checklist |
 | #342 | 交接报告主线 SHA |
 | #343 | 购买时长 partial 导出 hook；monitor/buy tar spot 扩展 |
+| #344 | 交接报告主线 SHA |
+| #345 | cert / top-res / 消息详情 tar spot 扩展 |
 
 ---
 
