@@ -114,6 +114,11 @@ SPOTS = (
     ),
     (
         "controller/site-usage-senior.js",
+        "veikorTableReloadI18nCols",
+        "site usage detail tables lang reload",
+    ),
+    (
+        "controller/site-usage-senior.js",
         "refreshSiteUsageSeniorI18n",
         "site usage charts i18n",
     ),
@@ -121,6 +126,11 @@ SPOTS = (
         "controller/stream_senior.js",
         "refreshStreamMonitorChartsI18n",
         "stream monitor realtime charts i18n",
+    ),
+    (
+        "controller/stream-usage-senior.js",
+        "veikorTableReloadI18nCols",
+        "stream usage detail tables lang reload",
     ),
     (
         "controller/stream-usage-senior.js",
