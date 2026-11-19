@@ -86,8 +86,8 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `package/my/index.html` | P1 | STATIC | Open layers + prompt; delegates detail/renew/up_down (#335) |
 | `package/my/detail.html` | P2 | POPUP | `window.refreshPackageDetailI18n` dynamic quota labels |
 | `package/my/renew.html` | P2 | POPUP, STATIC | `window.refreshPackageRenewPopupI18n` |
-| `package/my/buy-upgrade.html` | P2 | POPUP, STATIC | |
-| `package/my/up_down.html` | P3 | POPUP, STATIC | |
+| `package/my/buy-upgrade.html` | P2 | POPUP, STATIC | `window.refreshPackageBuyUpgradeI18n` title + body (#337) |
+| `package/my/up_down.html` | P2 | POPUP, STATIC | Nested buy-upgrade title (#325); delegates `refreshPackageBuyUpgradeI18n` |
 
 **Out of customer checklist:** `package/upgrade/*` (admin / doc excluded).
 

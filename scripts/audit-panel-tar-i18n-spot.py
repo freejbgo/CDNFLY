@@ -48,9 +48,9 @@ SPOTS = (
         "CC rule/match nested popup titles (#323)",
     ),
     (
-        "views/package/my/up_down.html",
-        "LAY-popup-package-buy-upgrade",
-        "package my buy-upgrade nested popup (#325)",
+        "views/package/my/buy-upgrade.html",
+        "window.refreshPackageBuyUpgradeI18n",
+        "package my buy-upgrade i18n hook (#337)",
     ),
     (
         "views/package/my/index.html",
