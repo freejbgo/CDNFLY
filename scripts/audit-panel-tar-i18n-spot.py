@@ -424,8 +424,13 @@ SPOTS = (
     ),
     (
         "views/site/cc/rule.html",
-        "refreshCcFilterAddFormI18n();",
-        "CC filter edit prefill uses refresh helper",
+        "refreshCcFilterAddFormI18n(true)",
+        "CC filter edit prefill langOnly refresh",
+    ),
+    (
+        "views/site/site/update_form.html",
+        "refreshSiteCacheFormI18n(true)",
+        "site batch update nested partials langOnly",
     ),
     (
         "views/finance/recharge/index.html",
