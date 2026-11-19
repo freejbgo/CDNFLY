@@ -59,8 +59,8 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 |------|---|-------|-------|
 | `finance/balance/index.html` | P1 | DYNAMIC, M2 | Balance + pay UI (#242); pay method `title` + `form.render` on lang |
 | `finance/balance/return.html` | P4 | STATIC, POPUP | `panel-lang` + **`veikor:lang`**; 3s redirect (#306) |
-| `finance/balance/alipay.html` | P2 | POPUP, STATIC | Pay layer fragment |
-| `finance/balance/weixin.html` | P2 | POPUP, STATIC | Pay QR layer fragment |
+| `finance/balance/alipay.html` | P2 | POPUP, STATIC | Parent refreshes layer title + body on lang (#311) |
+| `finance/balance/weixin.html` | P2 | POPUP, STATIC | Same as alipay fragment (#311) |
 | `finance/order/index.html` | P1 | STATIC, M2 | Enum **display** mapped; query params stay Chinese (by design) |
 | `finance/order/count.html` | P2 | STATIC | Stats / count widgets |
 | `finance/recharge/index.html` | P2 | M2 | Uses `notifyResMsg` pattern — extend for other fails |
