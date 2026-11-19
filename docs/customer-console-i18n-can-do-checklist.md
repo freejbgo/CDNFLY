@@ -141,7 +141,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/cc/filter-add.html` | P2 | POPUP | Content i18n; filter layer title via `rule.html` (#315) |
 | `site/group/index.html` | P2 | STATIC | `window.refreshSiteGroupI18n` (tar #349) |
 | `site/group/addform.html` | P2 | POPUP | `refreshSiteGroupAddFormI18n` + `site/group/index.html` layer title |
-| `site/refresh/index.html` | P2 | STATIC | `refreshSiteRefreshI18n` (tar #349) |
+| `site/refresh/index.html` | P2 | STATIC | `veikor:lang.siteRefresh` only (#381); tar #349 |
 
 ---
 

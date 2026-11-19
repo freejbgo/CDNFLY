@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `205cbea`（含 **#298–#379**）  
+**主线：** `main` @ `b47b821`（含 **#298–#380**；进行中 **#381**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -104,7 +104,7 @@
 | 项 | 说明 |
 |----|------|
 | Layui **Tab 标题** 随语言切换 | `index.js` / `applyLayuiTabTitlesI18n`（checklist） |
-| `site/refresh` 的 `veikor:lang.siteList` | 可改名为 refresh 专用 scope |
+| `site/refresh` 的 `veikor:lang.siteList` | **Done #381** — 仅 `siteRefresh` + 全局 `veikor:lang` |
 | `finance/balance/return.html` | 独立支付回跳页可选 lang 监听 |
 | `package/my/detail.html` | 数值格 dynamic 抛光 |
 
@@ -239,6 +239,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #378 | 交接报告主线 SHA（`37f23d7`） |
 | #379 | 交接报告主线 SHA |
 | #380 | 交接报告主线 SHA（`205cbea`） |
+| #381 | `site/refresh` 去掉 `veikor:lang.siteList` 监听 |
 
 ---
 
