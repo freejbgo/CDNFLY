@@ -1,13 +1,24 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `bdede9b`（面板 @ `8c7eeca`）；含 **#298–#388**  
+**主线：** `main` @ `0a5eb63`（面板 @ `8c7eeca`）；含 **#298–#389**  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
 ---
 
 ## 1. 本轮复核与合并结论
+
+### 2026-11-19 复核（#389 后）
+
+| 项 | 结果 |
+|----|------|
+| `origin/main` | `0a5eb63`（#389 文档）← `8c7eeca`（#387 面板） |
+| 开放 PR | **0** |
+| 双审计 + deep | **全绿** |
+| **合并** | 无待合并面板项 |
+| **M1** | **已签收**（#298–#387）；tar/`.veikor-build` 一致 |
+| **下一开发** | **P3** — 真实 `res.msg` → `API_MSG_BY_SOURCE` |
 
 ### 2026-11-19 复核（#388 后）
 
@@ -88,6 +99,7 @@
 | `layer.msg(res.msg)` 未翻译 | 客户视图 **0** 处（须 `translateResMsg` / `notifyResMsg`） |
 | `API_MSG_BY_SOURCE` | **332** 条（`MIN_API_MSG_ENTRIES` 285）；未命中 API 文案仍回退简体 |
 | 管理端 `node/*`、`config/*`、`package/sold` 等 | **明确不做** 三语 |
+| **M1 面板签收（2026-11-19）** | **#298–#387** 闭环（含 78 tar 针、P0 `form.render` 硬化）；**无面板 backlog** 直至 P3 样本到位 |
 
 **源码编辑路径：** `.veikor-build/cdnfly-master-v5.1.13/master/panel/src/`（gitignore）→ `scripts/sync-panel-to-master-tar.sh` → 仅提交 `cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz`。
 
@@ -295,6 +307,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #386 | checklist `API_MSG` 条数修正 + #385 后复核 |
 | #387 | 网站/转发/证书列表 lang 刷新 scoped form render；审计拒绝无参 `form.render()` |
 | #388 | 交接报告 main @ 8c7eeca（#387 closeout） |
+| #389 | 交接报告 main @ bdede9b（#388 closeout） |
 
 ---
 
