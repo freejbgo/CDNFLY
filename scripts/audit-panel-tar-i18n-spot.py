@@ -42,6 +42,11 @@ SPOTS = (
         "rememberSiteEditPopupTitle",
         "site edit nested popup title map",
     ),
+    (
+        "views/site/cc/rule-add.html",
+        "refreshCcRuleChildPopups",
+        "CC rule/match nested popup titles (#323)",
+    ),
 )
 
 

@@ -131,12 +131,12 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | File | P | Types | Notes |
 |------|---|-------|-------|
 | `site/acl/index.html` | P1 | STATIC | |
-| `site/acl/acl-add.html` | P2 | POPUP | |
+| `site/acl/acl-add.html` | P2 | POPUP | Nested `acllist` layer title on `veikor:lang` (#323) |
 | `site/acl/acllist-add.html` | P0 | POPUP, DYNAMIC | **Done #299** — `#matchers` lang replay |
 | `site/cc/rule.html` | P1 | STATIC | Open layer titles + nested partials on `veikor:lang` (#315) |
-| `site/cc/rule-add.html` | P2 | POPUP | |
+| `site/cc/rule-add.html` | P2 | POPUP | Nested rulelist/matchlist layer titles (#323) |
 | `site/cc/rulelist-add.html` | P2 | POPUP | Switch `lay-text` |
-| `site/cc/match-add.html` | P2 | POPUP | |
+| `site/cc/match-add.html` | P2 | POPUP | Nested matchlist layer titles (#323) |
 | `site/cc/matchlist-add.html` | P2 | POPUP | |
 | `site/cc/filter-add.html` | P2 | POPUP | |
 | `site/group/index.html` | P2 | STATIC | |
