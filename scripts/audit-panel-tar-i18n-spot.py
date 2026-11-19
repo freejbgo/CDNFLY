@@ -279,8 +279,23 @@ SPOTS = (
     ),
     (
         "views/site/cert/update-cert-type.html",
-        "refreshCertUpdateTypeI18n()",
-        "cert batch type popup refresh after DNS AJAX",
+        "refreshCertUpdateTypeI18n(true)",
+        "cert batch type popup langOnly after DNS AJAX",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "refreshCertUpdateTypeI18n(true)",
+        "cert list open layers batch type langOnly",
+    ),
+    (
+        "views/site/group/index.html",
+        "refreshSiteGroupAddFormI18n(true)",
+        "site group list open layer langOnly",
+    ),
+    (
+        "views/package/buy/index.html",
+        "refreshPackageBuyDurationPopupI18n(true)",
+        "package buy duration popup langOnly on reload",
     ),
     (
         "views/package/my/index.html",
