@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `b47b821`（含 **#298–#380**；进行中 **#381**）  
+**主线：** `main` @ `4a43ab9`（含 **#298–#381**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -240,6 +240,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #379 | 交接报告主线 SHA |
 | #380 | 交接报告主线 SHA（`205cbea`） |
 | #381 | `site/refresh` 去掉 `veikor:lang.siteList` 监听 |
+| #382 | 交接报告主线 SHA |
 
 ---
 
