@@ -583,6 +583,21 @@ SPOTS = (
         "package my scoped lang only",
     ),
     (
+        "views/site/group/addform.html",
+        "veikor:lang.siteGroup",
+        "site group add popup scoped lang",
+    ),
+    (
+        "views/stream/group/addform.html",
+        "veikor:lang.streamGroup",
+        "stream group add popup scoped lang",
+    ),
+    (
+        "views/site/site/index.html",
+        "$(document).on('veikor:lang.siteList', reloadSiteListPageI18n);",
+        "site list scoped lang only",
+    ),
+    (
         "views/site/cc/rule-add.html",
         "refreshCcRulelistAddI18n(true)",
         "CC rulelist AJAX/prefill refresh langOnly",
