@@ -247,6 +247,16 @@ SPOTS = (
         "window.refreshStreamGroupAddFormI18n",
         "stream group add popup partial i18n",
     ),
+    (
+        "views/site/group/addform.html",
+        "window.refreshSiteGroupAddFormI18n",
+        "site group add popup partial i18n",
+    ),
+    (
+        "views/site/cert/addform.html",
+        "window.refreshCertAddFormI18n",
+        "cert add popup partial i18n",
+    ),
 )
 
 
