@@ -263,6 +263,26 @@ SPOTS = (
         "site refresh op-log search lang sync",
     ),
     (
+        "views/site/refresh/index.html",
+        "veikorRenderFormControlSkins('site-refresh-main-form'",
+        "site refresh main form control skins",
+    ),
+    (
+        "views/site/cert/update-cert-type.html",
+        "refreshCertUpdateTypeI18n()",
+        "cert batch type popup refresh after DNS AJAX",
+    ),
+    (
+        "views/package/my/index.html",
+        "refreshPackageRenewPopupI18n",
+        "package renew popup open uses refresh partial",
+    ),
+    (
+        "views/package/my/up_down.html",
+        "refreshPackageBuyUpgradeI18n",
+        "package buy-upgrade popup open uses refresh partial",
+    ),
+    (
         "views/site/group/index.html",
         "window.refreshSiteGroupI18n",
         "site group list popups",
