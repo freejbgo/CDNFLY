@@ -182,6 +182,26 @@ SPOTS = (
         "refreshMessageDetailOpenLayer",
         "customer message detail popup",
     ),
+    (
+        "views/finance/balance/return.html",
+        "addEventListener('veikor:lang', repaintReturnI18n)",
+        "balance pay return standalone i18n (#306)",
+    ),
+    (
+        "views/finance/order/index.html",
+        "reloadOrderListPageI18n",
+        "finance order list i18n",
+    ),
+    (
+        "views/finance/order/count.html",
+        "reloadOrderCountPageI18n",
+        "finance order stats i18n",
+    ),
+    (
+        "views/account/sub/index.html",
+        "reloadAccountSubI18n",
+        "account message subscription i18n",
+    ),
 )
 
 
