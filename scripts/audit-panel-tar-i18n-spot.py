@@ -87,6 +87,36 @@ SPOTS = (
         "refreshPackageDetailI18n",
         "package my list delegates detail/renew i18n",
     ),
+    (
+        "views/site/monitor/usage.html",
+        "refreshSiteUsageSeniorI18n",
+        "site usage chart refresh delegate",
+    ),
+    (
+        "views/stream/monitor/usage.html",
+        "refreshStreamUsageSeniorI18n",
+        "stream usage chart refresh delegate (#339)",
+    ),
+    (
+        "controller/senior.js",
+        "refreshSiteMonitorChartsI18n",
+        "site monitor realtime charts i18n",
+    ),
+    (
+        "controller/site-usage-senior.js",
+        "refreshSiteUsageSeniorI18n",
+        "site usage charts i18n",
+    ),
+    (
+        "controller/stream_senior.js",
+        "refreshStreamMonitorChartsI18n",
+        "stream monitor realtime charts i18n",
+    ),
+    (
+        "controller/stream-usage-senior.js",
+        "refreshStreamUsageSeniorI18n",
+        "stream usage charts i18n",
+    ),
 )
 
 

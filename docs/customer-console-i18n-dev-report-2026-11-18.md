@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `e0999ee`（含 **#298–#337**）  
+**主线：** `main` @ `21015e2`（含 **#298–#338**；进行中 **#339**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -189,6 +189,8 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #335 | 我的套餐列表委托 detail/renew i18n；tar spot CNAME prompt；checklist 扫尾 |
 | #336 | 交接报告主线 SHA |
 | #337 | `buy-upgrade` 导出 `refreshPackageBuyUpgradeI18n` 供父页委托 |
+| #338 | 交接报告主线 SHA |
+| #339 | 转发用量页委托图表 i18n；monitor `*-senior.js` tar spot |
 
 ---
 
