@@ -87,7 +87,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `package/my/detail.html` | P2 | POPUP | `window.refreshPackageDetailI18n` dynamic quota labels |
 | `package/my/renew.html` | P2 | POPUP, STATIC | `window.refreshPackageRenewPopupI18n` |
 | `package/my/buy-upgrade.html` | P2 | POPUP, STATIC | `window.refreshPackageBuyUpgradeI18n` title + body (#337) |
-| `package/my/up_down.html` | P2 | POPUP, STATIC | Nested buy-upgrade title (#325); delegates `refreshPackageBuyUpgradeI18n` |
+| `package/my/up_down.html` | P2 | POPUP, STATIC | Nested buy-upgrade title (#325); `window.refreshUpDownI18n` (#354) |
 
 **Out of customer checklist:** `package/upgrade/*` (admin / doc excluded).
 
@@ -102,9 +102,9 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/site/addform.html` | P2 | POPUP, STATIC | New site |
 | `site/site/update_form.html` | P1 | POPUP, STATIC, M2 | Nested layer titles on `veikor:lang` (#317) |
 | `site/site/unlock-ip.html` | P2 | POPUP, M2 | `window.refreshSiteUnlockIpI18n`; title via `site/index` open layers |
-| `site/site/update-state.html` | P4 | POPUP | Mostly `show_all` admin toolbar |
-| `site/site/update-cname-mode.html` | P4 | POPUP | Admin toolbar |
-| `site/site/update-node-group.html` | P4 | POPUP | Admin toolbar |
+| `site/site/update-state.html` | P4 | POPUP | **Out of scope** — admin `show_all` toolbar |
+| `site/site/update-cname-mode.html` | P4 | POPUP | **Out of scope** — admin toolbar |
+| `site/site/update-node-group.html` | P4 | POPUP | **Out of scope** — admin toolbar |
 | `site/site/backend_form.html` | P2 | POPUP | Content i18n; layer title via `edit.html` `refreshSiteEditOpenLayers` |
 | `site/site/cache_form.html` | P2 | POPUP | Switch `lay-text` |
 | `site/site/req_header_form.html` | P2 | POPUP | Same parent refresh as `backend_form` |
@@ -169,9 +169,9 @@ Mirror site where paths exist:
 | `stream/stream/edit.html` | P1 | DYNAMIC, STATIC | Meta replay (#242) |
 | `stream/stream/addform.html` | P2 | POPUP | `refreshStreamAddFormI18n`; title via list `refreshStreamListOpenLayers` |
 | `stream/stream/update_form.html` | P2 | POPUP | Batch edit layer title on `veikor:lang` (#319) |
-| `stream/stream/update-state.html` | P4 | POPUP | Admin skew |
-| `stream/stream/update-cname-mode.html` | P4 | POPUP | |
-| `stream/stream/update-node-group.html` | P4 | POPUP | |
+| `stream/stream/update-state.html` | P4 | POPUP | **Out of scope** — admin skew |
+| `stream/stream/update-cname-mode.html` | P4 | POPUP | **Out of scope** |
+| `stream/stream/update-node-group.html` | P4 | POPUP | **Out of scope** |
 | `stream/stream/backend_form.html` | P2 | POPUP | Content i18n; titles via `stream/edit.html` `refreshStreamEditOpenLayers` |
 | `stream/stream/acl-add.html` | P2 | POPUP | Content i18n; acl layer title via `stream/edit.html` |
 | `stream/group/index.html` | P2 | STATIC | `window.refreshStreamGroupI18n` (tar #350) |

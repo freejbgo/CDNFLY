@@ -257,6 +257,26 @@ SPOTS = (
         "window.refreshCertAddFormI18n",
         "cert add popup partial i18n",
     ),
+    (
+        "views/package/my/up_down.html",
+        "window.refreshUpDownI18n",
+        "package up_down partial i18n hook (#354)",
+    ),
+    (
+        "views/package/my/detail.html",
+        "window.refreshPackageDetailI18n",
+        "package detail partial i18n",
+    ),
+    (
+        "views/package/my/renew.html",
+        "window.refreshPackageRenewPopupI18n",
+        "package renew partial i18n",
+    ),
+    (
+        "views/system/message/index.html",
+        "reloadMessageQueryPageI18n",
+        "customer message list i18n",
+    ),
 )
 
 
