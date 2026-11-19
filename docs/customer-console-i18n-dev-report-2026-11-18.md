@@ -1,13 +1,24 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `b2e2486`（面板 @ `8c7eeca`）；含 **#298–#391**  
+**主线：** `main` @ `f6d206a`（面板 @ `8c7eeca`）；含 **#298–#392**  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
 ---
 
 ## 1. 本轮复核与合并结论
+
+### 2026-11-19 复核（#392 后）
+
+| 项 | 结果 |
+|----|------|
+| `origin/main` | `f6d206a`（#392）← `8c7eeca`（#387 面板） |
+| 开放 PR | **0** |
+| 双审计 + deep | **全绿** |
+| P3 索引 | `audit-customer-notify-resmsg-index.py`（26 paths） |
+| **M1** | **已签收** |
+| **下一开发** | **P3** — 提供真实 `res.msg` 样本 |
 
 ### 2026-11-19 复核（#391 后）
 
@@ -333,6 +344,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #390 | M1 签收标注 + 交接 main @ 0a5eb63 |
 | #391 | `audit-panel-customer-i18n` 成功行打印 API_MSG 条数；计划文档 M1 更新 |
 | #392 | P3 客户 `notifyResMsg` API 路径索引脚本 + #391 后交接 |
+| #393 | P3 索引对齐客户视图范围 + 纳入 `verify-packages.sh` |
 
 ---
 
