@@ -2,7 +2,7 @@
 
 Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel under `.veikor-build/.../panel/src`, then `sync-panel-to-master-tar.sh` + `verify-packages.sh`.
 
-**Batch delivered (slices through 2026-11-19, PR #298–#304):** U2B scope; P0 `acllist-add` dynamic lang; `up_down` / `/jobs` alive guards; `siteRefresh` lang scope; cache edit popup title; `API_MSG` samples; CI rule for `/jobs` done + `*Alive()`. Plus earlier: `applyLayerPopupI18n`, tab title i18n, monitor chrome, pay return `panel-lang` storage. **Remaining:** production-only `res.msg` samples (P3), P4 polish, backend-authored API text (out of scope).
+**Batch delivered (slices through 2026-11-19, PR #298–#306):** U2B scope; P0 `acllist-add` dynamic lang; `up_down` / `/jobs` alive guards; `siteRefresh` lang scope; cache edit popup title; `API_MSG` samples; CI rule for `/jobs` done + `*Alive()`. Plus earlier: `applyLayerPopupI18n`, tab title i18n, monitor chrome, pay return `panel-lang` storage. **Remaining:** production-only `res.msg` samples (P3), P4 polish, backend-authored API text (out of scope).
 
 **Legend**
 
@@ -58,7 +58,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | File | P | Types | Notes |
 |------|---|-------|-------|
 | `finance/balance/index.html` | P1 | DYNAMIC, M2 | Balance + pay UI (#242); pay method `title` + `form.render` on lang |
-| `finance/balance/return.html` | P4 | STATIC, POPUP | Standalone pay return; optional `veikor:lang` (3s redirect) |
+| `finance/balance/return.html` | P4 | STATIC, POPUP | `panel-lang` + **`veikor:lang`**; 3s redirect (#306) |
 | `finance/balance/alipay.html` | P2 | POPUP, STATIC | Pay layer fragment |
 | `finance/balance/weixin.html` | P2 | POPUP, STATIC | Pay QR layer fragment |
 | `finance/order/index.html` | P1 | STATIC, M2 | Enum **display** mapped; query params stay Chinese (by design) |
