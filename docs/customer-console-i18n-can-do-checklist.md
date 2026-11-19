@@ -49,7 +49,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `views/user_home.html` | P1 | STATIC, DYNAMIC | Overview replay done (#242); announcement **title/body** stay API text; layer **buttons** refresh on `veikor:lang` (#333) |
+| `views/user_home.html` | P1 | STATIC, DYNAMIC | `reloadUserHomeI18n` (tar #362); announcement buttons (#333); API title/body |
 
 ---
 
@@ -57,7 +57,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `finance/balance/index.html` | P1 | DYNAMIC, M2 | Balance + pay UI (#242); pay method `title` + `form.render` on lang |
+| `finance/balance/index.html` | P1 | DYNAMIC, M2 | `reloadBalancePageI18n` (tar #362); pay QR title (#311) |
 | `finance/balance/return.html` | P4 | STATIC, POPUP | `panel-lang` + **`veikor:lang`**; tar spot (#347) |
 | `finance/balance/alipay.html` | P2 | POPUP, STATIC | Parent refreshes layer title + body on lang (#311) |
 | `finance/balance/weixin.html` | P2 | POPUP, STATIC | Same as alipay fragment (#311) |
@@ -81,7 +81,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `package/buy/index.html` | P1 | STATIC, M2 | `notifyResMsg` on purchase fail |
+| `package/buy/index.html` | P1 | STATIC, M2 | `reloadBuyPackageI18n` (tar #362); `notifyResMsg` on purchase fail |
 | `package/buy/duration.html` | P2 | POPUP, STATIC | `window.refreshPackageBuyDurationPopupI18n` (#343); parent `LAY-popup-acl-add` |
 | `package/my/index.html` | P1 | STATIC | Open layers + prompt; delegates detail/renew/up_down (#335) |
 | `package/my/detail.html` | P2 | POPUP | `window.refreshPackageDetailI18n` dynamic quota labels |
@@ -133,7 +133,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/acl/index.html` | P1 | STATIC | `refreshAclOpenLayer` (tar #349) |
 | `site/acl/acl-add.html` | P2 | POPUP | `window.refreshAclAddFormI18n` (#357); nested rule popups (#323) |
 | `site/acl/acllist-add.html` | P0 | POPUP, DYNAMIC | `#matchers` lang replay (#299); `window.refreshAclListAddPopupsI18n` (#358) |
-| `site/cc/rule.html` | P1 | STATIC | Open layer titles + nested partials on `veikor:lang` (#315) |
+| `site/cc/rule.html` | P1 | STATIC | `reloadCcRulePageI18n` + open layers (#315, tar #362) |
 | `site/cc/rule-add.html` | P2 | POPUP | Nested rulelist/matchlist layer titles (#323) |
 | `site/cc/rulelist-add.html` | P2 | POPUP | `refreshCcRulelistAddI18n` switch `lay-text`; title via `rule-add` (#323) |
 | `site/cc/match-add.html` | P2 | POPUP | Nested matchlist layer titles (#323) |
