@@ -1,13 +1,25 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `afc1ae5`（面板末 commit；文档 squash `21f8d25`）；含 **#298–#385**  
+**主线：** `main` @ `afc1ae5`（面板末 commit；文档 squash `f9a9acd`）；含 **#298–#386**（#387 面板待并）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
 ---
 
 ## 1. 本轮复核与合并结论
+
+### 2026-11-19 复核（#386 后）
+
+| 项 | 结果 |
+|----|------|
+| `origin/main` | `f9a9acd`（#386 文档）← `afc1ae5`（#383 面板） |
+| 开放 PR | **0** |
+| `audit-panel-customer-i18n.py` | **ok** |
+| `audit-panel-tar-i18n-spot.py` | **ok**（78 needles） |
+| `audit-panel-deep.py` | **0 issues** |
+| **合并** | 无待合并面板项；**#386** 已入主 |
+| **下一开发** | **#387** P0：`site/stream/cert` 列表 lang 刷新改为 scoped form render；**P3** 待真实 `res.msg` |
 
 ### 2026-11-19 复核（#385 后）
 
@@ -70,7 +82,7 @@
 | 工作 | 说明 |
 |------|------|
 | `site/acl/acllist-add.html` `#matchers` | **Done #299 / #358** — 动态 replay + `window.refreshAclListAddPopupsI18n` |
-| `form.render(null)` + `veikor:lang` | 审计当前客户页为 **0**；新 PR 勿引入；可做 CI 硬化 |
+| `form.render(null)` / 无参 `form.render()` + `veikor:lang` | 审计拒绝（#387 硬化）；列表页用 `render*ListForm` / `veikorRenderFormSkins` |
 | `id` + `data-i18n` 同标签 | `audit-panel-customer-i18n.py` 已检；新页用 `data-veikor-dynamic` |
 
 ### P1 — 高频 + 图表
@@ -256,6 +268,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #383 | package detail 切换语言时重算剩余额度 |
 | #384 | 交接报告主线 SHA |
 | #385 | #384 后复核表 + checklist 收口至 #384 |
+| #386 | checklist `API_MSG` 条数修正 + #385 后复核 |
 
 ---
 

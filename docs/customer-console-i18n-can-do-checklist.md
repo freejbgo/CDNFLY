@@ -41,7 +41,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `lib/veikor-i18n.js` — `applyDataI18n` + `data-veikor-dynamic` | P0 | DYNAMIC | Documented; extend CI to ban risky patterns |
 | `lib/view.js` — customer `reqErrorHtml` | — | Done | Keep mapping table in sync with M2 |
 | `index.js` — Layui **tab title** on lang change | P4 | Done | `bindLayuiTabTitleFromBody` + `applyLayuiTabTitlesI18n`; customer tab chip avoids stale `res.title` (#307) |
-| `scripts/audit-panel-customer-i18n.py` | P0 | CI | Ban `id` + `data-i18n` on same host (exceptions for `button`/`input`) |
+| `scripts/audit-panel-customer-i18n.py` | P0 | CI | Ban `id` + `data-i18n` on same host; ban `form.render()` / `form.render(null)` on `veikor:lang` pages (#387) |
 
 ---
 
