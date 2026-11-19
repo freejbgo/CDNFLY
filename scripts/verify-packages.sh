@@ -39,6 +39,12 @@ else
   ok "audit-panel-tar-i18n-spot"
 fi
 
+if ! python3 "$ROOT/scripts/audit-customer-notify-resmsg-index.py" >/dev/null; then
+  bad "audit-customer-notify-resmsg-index"
+else
+  ok "audit-customer-notify-resmsg-index"
+fi
+
 if ! python3 "$ROOT/scripts/audit-panel-view-aliases.py"; then
   bad "audit-panel-view-aliases"
 else

@@ -16,23 +16,28 @@ ROOT = os.path.join(
     "src",
     "views",
 )
-CUSTOMER_PREFIXES = (
-    "site/",
-    "stream/",
-    "account/",
-    "finance/",
-    os.path.join("package", "my") + os.sep,
-    os.path.join("package", "buy") + os.sep,
-    "user_home",
-    os.path.join("system", "message") + os.sep,
+# Match scripts/audit-panel-customer-i18n.py customer view scope
+CUSTOMER_VIEW_PREFIXES = (
+    "site",
+    "stream",
+    "account",
+    "finance",
+    "package/my",
+    "package/buy",
 )
 URL_LITERAL = re.compile(r"""url:\s*['"]([^'"]+)['"]""")
 
 
 def is_customer(rel: str) -> bool:
-    if rel.startswith("package/upgrade") or rel.startswith("package/sold"):
-        return False
-    return any(rel.startswith(p) or rel == p.rstrip(os.sep) + ".html" for p in CUSTOMER_PREFIXES)
+    rel = rel.replace("\\", "/")
+    for prefix in CUSTOMER_VIEW_PREFIXES:
+        if rel == prefix or rel.startswith(prefix + "/"):
+            return True
+    if rel == "user_home.html":
+        return True
+    if rel.startswith("system/message/"):
+        return True
+    return False
 
 
 def main() -> int:
