@@ -28,7 +28,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 |-----|------|
 | `account/balance/*` | `finance/balance/*` |
 | `account/order/*` | `finance/order/*` |
-| `account/log/*` | `system/log/*` (customer smoke; log pages mostly done in U2a) |
+| `account/log/*` | `system/log/*` (customer; `reload*LogPageI18n` tar spot #366) |
 
 ---
 
