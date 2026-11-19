@@ -47,6 +47,16 @@ SPOTS = (
         "refreshCcRuleChildPopups",
         "CC rule/match nested popup titles (#323)",
     ),
+    (
+        "views/package/my/up_down.html",
+        "LAY-popup-package-buy-upgrade",
+        "package my buy-upgrade nested popup (#325)",
+    ),
+    (
+        "views/package/my/index.html",
+        "refreshMyPackageRenamePrompt",
+        "package my rename prompt title refresh",
+    ),
 )
 
 
