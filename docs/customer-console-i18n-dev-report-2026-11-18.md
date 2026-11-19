@@ -162,7 +162,8 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #306 | +3 `API_MSG`；`return.html` `veikor:lang` |
 | #307 | 客户 tab 标签不写死 `res.title`；`site/refresh` 去掉 `siteList` 监听 |
 | #308 | 交接报告主线 SHA |
-| #309 | `package/my` 详情/升级包/续费弹窗标题随语言刷新 |
+| #309 | `package/my` 详情/升级包/续费弹窗标题随语言刷新（文档；tar 缺码 **#313** 补） |
+| #313 | 落地 #309：`index.html` 三弹窗 + `up_down` 升级包层标题 |
 | #311 | 充值页微信/支付宝扫码弹窗标题随语言刷新 |
 
 ---
