@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `85d0ad3`（含 **#298–#356**；进行中 **#357**）  
+**主线：** `main` @ `8d325b4`（含 **#298–#357**；进行中 **#358**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -209,6 +209,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #355 | site/stream 列表 open layer + message detail tar spot |
 | #356 | 交接报告主线 SHA |
 | #357 | ACL `acl-add` 导出 `refreshAclAddFormI18n` + tar spot |
+| #358 | `acllist-add` 导出 `refreshAclListAddPopupsI18n` + tar spot |
 
 ---
 

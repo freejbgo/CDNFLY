@@ -228,6 +228,11 @@ SPOTS = (
         "site ACL add popup partial hook (#357)",
     ),
     (
+        "views/site/acl/acllist-add.html",
+        "window.refreshAclListAddPopupsI18n",
+        "ACL rule match nested popups (#358)",
+    ),
+    (
         "views/site/refresh/index.html",
         "refreshSiteRefreshI18n",
         "site cache refresh page",
