@@ -228,6 +228,16 @@ SPOTS = (
         "account API key switch lay-text",
     ),
     (
+        "views/account/config/api.html",
+        "veikorRenderFormControlSkins('account-api-config'",
+        "account API config control skins on load",
+    ),
+    (
+        "views/site/site/req_header_form.html",
+        "refreshSiteReqHeaderFormI18n()",
+        "req header partial init via refresh only",
+    ),
+    (
         "views/account/personal/index.html",
         "reloadPersonalPageI18n",
         "account personal page i18n",
