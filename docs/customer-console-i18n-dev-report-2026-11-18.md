@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `ece837a`（含 **#298–#305**；进行中 **#306** P3 API 样本）  
+**主线：** `main` @ `37225f2`（含 **#298–#306**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -20,7 +20,7 @@
 | GitHub CI | 该 PR 无上报 checks；以本地 verify + 审计为准 |
 | **合并** | **已完成** — `248562b` Merge PR #298 |
 
-**复核备注（非阻断）：** `site/refresh/index.html` 仍监听 `veikor:lang.siteList`（历史命名）；同时有全局 `veikor:lang`，功能可用。抛光可改为 `veikor:lang.siteRefresh` 并在 `PAGE_LANG_SCOPES` 对齐。
+**复核备注：** `site/refresh` 已仅用 `veikor:lang.siteRefresh` + 全局 `veikor:lang`（#307）。
 
 ### U2B 作用域线（#284–#298）
 
@@ -160,6 +160,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #304 | `audit-panel-customer-i18n` 锁定 `/jobs` done `*Alive()` |
 | #305 | 交接报告 + checklist 同步 #298–#304 |
 | #306 | +3 `API_MSG`；`return.html` `veikor:lang` |
+| #307 | 客户 tab 标签不写死 `res.title`；`site/refresh` 去掉 `siteList` 监听 |
 
 ---
 
