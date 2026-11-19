@@ -150,7 +150,7 @@
 | 工作 | 说明 |
 |------|------|
 | `site/acl/acllist-add.html` `#matchers` | **Done #299 / #358** — 动态 replay + `window.refreshAclListAddPopupsI18n` |
-| `form.render(null)` / 无参 `form.render()` + `veikor:lang` | 审计拒绝（#387 硬化）；列表页用 `render*ListForm` / `veikorRenderFormSkins` |
+| `form.render(null)` / 无参 `form.render()` + `veikor:lang` | 审计拒绝（#387）；列表 **lang** 刷新用 `render*LangSkins`（按字段 `render*Select`，勿整表 `select` 重绘） |
 | `id` + `data-i18n` 同标签 | `audit-panel-customer-i18n.py` 已检；新页用 `data-veikor-dynamic` |
 
 ### P1 — 高频 + 图表
