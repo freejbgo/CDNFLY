@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `4a43ab9`（含 **#298–#381**）  
+**主线：** `main` @ `64a32c2`（含 **#298–#382**；进行中 **#383**）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -106,7 +106,7 @@
 | Layui **Tab 标题** 随语言切换 | `index.js` / `applyLayuiTabTitlesI18n`（checklist） |
 | `site/refresh` 的 `veikor:lang.siteList` | **Done #381** — 仅 `siteRefresh` + 全局 `veikor:lang` |
 | `finance/balance/return.html` | 独立支付回跳页可选 lang 监听 |
-| `package/my/detail.html` | 数值格 dynamic 抛光 |
+| `package/my/detail.html` | **Done #383** — `refreshPackageDetailI18n` 重算剩余列 |
 
 ### 明确不做（产品范围）
 
@@ -241,6 +241,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #380 | 交接报告主线 SHA（`205cbea`） |
 | #381 | `site/refresh` 去掉 `veikor:lang.siteList` 监听 |
 | #382 | 交接报告主线 SHA |
+| #383 | package detail 切换语言时重算剩余额度 |
 
 ---
 

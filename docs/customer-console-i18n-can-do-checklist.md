@@ -84,7 +84,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `package/buy/index.html` | P1 | STATIC, M2 | `reloadBuyPackageI18n` (tar #362); `notifyResMsg` on purchase fail |
 | `package/buy/duration.html` | P2 | POPUP, STATIC | `window.refreshPackageBuyDurationPopupI18n` (#343); parent `LAY-popup-acl-add` |
 | `package/my/index.html` | P1 | STATIC | `reloadMyPackageI18n` (tar #364); popups/prompts (#335) |
-| `package/my/detail.html` | P2 | POPUP | `window.refreshPackageDetailI18n` dynamic quota labels |
+| `package/my/detail.html` | P2 | POPUP | `refreshPackageDetailI18n` 剩余/不限 on lang (#383) |
 | `package/my/renew.html` | P2 | POPUP, STATIC | `window.refreshPackageRenewPopupI18n` |
 | `package/my/buy-upgrade.html` | P2 | POPUP, STATIC | `window.refreshPackageBuyUpgradeI18n` title + body (#337) |
 | `package/my/up_down.html` | P2 | POPUP, STATIC | Nested buy-upgrade title (#325); `window.refreshUpDownI18n` (#354) |
