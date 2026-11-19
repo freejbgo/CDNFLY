@@ -578,9 +578,19 @@ SPOTS = (
         "CC matchlist child popup refresh langOnly",
     ),
     (
+        "views/site/cc/rule-add.html",
+        "$(document).on('veikor:lang.ccRule', refreshCcRuleAddFormI18n);",
+        "CC rule-add partial scoped lang only",
+    ),
+    (
+        "views/site/cc/match-add.html",
+        "$(document).on('veikor:lang.ccRule', refreshCcMatchAddFormI18n);",
+        "CC match-add partial scoped lang only",
+    ),
+    (
         "views/site/acl/acl-add.html",
-        "window.refreshRuleMatchFormI18n",
-        "ACL rule add/edit nested popup refresh after prefill",
+        "refreshRuleMatchFormI18n(root, true)",
+        "ACL rule edit prefill langOnly refresh",
     ),
     (
         "views/site/acl/acllist-add.html",
