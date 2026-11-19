@@ -672,6 +672,26 @@ SPOTS = (
         "applyStreamMonitorRealtimeChrome",
         "stream monitor realtime chrome",
     ),
+    (
+        "views/site/site/update-state.html",
+        "refreshSiteStatePopupI18n(true)",
+        "site batch state popup lang-only sync",
+    ),
+    (
+        "views/stream/stream/update-state.html",
+        "refreshStreamStatePopupI18n(true)",
+        "stream batch state popup lang-only sync",
+    ),
+    (
+        "views/package/my/renew.html",
+        "refreshPackageRenewPopupI18n(true)",
+        "package renew popup lang-only sync",
+    ),
+    (
+        "views/package/buy/duration.html",
+        "refreshPackageBuyDurationPopupI18n(true)",
+        "package buy duration popup lang-only sync",
+    ),
 )
 
 
