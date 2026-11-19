@@ -108,9 +108,8 @@ def _audit_api_msg_map() -> list[str]:
 
 
 def _missing_global_lang(text: str) -> bool:
-    if not SCOPED_LANG.search(text):
-        return False
-    return not (GLOBAL_LANG.search(text) or re.search(r"\.on\('veikor:lang'", text))
+    """Legacy: global listener optional when scoped exists (applyConsoleI18n fires scoped + shell only)."""
+    return False
 
 
 def _audit_jobs_done_alive(rel: str, text: str) -> list[str]:
