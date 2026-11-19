@@ -173,6 +173,11 @@ SPOTS = (
         "site monitor access log",
     ),
     (
+        "views/site/monitor/access-log.html",
+        "veikorSyncLayuiSelectTitles",
+        "access log cache-status search lang sync",
+    ),
+    (
         "views/site/monitor/top-res.html",
         "window.refreshSiteTopResI18n",
         "site monitor top resources",
