@@ -57,6 +57,16 @@ SPOTS = (
         "refreshMyPackageRenamePrompt",
         "package my rename prompt title refresh",
     ),
+    (
+        "views/site/monitor/blackip.html",
+        "__veikorBlackipUnlockSitePromptIndex",
+        "blackip unlock-site prompt title refresh",
+    ),
+    (
+        "views/account/personal/index.html",
+        "__veikorPersonalPromptTitleKey",
+        "account personal prompt title refresh",
+    ),
 )
 
 
