@@ -72,7 +72,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | File | P | Types | Notes |
 |------|---|-------|-------|
 | `account/personal/index.html` | P1 | STATIC, DYNAMIC, M2 | Captcha radios/checkboxes `title`; `lastPersonalUser` replay on lang; `layer.prompt` titles (#331) |
-| `account/config/api.html` | P2 | STATIC | API key switch / labels |
+| `account/config/api.html` | P2 | STATIC | `updateApiSwitchLayText` + `reloadAccountApiI18n` (tar #349) |
 | `account/sub/index.html` | P2 | STATIC | `reloadAccountSubI18n` (tar #347) |
 
 ---
@@ -130,7 +130,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `site/acl/index.html` | P1 | STATIC | |
+| `site/acl/index.html` | P1 | STATIC | `refreshAclOpenLayer` (tar #349) |
 | `site/acl/acl-add.html` | P2 | POPUP | Nested `acllist` layer title on `veikor:lang` (#323) |
 | `site/acl/acllist-add.html` | P0 | POPUP, DYNAMIC | **Done #299** — `#matchers` lang replay |
 | `site/cc/rule.html` | P1 | STATIC | Open layer titles + nested partials on `veikor:lang` (#315) |
@@ -139,9 +139,9 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `site/cc/match-add.html` | P2 | POPUP | Nested matchlist layer titles (#323) |
 | `site/cc/matchlist-add.html` | P2 | POPUP | Content i18n; title via `match-add` (#323) |
 | `site/cc/filter-add.html` | P2 | POPUP | Content i18n; filter layer title via `rule.html` (#315) |
-| `site/group/index.html` | P2 | STATIC | |
+| `site/group/index.html` | P2 | STATIC | `window.refreshSiteGroupI18n` (tar #349) |
 | `site/group/addform.html` | P2 | POPUP | `refreshSiteGroupAddFormI18n` + `site/group/index.html` layer title |
-| `site/refresh/index.html` | P2 | STATIC | Clear cache |
+| `site/refresh/index.html` | P2 | STATIC | `refreshSiteRefreshI18n` (tar #349) |
 
 ---
 

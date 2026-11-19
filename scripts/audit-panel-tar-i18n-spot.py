@@ -202,6 +202,31 @@ SPOTS = (
         "reloadAccountSubI18n",
         "account message subscription i18n",
     ),
+    (
+        "views/account/config/api.html",
+        "updateApiSwitchLayText",
+        "account API key switch lay-text",
+    ),
+    (
+        "views/account/personal/index.html",
+        "reloadPersonalPageI18n",
+        "account personal page i18n",
+    ),
+    (
+        "views/site/acl/index.html",
+        "refreshAclOpenLayer",
+        "site ACL list popup titles",
+    ),
+    (
+        "views/site/refresh/index.html",
+        "refreshSiteRefreshI18n",
+        "site cache refresh page",
+    ),
+    (
+        "views/site/group/index.html",
+        "window.refreshSiteGroupI18n",
+        "site group list popups",
+    ),
 )
 
 
