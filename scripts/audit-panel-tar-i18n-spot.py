@@ -428,6 +428,11 @@ SPOTS = (
         "customer login log page reload",
     ),
     (
+        "views/system/log/login.html",
+        "veikorSyncLayuiSelectTitles",
+        "login log search lang sync selects",
+    ),
+    (
         "views/system/log/op.html",
         "reloadOpLogPageI18n",
         "customer operation log page reload",
