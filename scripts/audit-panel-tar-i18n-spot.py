@@ -344,6 +344,21 @@ SPOTS = (
     ),
     (
         "views/site/site/edit.html",
+        "veikorSyncLayuiSelectTitles",
+        "site edit lang refresh sync selects",
+    ),
+    (
+        "views/site/site/update_form.html",
+        "refreshSiteUpdatePopupFormLangSkins",
+        "site batch update lang form skins",
+    ),
+    (
+        "views/stream/stream/update_form.html",
+        "refreshStreamUpdatePopupFormLangSkins",
+        "stream batch update lang form skins",
+    ),
+    (
+        "views/site/site/edit.html",
         "refreshSiteEditOpenLayers",
         "site edit nested popup titles",
     ),
