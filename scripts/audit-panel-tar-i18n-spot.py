@@ -378,6 +378,11 @@ SPOTS = (
         "finance balance page lang reload",
     ),
     (
+        "views/finance/balance/index.html",
+        "renderBalanceRechargeControlsI18n",
+        "balance recharge pay-method checkbox lang skin",
+    ),
+    (
         "views/site/cc/rule.html",
         "reloadCcRulePageI18n",
         "CC rule page lang reload",
