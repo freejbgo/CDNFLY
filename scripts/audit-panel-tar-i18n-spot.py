@@ -323,9 +323,24 @@ SPOTS = (
         "site list page lang reload",
     ),
     (
+        "views/site/site/index.html",
+        "veikorSyncLayuiSelectTitles",
+        "site list search lang sync selects",
+    ),
+    (
         "views/stream/stream/index.html",
         "reloadStreamListPageI18n",
         "stream list page lang reload",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "veikorSyncLayuiSelectTitles",
+        "stream list search lang sync selects",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "veikorSyncLayuiSelectTitles",
+        "cert list search lang sync selects",
     ),
     (
         "views/site/site/edit.html",
