@@ -707,6 +707,31 @@ SPOTS = (
         "refreshAclAddFormI18n(true)",
         "ACL add popup lang-only radio chrome",
     ),
+    (
+        "views/site/acl/acllist-add.html",
+        "refreshRuleMatchFormI18n(popRoot, true)",
+        "ACL rule matcher popup lang-only sync",
+    ),
+    (
+        "views/stream/stream/acl-add.html",
+        "refreshStreamAclAddFormI18n(true)",
+        "stream ACL add lang-only sync",
+    ),
+    (
+        "views/site/cert/addform.html",
+        "refreshCertAddFormI18n(true)",
+        "cert add popup lang-only sync",
+    ),
+    (
+        "views/site/site/addform.html",
+        "refreshSiteAddFormI18n(true)",
+        "site add popup lang-only sync",
+    ),
+    (
+        "views/stream/stream/addform.html",
+        "refreshStreamAddFormI18n(true)",
+        "stream add popup lang-only sync",
+    ),
 )
 
 
