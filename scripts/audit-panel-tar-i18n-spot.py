@@ -378,6 +378,11 @@ SPOTS = (
         "site edit nested popup titles",
     ),
     (
+        "views/site/site/edit.html",
+        "veikorSyncLayuiSelectTitles(popRoot)",
+        "site edit nested popup select sync after prefill",
+    ),
+    (
         "views/stream/stream/edit.html",
         "refreshStreamEditOpenLayers",
         "stream edit nested popup titles",
