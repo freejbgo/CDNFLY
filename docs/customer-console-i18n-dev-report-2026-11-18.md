@@ -1,7 +1,7 @@
 # 客户控制台三语 i18n — 开发交接报告（2026-11-18）
 
 **仓库：** `freejbgo/CDNFLY`  
-**主线：** `main` @ `91dc0b8`（含 **#298–#302**；进行中 **#303** jobs alive）  
+**主线：** `main` @ `4582d63`（含 **#298–#303**；进行中 **#304** jobs done CI）  
 **受众：** 接替开发的 AI / 维护者  
 **范围：** 仅客户会话（`user_type !== 1`）；管理端保持简体，不做三语。
 
@@ -148,7 +148,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | 剩余工作以 checklist P0–P4 为准 | 与 `customer-console-i18n-can-do-checklist.md` 交叉 | ✓ 一致 |
 | 管理端未纳入剩余项 | `customer-console-i18n.md` scope | ✓ |
 
-**结论（2026-11-19 更新）：** U2B 已收口；**#299–#302** 已交付 P0 `acllist-add` 动态 lang、P1 `up_down` alive + `siteRefresh` scope、P2 缓存弹窗标题、P3 refresh job guard + `API_MSG` 样本。**客户静态/弹窗三语与 `audit-panel-customer-i18n.py` 已绿**；剩余主要为 **P3 生产 `res.msg` 增量映射**、P4 Tab/低流量抛光，非 `#LAY_app_body` 清扫。
+**结论（2026-11-19 更新）：** U2B 已收口；**#299–#303** 已交付 P0 `acllist-add` 动态 lang、P1 `up_down` alive + `siteRefresh` scope、P2 缓存弹窗标题、P3 refresh job guard + `API_MSG` 样本。**客户静态/弹窗三语与 `audit-panel-customer-i18n.py` 已绿**；剩余主要为 **P3 生产 `res.msg` 增量映射**、P4 Tab/低流量抛光，非 `#LAY_app_body` 清扫。
 
 | PR | 摘要 |
 |----|------|
@@ -156,6 +156,7 @@ rg "\$\(['\"]#LAY_app_body" .veikor-build/cdnfly-master-v5.1.13/master/panel/src
 | #300 | `up_down` layer alive；`site/refresh` → `veikor:lang.siteRefresh` |
 | #301 | `update_form` 缓存编辑弹窗标题 i18n |
 | #302 | refresh jobs `done` alive；3 条 `API_MSG_BY_SOURCE` |
+| #303 | site list / blackip `/jobs` 成功 toast alive |
 
 ---
 

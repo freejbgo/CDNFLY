@@ -41,6 +41,10 @@ LAYER_CJK = re.compile(
     r"layer\.(?:msg|alert|confirm)\(\s*['\"]([^'\"]*[\u4e00-\u9fff][^'\"]*)"
 )
 RAW_RES_MSG = re.compile(r"layer\.msg\(\s*res\.msg\b")
+JOBS_DONE_LAYER = re.compile(
+    r"url:\s*['\"]/jobs[^'\"]*['\"][\s\S]{0,500}?done:\s*function\s*\([^)]*\)\s*\{([^}]{0,200})",
+    re.DOTALL,
+)
 API_MSG_ENTRY = re.compile(
     r'"([^"\\]+)":\s*\{("zh-CN"|"zh-TW"|"en"):[^}]+\}'
 )
@@ -99,6 +103,22 @@ def _missing_global_lang(text: str) -> bool:
     if not SCOPED_LANG.search(text):
         return False
     return not (GLOBAL_LANG.search(text) or re.search(r"\.on\('veikor:lang'", text))
+
+
+def _audit_jobs_done_alive(rel: str, text: str) -> list[str]:
+    """Jobs async toast must not run after customer page navigates away."""
+    if not re.search(r"function \w+Alive\s*\(", text):
+        return []
+    bad: list[str] = []
+    for m in JOBS_DONE_LAYER.finditer(text):
+        body = m.group(1)
+        if not re.search(r"layer\.(msg|alert)\(", text[m.start() : m.start() + 600]):
+            continue
+        if re.search(r"\w+Alive\s*\(", body):
+            continue
+        bad.append(f"{rel}: /jobs done missing *Alive() guard")
+        break
+    return bad
 
 
 def _audit_dynamic_host_i18n(rel: str, text: str) -> list[str]:
@@ -187,6 +207,7 @@ def main() -> int:
     bad_layer: list[tuple[str, str]] = []
     bad_res_msg: list[str] = []
     bad_dynamic: list[str] = []
+    bad_jobs_done: list[str] = []
     form_render_null_advisory: list[str] = []
     bad_i18n_js = _audit_veikor_i18n_js()
 
@@ -208,6 +229,7 @@ def main() -> int:
             if RAW_RES_MSG.search(text) and "translateResMsg" not in text and "notifyResMsg" not in text:
                 bad_res_msg.append(rel)
             bad_dynamic.extend(_audit_dynamic_host_i18n(rel, text))
+            bad_jobs_done.extend(_audit_jobs_done_alive(rel, text))
 
     for fn in CUSTOMER_CONTROLLERS:
         path = os.path.join(CONTROLLERS, fn)
@@ -257,7 +279,12 @@ def main() -> int:
         for rel in sorted(form_render_null_advisory):
             print(" ", rel, file=sys.stderr)
 
-    if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic or bad_i18n_js or form_render_null_advisory:
+    if bad_jobs_done:
+        print("customer views: /jobs done should guard with *Alive():", file=sys.stderr)
+        for line in sorted(bad_jobs_done):
+            print(" ", line, file=sys.stderr)
+
+    if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic or bad_i18n_js or form_render_null_advisory or bad_jobs_done:
         return 1
     print("audit-panel-customer-i18n: ok")
     return 0
