@@ -36,6 +36,7 @@ CUSTOMER_CONTROLLERS = (
 SCOPED_LANG = re.compile(r"\$\(document\)\.on\('veikor:lang\.([^']+)'")
 GLOBAL_LANG = re.compile(r"\$\(document\)\.on\('veikor:lang'")
 FORM_RENDER_NULL = re.compile(r"form\.render\s*\(\s*null")
+FORM_RENDER_BARE = re.compile(r"form\.render\s*\(\s*\)")
 LANG_HANDLER = re.compile(r"\$\(document\)\.on\('veikor:lang")
 LAYER_CJK = re.compile(
     r"layer\.(?:msg|alert|confirm)\(\s*['\"]([^'\"]*[\u4e00-\u9fff][^'\"]*)"
@@ -209,6 +210,7 @@ def main() -> int:
     bad_dynamic: list[str] = []
     bad_jobs_done: list[str] = []
     form_render_null_advisory: list[str] = []
+    form_render_bare_advisory: list[str] = []
     bad_i18n_js = _audit_veikor_i18n_js()
 
     for dirpath, _, files in os.walk(VIEWS):
@@ -224,6 +226,8 @@ def main() -> int:
                 bad_lang.append(rel)
             if LANG_HANDLER.search(text) and FORM_RENDER_NULL.search(text):
                 form_render_null_advisory.append(rel)
+            if LANG_HANDLER.search(text) and FORM_RENDER_BARE.search(text):
+                form_render_bare_advisory.append(rel)
             for m in LAYER_CJK.finditer(text):
                 bad_layer.append((rel, m.group(1)[:80]))
             if RAW_RES_MSG.search(text) and "translateResMsg" not in text and "notifyResMsg" not in text:
@@ -279,12 +283,30 @@ def main() -> int:
         for rel in sorted(form_render_null_advisory):
             print(" ", rel, file=sys.stderr)
 
+    if form_render_bare_advisory:
+        print(
+            "customer pages with veikor:lang and form.render() (use scoped render):",
+            file=sys.stderr,
+        )
+        for rel in sorted(form_render_bare_advisory):
+            print(" ", rel, file=sys.stderr)
+
     if bad_jobs_done:
         print("customer views: /jobs done should guard with *Alive():", file=sys.stderr)
         for line in sorted(bad_jobs_done):
             print(" ", line, file=sys.stderr)
 
-    if bad_lang or bad_layer or bad_res_msg or bad_api or bad_dynamic or bad_i18n_js or form_render_null_advisory or bad_jobs_done:
+    if (
+        bad_lang
+        or bad_layer
+        or bad_res_msg
+        or bad_api
+        or bad_dynamic
+        or bad_i18n_js
+        or form_render_null_advisory
+        or form_render_bare_advisory
+        or bad_jobs_done
+    ):
         return 1
     print("audit-panel-customer-i18n: ok")
     return 0
