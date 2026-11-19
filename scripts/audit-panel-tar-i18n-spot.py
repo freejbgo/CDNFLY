@@ -347,6 +347,21 @@ SPOTS = (
         "reloadUserHomeI18n",
         "user home overview lang reload",
     ),
+    (
+        "views/package/my/index.html",
+        "reloadMyPackageI18n",
+        "package my page lang reload",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "reloadCertListPageI18n",
+        "cert list page lang reload",
+    ),
+    (
+        "views/finance/recharge/index.html",
+        "reloadRechargePageI18n",
+        "finance recharge page lang reload",
+    ),
 )
 
 

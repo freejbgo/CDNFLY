@@ -63,7 +63,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `finance/balance/weixin.html` | P2 | POPUP, STATIC | Same as alipay fragment (#311) |
 | `finance/order/index.html` | P1 | STATIC, M2 | `reloadOrderListPageI18n` (tar #347) |
 | `finance/order/count.html` | P2 | STATIC | `reloadOrderCountPageI18n` (tar #347) |
-| `finance/recharge/index.html` | P2 | M2 | Uses `notifyResMsg` pattern — extend for other fails |
+| `finance/recharge/index.html` | P2 | M2 | `reloadRechargePageI18n` (tar #364); `notifyResMsg` |
 
 ---
 
@@ -83,7 +83,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 |------|---|-------|-------|
 | `package/buy/index.html` | P1 | STATIC, M2 | `reloadBuyPackageI18n` (tar #362); `notifyResMsg` on purchase fail |
 | `package/buy/duration.html` | P2 | POPUP, STATIC | `window.refreshPackageBuyDurationPopupI18n` (#343); parent `LAY-popup-acl-add` |
-| `package/my/index.html` | P1 | STATIC | Open layers + prompt; delegates detail/renew/up_down (#335) |
+| `package/my/index.html` | P1 | STATIC | `reloadMyPackageI18n` (tar #364); popups/prompts (#335) |
 | `package/my/detail.html` | P2 | POPUP | `window.refreshPackageDetailI18n` dynamic quota labels |
 | `package/my/renew.html` | P2 | POPUP, STATIC | `window.refreshPackageRenewPopupI18n` |
 | `package/my/buy-upgrade.html` | P2 | POPUP, STATIC | `window.refreshPackageBuyUpgradeI18n` title + body (#337) |
@@ -118,7 +118,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 
 | File | P | Types | Notes |
 |------|---|-------|-------|
-| `site/cert/cert.html` | P1 | STATIC, M2 | `refreshCertListOpenLayers` batch/popup titles (tar #345) |
+| `site/cert/cert.html` | P1 | STATIC, M2 | `reloadCertListPageI18n` + `refreshCertListOpenLayers` (tar #364/#345) |
 | `site/cert/dnsapi.html` | P2 | STATIC | `refreshDnsApiOpenLayer` + partial hook (tar #345) |
 | `site/cert/addform.html` | P2 | POPUP, STATIC | |
 | `site/cert/dnsapi-add.html` | P2 | POPUP, STATIC | DNS type names = brands (keep) |
