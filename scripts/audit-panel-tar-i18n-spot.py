@@ -1153,6 +1153,21 @@ SPOTS = (
         "acl rule editor aclist scoped under popup root",
     ),
     (
+        "views/site/acl/acl-add.html",
+        "function aclRuleAclTableEventOk(obj)",
+        "acl rule editor disambiguates stream edit aclist handlers",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "function streamEditAclTableEventOk(obj)",
+        "stream edit disambiguates site rule editor aclist handlers",
+    ),
+    (
+        "views/package/upgrade/addform.html",
+        "function packageUpgradeAddformRoot()",
+        "package upgrade addform scoped to edit popup",
+    ),
+    (
         "views/site/acl/index.html",
         "el.querySelector('#acllist') && !el.querySelector('#buy-confirm')",
         "acl rule popup shell disambiguates stream edit aclist",
