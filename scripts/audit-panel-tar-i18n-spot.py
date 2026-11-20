@@ -953,6 +953,26 @@ SPOTS = (
         "stream edit per-popup title refresh gated on edit page",
     ),
     (
+        "views/finance/balance/index.html",
+        "function balancePayPopupRoot()",
+        "balance pay QR popup disambiguates LAY-popup-node-add",
+    ),
+    (
+        "views/site/cert/dnsapi.html",
+        "site-dnsapi-add-root[data-veikor-form=\"dnsApiAdd\"]",
+        "dns api open layer disambiguates node-add shell",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "popupId === 'LAY-popup-node-add' && !el.querySelector(\"textarea[name='cert']\")",
+        "cert edit open layer disambiguates node-add shell",
+    ),
+    (
+        "views/site/acl/index.html",
+        "pop.querySelector('#buy-confirm')",
+        "acl open layer skips package-buy duration shell",
+    ),
+    (
         "views/system/message/index.html",
         "form.render('select', 'system-message-search')",
         "system message search control skins on first load",
