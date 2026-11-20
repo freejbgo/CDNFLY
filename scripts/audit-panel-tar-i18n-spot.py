@@ -103,6 +103,11 @@ SPOTS = (
         "stream realtime chart refresh delegate",
     ),
     (
+        "views/stream/monitor/realtime.html",
+        "path[2] !== 'realtime'",
+        "stream realtime monitor route guard",
+    ),
+    (
         "views/site/monitor/usage.html",
         "refreshSiteUsageSeniorI18n",
         "site usage chart refresh delegate",
