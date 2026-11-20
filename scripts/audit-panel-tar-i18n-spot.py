@@ -1033,6 +1033,11 @@ SPOTS = (
         "stream batch update i18n gated on open popup",
     ),
     (
+        "views/stream/stream/update_form.html",
+        "return !!streamUpdatePopupRoot()",
+        "stream batch update alive requires collapse shell marker",
+    ),
+    (
         "views/site/site/update_form.html",
         "if (!siteUpdatePopupAlive() || !veikorI18n) return",
         "site batch update form i18n gated on open popup",
