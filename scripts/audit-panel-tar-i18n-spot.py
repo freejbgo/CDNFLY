@@ -1103,6 +1103,21 @@ SPOTS = (
         "balance pay QR popup disambiguates LAY-popup-node-add",
     ),
     (
+        "views/finance/balance/index.html",
+        "var payRoot = balancePayPopupRoot()",
+        "balance pay codepay DOM scoped to pay shell",
+    ),
+    (
+        "views/layout.html",
+        "function layoutNodeAddForeignShell(el)",
+        "shell lang skips foreign LAY-popup-node-add shells",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "certListOpenLayerShellOk('LAY-popup-node-add', popup)",
+        "cert edit hides count only in cert node-add shell",
+    ),
+    (
         "views/site/cert/dnsapi.html",
         "site-dnsapi-add-root[data-veikor-form=\"dnsApiAdd\"]",
         "dns api open layer disambiguates node-add shell",
