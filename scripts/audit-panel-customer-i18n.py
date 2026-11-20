@@ -288,6 +288,7 @@ def main() -> int:
             bad_dynamic.extend(_audit_dynamic_host_i18n(rel, text))
             bad_jobs_done.extend(_audit_jobs_done_alive(rel, text))
 
+    bad_monitor_controller_lang: list[str] = []
     for fn in CUSTOMER_CONTROLLERS:
         path = os.path.join(CONTROLLERS, fn)
         if not os.path.isfile(path):
@@ -295,6 +296,10 @@ def main() -> int:
         text = open(path, encoding="utf-8", errors="replace").read()
         if BARE_LANG_LISTENER.search(text):
             bad_bare_lang.append(os.path.join("controller", fn))
+        if SCOPED_LANG.search(text):
+            bad_monitor_controller_lang.append(
+                os.path.join("controller", fn)
+            )
         if _missing_global_lang(text):
             bad_lang.append(os.path.join("controller", fn))
 
@@ -320,6 +325,14 @@ def main() -> int:
         print("site/stream list+edit lang route guards:", file=sys.stderr)
         for line in sorted(bad_list_edit_guard):
             print(" ", line, file=sys.stderr)
+
+    if bad_monitor_controller_lang:
+        print(
+            "monitor senior controllers must not bind veikor:lang (views orchestrate):",
+            file=sys.stderr,
+        )
+        for rel in sorted(bad_monitor_controller_lang):
+            print(" ", rel, file=sys.stderr)
 
     if bad_lang:
         print(
@@ -375,7 +388,8 @@ def main() -> int:
     if (
         bad_bare_lang
         or         bad_open_partial_lang
-        or bad_list_edit_guard
+        or         bad_list_edit_guard
+        or bad_monitor_controller_lang
         or bad_lang
         or bad_layer
         or bad_res_msg
