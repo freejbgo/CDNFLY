@@ -873,6 +873,26 @@ SPOTS = (
         "stream group open layer refresh gated",
     ),
     (
+        "views/site/site/index.html",
+        "refreshSiteNodeGroupPopupI18n(true)",
+        "site list node-group lang refresh",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "refreshStreamNodeGroupPopupI18n(true)",
+        "stream list node-group lang refresh",
+    ),
+    (
+        "views/site/site/update-node-group.html",
+        "function refreshSiteNodeGroupPopupI18n(langOnly)",
+        "site node-group partial accepts langOnly",
+    ),
+    (
+        "views/account/sub/index.html",
+        "veikorRenderFormControlSkins('account-sub-page'",
+        "account sub lang reload uses control skins only",
+    ),
+    (
         "views/system/message/index.html",
         "form.render('select', 'system-message-search')",
         "system message search control skins on first load",
