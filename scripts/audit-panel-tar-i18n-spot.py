@@ -1323,6 +1323,26 @@ SPOTS = (
         "sold package region_id select and submit gated on edit form",
     ),
     (
+        "views/node/node/index.html",
+        "window.nodeNodeHttpProxyFormRoot()",
+        "node add submit reads http proxy fields from proxy tab root",
+    ),
+    (
+        "views/package/basic/index.html",
+        "window.packageBasicAddFormRoot()",
+        "basic package add/edit click reads fields from package form root",
+    ),
+    (
+        "views/package/basic/sync.html",
+        "window.packageBasicSyncFormRoot = packageBasicSyncFormRoot",
+        "basic package sync popup form root",
+    ),
+    (
+        "views/package/basic/index.html",
+        "window.packageBasicSyncFormRoot()",
+        "basic package sync click scoped to sync form root",
+    ),
+    (
         "views/site/acl/index.html",
         "el.querySelector('#acllist') && !el.querySelector('#buy-confirm')",
         "acl rule popup shell disambiguates stream edit aclist",
