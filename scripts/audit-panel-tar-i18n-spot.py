@@ -1732,6 +1732,21 @@ SPOTS = (
         "window.announcementMessageFormRoot()",
         "announcement submit gated on message form root",
     ),
+    (
+        "views/node/node/index.html",
+        "var $mon = $(formRoot)",
+        "node monitor submit reads fields from monitor form root",
+    ),
+    (
+        "views/system/announcement/index.html",
+        "var $form = $(popupRoot)",
+        "announcement submit reads checkbox fields from message form root",
+    ),
+    (
+        "views/package/basic/index.html",
+        "var $pkgForm = pkgRoot ? $(pkgRoot) : $(layero)",
+        "package basic popup init scopes region select to package form root",
+    ),
 )
 
 
