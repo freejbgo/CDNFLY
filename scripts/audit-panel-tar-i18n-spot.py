@@ -858,9 +858,19 @@ SPOTS = (
         "package my list owns renew popup lang refresh",
     ),
     (
-        "views/package/buy/duration.html",
+        "views/package/buy/index.html",
         "refreshPackageBuyDurationPopupI18n(true)",
-        "package buy duration popup lang-only sync",
+        "package buy list owns duration popup lang refresh",
+    ),
+    (
+        "views/package/my/index.html",
+        "refreshPackageDetailI18n",
+        "package my list owns detail popup lang refresh",
+    ),
+    (
+        "views/package/my/index.html",
+        "refreshUpDownI18n",
+        "package my list owns up_down popup lang refresh",
     ),
     (
         "views/site/monitor/usage.html",
