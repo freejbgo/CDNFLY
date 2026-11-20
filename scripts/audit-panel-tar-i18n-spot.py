@@ -1038,6 +1038,16 @@ SPOTS = (
         "site batch update form i18n gated on open popup",
     ),
     (
+        "views/site/site/update_form.html",
+        "function siteUpdateTableEventOk(tableId, obj)",
+        "site batch update nested table handler disambiguation",
+    ),
+    (
+        "views/site/site/update_form.html",
+        "return !!siteUpdatePopupRoot()",
+        "site batch update alive requires collapse shell marker",
+    ),
+    (
         "views/package/my/index.html",
         "if (!myPackageAlive() || !veikorI18n) return",
         "package my per-popup refresh gated on my-package page",
