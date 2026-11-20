@@ -37,6 +37,7 @@ def main() -> int:
         "layui-layer-btn1",
         "layui-icon[close]",
         "layui-layer-msg",
+        "layui-nav-child a cite",
     ]
     for needle in required:
         if needle not in theme:
