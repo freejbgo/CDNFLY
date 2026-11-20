@@ -59,6 +59,11 @@ SPOTS = (
     ),
     (
         "views/package/my/buy-upgrade.html",
+        "querySelector('#buy-upgrade-confirm')",
+        "package buy-upgrade partial shell marker",
+    ),
+    (
+        "views/package/my/buy-upgrade.html",
         "window.refreshPackageBuyUpgradeI18n",
         "package my buy-upgrade i18n hook (#337)",
     ),
@@ -649,12 +654,12 @@ SPOTS = (
     ),
     (
         "views/site/site/index.html",
-        "siteAddPop.querySelector('select#package')",
+        "siteListOpenLayerShellOk('LAY-popup-node-add', siteAddPop)",
         "site list open-layer add guard (LAY-popup-node-add disambiguation)",
     ),
     (
         "views/stream/stream/index.html",
-        "streamAddPop.querySelector('select#package')",
+        "streamListOpenLayerShellOk('LAY-popup-stream-add', streamAddPop)",
         "stream list open-layer add guard (stream add disambiguation)",
     ),
     (
@@ -681,6 +686,16 @@ SPOTS = (
         "views/package/my/index.html",
         "function myPackageOpenLayerShellOk(popupId, el)",
         "package my popup shell disambiguation",
+    ),
+    (
+        "views/package/my/index.html",
+        "window.myPackageOpenLayerShellOk = myPackageOpenLayerShellOk",
+        "package my shell helper exported for nested partials",
+    ),
+    (
+        "views/package/my/up_down.html",
+        "myPackageOpenLayerShellOk('LAY-popup-package-buy-upgrade'",
+        "package up_down nested buy-upgrade shell gate",
     ),
     (
         "views/site/group/index.html",
