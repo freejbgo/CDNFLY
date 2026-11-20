@@ -84,6 +84,18 @@ def scan_index_preload():
         fail("index.js: veikorLocalBatch not preloaded in main define()")
 
 
+def scan_view_menu_fail_handler():
+    view_path = os.path.join(PANEL, "lib", "view.js")
+    if not os.path.isfile(view_path):
+        return
+    text = open(view_path, encoding="utf-8", errors="replace").read()
+    if re.search(
+        r"if\s*\(\s*!isMenu\s*\)\s*\{[\s\S]{0,220}?veikorMenuLoadFailed",
+        text,
+    ):
+        fail("view.js: non-menu lay-url fail handler must not call veikorMenuLoadFailed")
+
+
 # A new search or filter is a different result set. Cross-page ids from the previous query must not stay selected.
 FILTER_CLEARS = {
     "views/site/site/index.html": "__veikorSiteListCheckedMap = {}",
@@ -244,6 +256,7 @@ def main():
     if os.path.isdir(VIEWS) and os.path.isfile(os.path.join(PANEL, "index.js")):
         scan_views()
         scan_index_preload()
+        scan_view_menu_fail_handler()
     else:
         print("panel tree absent, skipped local view scan")
     import subprocess
