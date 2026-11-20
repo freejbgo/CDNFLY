@@ -659,7 +659,7 @@ SPOTS = (
     ),
     (
         "views/site/cert/cert.html",
-        "LAY-popup-set-cert-type') && window.refreshCertUpdateTypeI18n",
+        "certTypePop.querySelector('.cert-update-type-root')",
         "cert list batch-type open-layer guard",
     ),
     (
@@ -1006,6 +1006,26 @@ SPOTS = (
         "views/site/site/edit.html",
         "function siteEditNestedShellOk(popupId, el)",
         "site edit nested popup lang refresh shell markers",
+    ),
+    (
+        "views/site/site/edit.html",
+        "!siteEditNestedShellOk(popupId, node)",
+        "site edit open-layer title gated on nested shell",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "function streamEditNestedShellOk(popupId, el)",
+        "stream edit nested popup shell markers",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        ".stream-acl-add-root",
+        "stream edit ACL popup disambiguates site acl shell",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "LAY-popup-set-cert-type' && !el.querySelector('.cert-update-type-root')",
+        "cert update-type open layer shell marker",
     ),
     (
         "views/system/message/index.html",
