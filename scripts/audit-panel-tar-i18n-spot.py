@@ -669,7 +669,7 @@ SPOTS = (
     ),
     (
         "views/site/cert/cert.html",
-        "certTypePop.querySelector('.cert-update-type-root')",
+        "certListOpenLayerShellOk('LAY-popup-set-cert-type', certTypePop)",
         "cert list batch-type open-layer guard",
     ),
     (
@@ -973,6 +973,21 @@ SPOTS = (
         "package buy alive exported for duration partial",
     ),
     (
+        "views/system/message/index.html",
+        "function messageDetailOpenLayerShellOk(el)",
+        "message detail popup shell disambiguation",
+    ),
+    (
+        "views/system/message/index.html",
+        "#LAY-popup-message-detail-pane",
+        "message detail partial shell marker",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "function certListOpenLayerShellOk(popupId, el)",
+        "cert list popup shell disambiguation",
+    ),
+    (
         "views/site/cert/cert.html",
         "function refreshCertOpenLayer(popupId, titleKey)",
         "cert list per-popup refresh gated on cert page",
@@ -1009,7 +1024,7 @@ SPOTS = (
     ),
     (
         "views/site/cert/cert.html",
-        "popupId === 'LAY-popup-node-add' && !el.querySelector(\"textarea[name='cert']\")",
+        "if (popupId === 'LAY-popup-node-add') return !!el.querySelector(\"textarea[name='cert']\")",
         "cert edit open layer disambiguates node-add shell",
     ),
     (
@@ -1059,7 +1074,7 @@ SPOTS = (
     ),
     (
         "views/site/cert/cert.html",
-        "LAY-popup-cert-add' && !el.querySelector(\"input[name='count']\")",
+        "if (popupId === 'LAY-popup-cert-add') return !!el.querySelector(\"input[name='count']\")",
         "cert add open layer disambiguates node-add shells",
     ),
     (
@@ -1084,7 +1099,7 @@ SPOTS = (
     ),
     (
         "views/site/cert/cert.html",
-        "LAY-popup-set-cert-type' && !el.querySelector('.cert-update-type-root')",
+        "if (popupId === 'LAY-popup-set-cert-type') return !!el.querySelector('.cert-update-type-root')",
         "cert update-type open layer shell marker",
     ),
     (
