@@ -1258,6 +1258,36 @@ SPOTS = (
         "stream group add form root exported for submit guard",
     ),
     (
+        "views/node/group/groupform.html",
+        "window.nodeGroupFormRoot = nodeGroupFormRoot",
+        "node group form root exported for submit guard",
+    ),
+    (
+        "views/node/node/nodeform.html",
+        "window.nodeNodeFormRoot = nodeNodeFormRoot",
+        "node add/edit form root exported for submit guard",
+    ),
+    (
+        "views/node/region/addform.html",
+        "window.nodeRegionFormRoot = nodeRegionFormRoot",
+        "node region form root exported for submit guard",
+    ),
+    (
+        "views/system/user/addform.html",
+        "window.systemUserAdminFormRoot = systemUserAdminFormRoot",
+        "admin user form root disambiguates shell profile",
+    ),
+    (
+        "views/package/group/addform.html",
+        "window.packageGroupAddFormRoot = packageGroupAddFormRoot",
+        "package group form root exported for submit guard",
+    ),
+    (
+        "views/node/node/index.html",
+        "window.nodeMonitorFormRoot()",
+        "node monitor submit gated on monitor popup shell",
+    ),
+    (
         "views/site/acl/index.html",
         "el.querySelector('#acllist') && !el.querySelector('#buy-confirm')",
         "acl rule popup shell disambiguates stream edit aclist",
