@@ -74,6 +74,25 @@ def _is_open_layer_partial(rel: str) -> bool:
     return bool(OPEN_LAYER_PARTIAL_RE.search(rel))
 
 
+LIST_INDEX_ROUTE_GUARD = ("site/site/index.html", "stream/stream/index.html")
+LIST_INDEX_GUARD_NEEDLE = "third && third !== 'index'"
+EDIT_INDEX_ROUTE_GUARD = ("site/site/edit.html", "stream/stream/edit.html")
+EDIT_ROUTE_NEEDLE = "path[2] !== 'edit'"
+
+
+def _audit_list_edit_lang_guards(rel: str, text: str) -> list[str]:
+    bad: list[str] = []
+    rel = rel.replace("\\", "/")
+    if rel in LIST_INDEX_ROUTE_GUARD and LIST_INDEX_GUARD_NEEDLE not in text:
+        bad.append(
+            f"{rel}: list page root must reject non-index routes ({LIST_INDEX_GUARD_NEEDLE})"
+        )
+    if rel in EDIT_INDEX_ROUTE_GUARD:
+        if EDIT_ROUTE_NEEDLE not in text and "path[2] === 'edit'" not in text:
+            bad.append(f"{rel}: edit page alive must gate on edit route segment")
+    return bad
+
+
 def _is_customer_view(rel: str) -> bool:
     rel = rel.replace("\\", "/")
     for prefix in CUSTOMER_VIEW_PREFIXES:
@@ -237,6 +256,7 @@ def main() -> int:
     bad_jobs_done: list[str] = []
     bad_bare_lang: list[str] = []
     bad_open_partial_lang: list[str] = []
+    bad_list_edit_guard: list[str] = []
     form_render_null_advisory: list[str] = []
     form_render_bare_advisory: list[str] = []
     bad_i18n_js = _audit_veikor_i18n_js()
@@ -254,6 +274,7 @@ def main() -> int:
                 bad_bare_lang.append(rel)
             if _is_open_layer_partial(rel) and SCOPED_LANG.search(text):
                 bad_open_partial_lang.append(rel)
+            bad_list_edit_guard.extend(_audit_list_edit_lang_guards(rel, text))
             if _missing_global_lang(text):
                 bad_lang.append(rel)
             if LANG_HANDLER.search(text) and FORM_RENDER_NULL.search(text):
@@ -294,6 +315,11 @@ def main() -> int:
         )
         for rel in sorted(bad_open_partial_lang):
             print(" ", rel, file=sys.stderr)
+
+    if bad_list_edit_guard:
+        print("site/stream list+edit lang route guards:", file=sys.stderr)
+        for line in sorted(bad_list_edit_guard):
+            print(" ", line, file=sys.stderr)
 
     if bad_lang:
         print(
@@ -348,7 +374,8 @@ def main() -> int:
 
     if (
         bad_bare_lang
-        or bad_open_partial_lang
+        or         bad_open_partial_lang
+        or bad_list_edit_guard
         or bad_lang
         or bad_layer
         or bad_res_msg
