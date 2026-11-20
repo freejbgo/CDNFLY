@@ -77,6 +77,10 @@ def main() -> int:
         print("audit-panel-cache-version: missing admin popup close icon contrast in veikor-theme")
         return 1
 
+    if "layui-side-menu .layui-nav-tree .layui-nav-child a" not in theme:
+        print("audit-panel-cache-version: missing side submenu link contrast in veikor-theme")
+        return 1
+
     page_js = tar_cat("cdnfly-master-v5.1.13/master/panel/src/lib/veikor-page.js")
     build_m = re.search(r"PANEL_FORM_SKIN_BUILD\s*=\s*'(\d{8}-\d+)'", page_js)
     if not build_m:
