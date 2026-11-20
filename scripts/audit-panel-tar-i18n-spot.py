@@ -1777,6 +1777,36 @@ SPOTS = (
         "window.certUpdateTypeFormRoot()",
         "cert batch update click scoped to cert type form root",
     ),
+    (
+        "views/stream/stream/update-state.html",
+        "window.streamStatePopupRoot = streamStatePopupRoot",
+        "stream batch state popup root export",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "window.streamStatePopupRoot()",
+        "stream batch state update scoped to popup root",
+    ),
+    (
+        "views/site/site/update-state.html",
+        "window.siteStatePopupRoot = statePopupRoot",
+        "site batch state popup root export",
+    ),
+    (
+        "views/site/site/index.html",
+        "window.siteStatePopupRoot()",
+        "site batch state update scoped to popup root",
+    ),
+    (
+        "views/package/basic/sync.html",
+        "window.packageBasicSyncPopupRoot = packageBasicSyncPopupRoot",
+        "package basic sync popup shell root",
+    ),
+    (
+        "views/package/basic/index.html",
+        "window.packageBasicSyncPopupRoot()",
+        "package basic sync button bound to sync popup root",
+    ),
 )
 
 
