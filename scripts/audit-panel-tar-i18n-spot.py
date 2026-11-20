@@ -973,6 +973,26 @@ SPOTS = (
         "acl open layer skips package-buy duration shell",
     ),
     (
+        "views/site/site/index.html",
+        "function siteListOpenLayerShellOk(popupId, el)",
+        "site list batch popup shell disambiguation",
+    ),
+    (
+        "views/site/site/index.html",
+        "popupId === 'LAY-popup-set-state') return !!el.querySelector('#site_state')",
+        "site list state popup disambiguates stream state shell",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "function streamListOpenLayerShellOk(popupId, el)",
+        "stream list batch popup shell disambiguation",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "popupId === 'LAY-popup-set-state') return !!el.querySelector('#stream_state')",
+        "stream list state popup disambiguates site state shell",
+    ),
+    (
         "views/system/message/index.html",
         "form.render('select', 'system-message-search')",
         "system message search control skins on first load",
