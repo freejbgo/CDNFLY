@@ -1098,6 +1098,46 @@ SPOTS = (
         "CC rule group child popup shell gate",
     ),
     (
+        "views/site/cc/rule-add.html",
+        "window.ccRuleGroupFormRoot = ruleGroupAddRoot",
+        "CC rule group form root export",
+    ),
+    (
+        "views/site/cc/match-add.html",
+        "window.ccMatchAddFormRoot = matchAddRoot",
+        "CC matcher add form root export",
+    ),
+    (
+        "views/site/cc/filter-add.html",
+        "window.ccFilterFormRoot = ccFilterFormRoot",
+        "CC filter add form root export",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "ccRuleGroupFormRoot()",
+        "CC rule group save scoped to form root",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "ccFilterFormRoot()",
+        "CC filter popup save/prefill scoped to form root",
+    ),
+    (
+        "views/package/basic/index.html",
+        "if (!pkgRoot) return",
+        "basic package add popup requires form root",
+    ),
+    (
+        "views/site/site/index.html",
+        "if (!stateRoot) return",
+        "site batch state popup requires state root",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "if (!stateRoot) return",
+        "stream batch state popup requires state root",
+    ),
+    (
         "views/stream/stream/update_form.html",
         "if (!streamUpdatePopupAlive()",
         "stream batch update i18n gated on open popup",
@@ -1844,8 +1884,8 @@ SPOTS = (
     ),
     (
         "views/package/basic/index.html",
-        "var $pkgForm = pkgRoot ? $(pkgRoot) : $(layero)",
-        "package basic popup init scopes region select to package form root",
+        "if (!pkgRoot) return",
+        "package basic popup init requires package form root",
     ),
     (
         "views/package/basic/index.html",
@@ -1854,8 +1894,8 @@ SPOTS = (
     ),
     (
         "views/package/sold/index.html",
-        "var $soldForm = soldRoot ? $(soldRoot) : $(layero)",
-        "sold package edit popup scoped to edit form root",
+        "if (!soldRoot) return",
+        "sold package edit popup requires edit form root",
     ),
     (
         "views/package/sold/sync.html",
