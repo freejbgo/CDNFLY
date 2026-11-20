@@ -33,6 +33,8 @@ def main() -> int:
         ".layui-table-tool",
         "layadmin-tabs-control",
         "layui-tab-close",
+        "layui-layer-btn0",
+        "layui-icon[close]",
     ]
     for needle in required:
         if needle not in theme:

@@ -69,6 +69,14 @@ def main() -> int:
         print("audit-panel-cache-version: missing pagetabs contrast rules in veikor-theme")
         return 1
 
+    if "layui-layer-btn0" not in theme or "color: #fff !important" not in theme:
+        print("audit-panel-cache-version: missing popup primary button contrast in veikor-theme")
+        return 1
+
+    if "layui-layer-admin > i[close]" not in theme and "layui-icon[close]" not in theme:
+        print("audit-panel-cache-version: missing admin popup close icon contrast in veikor-theme")
+        return 1
+
     page_js = tar_cat("cdnfly-master-v5.1.13/master/panel/src/lib/veikor-page.js")
     build_m = re.search(r"PANEL_FORM_SKIN_BUILD\s*=\s*'(\d{8}-\d+)'", page_js)
     if not build_m:
