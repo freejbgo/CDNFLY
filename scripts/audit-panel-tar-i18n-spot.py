@@ -1053,6 +1053,11 @@ SPOTS = (
         "site batch update alive requires collapse shell marker",
     ),
     (
+        "views/site/site/update_form.html",
+        "function siteUpdateField(sel) {\n    var popup = siteUpdatePopupRoot();",
+        "site batch update field lookup uses popup root",
+    ),
+    (
         "views/package/my/index.html",
         "if (!myPackageAlive() || !veikorI18n) return",
         "package my per-popup refresh gated on my-package page",
