@@ -1143,6 +1143,21 @@ SPOTS = (
         "acl rule matcher save gated by child shell",
     ),
     (
+        "views/site/acl/acl-add.html",
+        "aclRulePopupShellOk(root)) return root",
+        "acl rule editor root scoped to rule popup shell",
+    ),
+    (
+        "views/site/acl/acl-add.html",
+        "function aclRuleAclistEl()",
+        "acl rule editor aclist scoped under popup root",
+    ),
+    (
+        "views/site/acl/index.html",
+        "el.querySelector('#acllist') && !el.querySelector('#buy-confirm')",
+        "acl rule popup shell disambiguates stream edit aclist",
+    ),
+    (
         "views/site/acl/index.html",
         "window.refreshAclAddFormI18n(true)",
         "acl list lang reload refreshes open rule editor popup",
