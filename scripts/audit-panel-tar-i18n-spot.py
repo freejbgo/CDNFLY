@@ -1807,6 +1807,21 @@ SPOTS = (
         "window.packageBasicSyncPopupRoot()",
         "package basic sync button bound to sync popup root",
     ),
+    (
+        "views/package/sold/index.html",
+        "window.packageSoldSyncFormRoot()",
+        "sold package sync button bound to sync popup root",
+    ),
+    (
+        "views/package/group/index.html",
+        "window.packageGroupAddFormRoot()",
+        "package group edit prefill scoped to form root",
+    ),
+    (
+        "views/package/upgrade/index.html",
+        "window.packageUpgradeAddformRoot()",
+        "package upgrade edit prefill scoped to form root",
+    ),
 )
 
 
