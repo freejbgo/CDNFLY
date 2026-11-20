@@ -574,13 +574,43 @@ SPOTS = (
     ),
     (
         "views/site/site/backend_form.html",
+        "getElementById('LAY-popup-backend-add')",
+        "site backend form scoped to popup shell",
+    ),
+    (
+        "views/site/site/backend_form.html",
         "window.refreshSiteBackendFormI18n",
         "site backend defers lang to edit open layers",
     ),
     (
         "views/stream/stream/backend_form.html",
+        "getElementById('LAY-popup-backend-add')",
+        "stream backend form scoped to popup shell",
+    ),
+    (
+        "views/stream/stream/backend_form.html",
         "window.refreshStreamBackendFormI18n",
         "stream backend defers lang to edit open layers",
+    ),
+    (
+        "views/site/site/cache_form.html",
+        "getElementById('LAY-popup-cache-add')",
+        "site cache form scoped to popup shell",
+    ),
+    (
+        "views/site/site/resp_header_form.html",
+        "getElementById('LAY-popup-resp_header-add')",
+        "site resp header form scoped to popup shell",
+    ),
+    (
+        "views/site/site/url_ratelimit_form.html",
+        "getElementById('LAY-popup-url-ratelimit-add')",
+        "site url ratelimit form scoped to popup shell",
+    ),
+    (
+        "views/site/acl/acllist-add.html",
+        "window.siteAclMatchPopupShellOk = siteAclMatchPopupShellOk",
+        "ACL match popup shell helper exported",
     ),
     (
         "views/stream/stream/edit.html",
