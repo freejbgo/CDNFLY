@@ -823,6 +823,11 @@ SPOTS = (
         "stream edit open layers gated on edit route",
     ),
     (
+        "views/site/site/edit.html",
+        "if (!siteEditAlive()",
+        "site edit open layers gated on edit route",
+    ),
+    (
         "views/site/cc/rule.html",
         "refreshCcRuleAddFormI18n(true)",
         "CC rule group add lang-only on switch",
