@@ -1173,6 +1173,21 @@ SPOTS = (
         "site edit disambiguates stream edit backend handlers",
     ),
     (
+        "views/site/site/edit.html",
+        "function siteEditTableEventOk(tableId, obj)",
+        "site edit nested table handler disambiguation",
+    ),
+    (
+        "views/site/site/edit.html",
+        "siteEditTableEventOk('cache', obj)",
+        "site edit cache table disambiguates default config cache",
+    ),
+    (
+        "views/config/default/index.html",
+        "function defaultConfigCacheTableEventOk(obj)",
+        "default config cache table disambiguates site edit cache",
+    ),
+    (
         "views/package/upgrade/addform.html",
         "function packageUpgradeAddformRoot()",
         "package upgrade addform scoped to edit popup",
