@@ -121,6 +121,26 @@ def _audit_list_edit_lang_guards(rel: str, text: str) -> list[str]:
     return bad
 
 
+BLOCK_REGION_INPUT = re.compile(
+    r'<input[^>]*class="block_region[^"]*"[^>]*name="block_region"\s+value="[a-z]{2}"'
+)
+BLOCK_REGION_I18N = re.compile(
+    r'name="block_region"\s+value="[a-z]{2}"[^>]*data-i18n-title="page\.geo\.country\.'
+)
+
+
+def _audit_block_region_geo_titles(rel: str, text: str) -> list[str]:
+    """Shield-region checkboxes must carry data-i18n-title for first paint + lang skins."""
+    rel = rel.replace("\\", "/")
+    if rel not in ("site/site/edit.html", "site/site/update_form.html"):
+        return []
+    need = len(BLOCK_REGION_INPUT.findall(text))
+    have = len(BLOCK_REGION_I18N.findall(text))
+    if need and have < need:
+        return [f"{rel}: block_region inputs missing data-i18n-title ({have}/{need})"]
+    return []
+
+
 def _is_customer_view(rel: str) -> bool:
     rel = rel.replace("\\", "/")
     for prefix in CUSTOMER_VIEW_PREFIXES:
@@ -316,6 +336,7 @@ def main() -> int:
                 bad_res_msg.append(rel)
             bad_dynamic.extend(_audit_dynamic_host_i18n(rel, text))
             bad_jobs_done.extend(_audit_jobs_done_alive(rel, text))
+            bad_list_edit_guard.extend(_audit_block_region_geo_titles(rel, text))
 
     bad_monitor_controller_lang: list[str] = []
     for fn in CUSTOMER_CONTROLLERS:

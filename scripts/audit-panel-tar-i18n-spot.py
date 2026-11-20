@@ -544,6 +544,11 @@ SPOTS = (
     ),
     (
         "views/site/site/edit.html",
+        'data-i18n-title="page.geo.country.cn"',
+        "site edit block_region checkboxes use GEO_COUNTRY keys",
+    ),
+    (
+        "views/site/site/edit.html",
         "window.repaintSiteEditFormLangSkins",
         "site edit AJAX/prefill form lang skins export",
     ),
