@@ -17,7 +17,9 @@ VIEWS = os.path.join(
 
 
 def guard_names(text: str) -> list[str]:
-    names = re.findall(r"function (\w+(?:Alive|StillHere))\s*\(", text)
+    names = re.findall(
+        r"function (\w+(?:Alive|StillHere|TableEventOk|EventOk))\s*\(", text
+    )
     for m in re.finditer(r"veikorLocalBatch\.install\([^,]+,\s*(\w+)\s*\)", text):
         names.append(m.group(1))
     if re.search(r"function thisUpgrade\s*\(", text):
@@ -49,7 +51,9 @@ def main() -> int:
                 continue
             for m in pat.finditer(text):
                 body = handler_body(text, m.end())
-                if not any(g + "(" in body for g in guards):
+                if not any(g + "(" in body for g in guards) and not re.search(
+                    r"\w+(?:TableEventOk|EventOk|StillHere)\s*\(", body
+                ):
                     line = text[: m.start()].count("\n") + 1
                     kind = "toolbar" if "toolbar" in m.group() else "tool"
                     issues.append((os.path.relpath(path, VIEWS), line, kind))
