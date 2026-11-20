@@ -1163,6 +1163,16 @@ SPOTS = (
         "stream edit disambiguates site rule editor aclist handlers",
     ),
     (
+        "views/stream/stream/edit.html",
+        "function streamEditBackendTableEventOk(obj)",
+        "stream edit disambiguates site edit backend handlers",
+    ),
+    (
+        "views/site/site/edit.html",
+        "function siteEditBackendTableEventOk(obj)",
+        "site edit disambiguates stream edit backend handlers",
+    ),
+    (
         "views/package/upgrade/addform.html",
         "function packageUpgradeAddformRoot()",
         "package upgrade addform scoped to edit popup",
