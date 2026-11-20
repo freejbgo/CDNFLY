@@ -1243,6 +1243,21 @@ SPOTS = (
         "package upgrade addform scoped to edit popup",
     ),
     (
+        "views/package/upgrade/addform.html",
+        "document.getElementById('LAY-popup-node-add')",
+        "package upgrade addform resolves node-add popup id",
+    ),
+    (
+        "views/package/upgrade/index.html",
+        "window.packageUpgradeAddformRoot()",
+        "package upgrade submit gated on upgrade form shell",
+    ),
+    (
+        "views/stream/group/addform.html",
+        "window.streamGroupAddFormRoot = streamGroupAddFormRoot",
+        "stream group add form root exported for submit guard",
+    ),
+    (
         "views/site/acl/index.html",
         "el.querySelector('#acllist') && !el.querySelector('#buy-confirm')",
         "acl rule popup shell disambiguates stream edit aclist",
@@ -1516,6 +1531,31 @@ SPOTS = (
         "views/site/site/update_form.html",
         "if (!siteUpdatePopupAlive()) return;\n                  if (!data.elem || !$(layero)",
         "site batch nested popup submit gated on update popup",
+    ),
+    (
+        "views/site/group/addform.html",
+        "window.siteGroupAddFormRoot = siteGroupAddFormRoot",
+        "site group add form root exported for submit guard",
+    ),
+    (
+        "views/site/group/index.html",
+        "window.siteGroupAddFormRoot()",
+        "site group submit gated on group popup shell",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "var addRoot = streamAddRoot();",
+        "stream add submit gated on stream-add popup shell",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "var root = certAddRoot();",
+        "cert add submit gated on cert-add popup shell",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "certListOpenLayerShellOk('LAY-popup-node-add', root)",
+        "cert edit submit gated on cert node-add shell",
     ),
     (
         "views/site/site/update-cname-mode.html",
