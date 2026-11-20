@@ -644,13 +644,13 @@ SPOTS = (
     ),
     (
         "views/site/site/index.html",
-        "getElementById('LAY-popup-node-add') && window.refreshSiteAddFormI18n",
-        "site list open-layer add guard",
+        "siteAddPop.querySelector('select#package')",
+        "site list open-layer add guard (LAY-popup-node-add disambiguation)",
     ),
     (
         "views/stream/stream/index.html",
-        "getElementById('LAY-popup-stream-add') && window.refreshStreamAddFormI18n",
-        "stream list open-layer add guard",
+        "streamAddPop.querySelector('select#package')",
+        "stream list open-layer add guard (stream add disambiguation)",
     ),
     (
         "views/site/site/edit.html",
@@ -936,6 +936,21 @@ SPOTS = (
         "views/site/site/edit.html",
         "function refreshSiteEditOpenLayer(popupId, titleKey)",
         "site edit per-popup title refresh gated on edit page",
+    ),
+    (
+        "views/site/site/index.html",
+        "function refreshSiteListOpenLayer(popupId, titleKey)",
+        "site list per-popup refresh gated; node-add requires package select",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "function refreshStreamListOpenLayer(popupId, titleKey)",
+        "stream list per-popup refresh gated on stream list page",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "function refreshStreamEditOpenLayer(popupId, titleKey)",
+        "stream edit per-popup title refresh gated on edit page",
     ),
     (
         "views/system/message/index.html",
