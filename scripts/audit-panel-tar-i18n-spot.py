@@ -858,6 +858,71 @@ SPOTS = (
         "cert add form AJAX select chrome helper",
     ),
     (
+        "views/site/cert/addform.html",
+        "window.certAddFormRoot = certAddRoot",
+        "cert add popup root exported",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "function certBatchIdsBannerRoot()",
+        "cert batch id banner root helper",
+    ),
+    (
+        "views/site/site/index.html",
+        "function siteBatchIdsBannerRoot()",
+        "site batch id banner root helper",
+    ),
+    (
+        "views/stream/stream/index.html",
+        "function streamBatchIdsBannerRoot()",
+        "stream batch id banner root helper",
+    ),
+    (
+        "views/site/acl/acl-add.html",
+        "window.siteAclAddFormRoot = aclAddRoot",
+        "site ACL add popup root export",
+    ),
+    (
+        "views/site/acl/index.html",
+        "siteAclAddFormRoot()",
+        "site ACL open/save scoped to add-form root",
+    ),
+    (
+        "views/stream/stream/acl-add.html",
+        "window.streamAclAddFormRoot = streamAclAddRoot",
+        "stream edit acl popup root export",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "streamAclAddFormRoot()",
+        "stream edit acl popup handlers scoped to form root",
+    ),
+    (
+        "views/system/announcement/index.html",
+        "announcementMessageFormRoot()",
+        "announcement edit prefill scoped to message form root",
+    ),
+    (
+        "views/system/announcement/index.html",
+        "if (!announcementAlive()) return",
+        "announcement edit detail AJAX alive gate",
+    ),
+    (
+        "views/node/group/groupform.html",
+        "'LAY-popup-node-edit'",
+        "node group form root includes edit popup id",
+    ),
+    (
+        "views/node/group/index.html",
+        "nodeGroupFormRoot()",
+        "node group edit prefill via form root",
+    ),
+    (
+        "views/site/cert/dnsapi.html",
+        "siteDnsApiAddFormRoot()",
+        "dnsapi edit prefill scoped to add-form root",
+    ),
+    (
         "views/site/cert/cert.html",
         "repaintCertAddSelectChrome",
         "cert add popup user/dnsapi select sync after AJAX",
