@@ -1303,6 +1303,26 @@ SPOTS = (
         "node subip tab submit gated on node popup shell",
     ),
     (
+        "views/package/basic/addform.html",
+        "window.packageBasicAddFormRoot = packageBasicAddFormRoot",
+        "basic package add/edit popup form root for region_id guard",
+    ),
+    (
+        "views/package/basic/index.html",
+        "window.packageBasicAddFormRoot()",
+        "basic package region_id select gated on package add form",
+    ),
+    (
+        "views/package/sold/editform.html",
+        "window.packageSoldEditFormRoot = packageSoldEditFormRoot",
+        "sold package edit popup form root",
+    ),
+    (
+        "views/package/sold/index.html",
+        "window.packageSoldEditFormRoot()",
+        "sold package region_id select and submit gated on edit form",
+    ),
+    (
         "views/site/acl/index.html",
         "el.querySelector('#acllist') && !el.querySelector('#buy-confirm')",
         "acl rule popup shell disambiguates stream edit aclist",
