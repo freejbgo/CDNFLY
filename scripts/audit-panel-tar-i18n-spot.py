@@ -604,7 +604,7 @@ SPOTS = (
     ),
     (
         "views/site/cc/rule.html",
-        "LAY-popup-rulelist-edit')) && window.refreshCcRulelistAddI18n",
+        "ccRuleOpenLayerShellOk('LAY-popup-rulelist-edit', ruleListEdit))",
         "CC rule open layer rulelist guard",
     ),
     (
@@ -849,7 +849,7 @@ SPOTS = (
     ),
     (
         "views/site/cc/rule.html",
-        "refreshCcRuleAddFormI18n(true)",
+        "ccRuleRefreshNestedForm('LAY-popup-rulegroup-add'",
         "CC rule group add lang-only on switch",
     ),
     (
@@ -901,6 +901,16 @@ SPOTS = (
         "views/site/cc/rule.html",
         "if (!ccRuleAlive()",
         "CC rule per-popup refresh gated on cc page",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "function ccRuleOpenLayerShellOk(popupId, el)",
+        "CC rule popup shell disambiguation",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "ccRuleRefreshNestedForm('LAY-popup-filter-add'",
+        "CC rule nested form refresh gated on shell",
     ),
     (
         "views/stream/stream/update_form.html",
