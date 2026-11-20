@@ -1113,6 +1113,16 @@ SPOTS = (
         "acl match popup shell gate",
     ),
     (
+        "views/stream/stream/acl-add.html",
+        "function streamAclAddPopupShellOk(el)",
+        "stream ACL add popup shell gate",
+    ),
+    (
+        "views/stream/stream/acl-add.html",
+        "getElementById('LAY-popup-acllist-add')",
+        "stream ACL add scoped to acllist popup shell",
+    ),
+    (
         "views/site/site/index.html",
         "function siteListOpenLayerShellOk(popupId, el)",
         "site list batch popup shell disambiguation",
