@@ -488,6 +488,11 @@ SPOTS = (
         "site list search lang sync selects",
     ),
     (
+        "views/site/site/index.html",
+        "veikorRefreshSelectElement",
+        "site list isolated AJAX select refresh",
+    ),
+    (
         "views/stream/stream/index.html",
         "reloadStreamListPageI18n",
         "stream list page lang reload",
