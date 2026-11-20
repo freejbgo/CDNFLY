@@ -1288,6 +1288,21 @@ SPOTS = (
         "node monitor submit gated on monitor popup shell",
     ),
     (
+        "views/node/node/nodeform.html",
+        "window.nodeNodeCacheFormRoot = nodeNodeCacheFormRoot",
+        "node edit cache tab root for submit guard",
+    ),
+    (
+        "views/node/node/index.html",
+        "window.nodeNodeCacheFormRoot()",
+        "node cache tab submit gated on node popup shell",
+    ),
+    (
+        "views/node/node/index.html",
+        "window.nodeNodeSubipFormRoot()",
+        "node subip tab submit gated on node popup shell",
+    ),
+    (
         "views/site/acl/index.html",
         "el.querySelector('#acllist') && !el.querySelector('#buy-confirm')",
         "acl rule popup shell disambiguates stream edit aclist",
