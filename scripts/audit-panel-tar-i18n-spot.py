@@ -168,6 +168,21 @@ SPOTS = (
         "site unlock-ip popup i18n",
     ),
     (
+        "views/site/site/unlock-ip.html",
+        "function refreshSiteUnlockIpI18n(langOnly)",
+        "site unlock-ip lang-only radio skins",
+    ),
+    (
+        "views/site/site/index.html",
+        "refreshSiteUnlockIpI18n(true)",
+        "site list unlock popup lang-only refresh",
+    ),
+    (
+        "views/system/message/index.html",
+        "if (!messagePageAlive()",
+        "message detail open layer gated on list page",
+    ),
+    (
         "views/site/monitor/domain-rank.html",
         "window.refreshDomainRankI18n",
         "site monitor domain rank",
