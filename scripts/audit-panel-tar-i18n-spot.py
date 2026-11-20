@@ -499,8 +499,8 @@ SPOTS = (
     ),
     (
         "views/stream/stream/index.html",
-        "form.render('select', 'stream-list-search')",
-        "stream list search scoped first render",
+        "renderStreamListSelect",
+        "stream list search scoped select render",
     ),
     (
         "views/site/cert/cert.html",
@@ -509,8 +509,8 @@ SPOTS = (
     ),
     (
         "views/site/cert/cert.html",
-        "form.render('select', 'cert-list-search')",
-        "cert list search scoped first render",
+        "renderCertSearchSelect",
+        "cert list search scoped select render",
     ),
     (
         "views/site/cert/cert.html",
