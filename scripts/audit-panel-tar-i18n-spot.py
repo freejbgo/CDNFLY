@@ -918,6 +918,26 @@ SPOTS = (
         "package my per-popup refresh gated on my-package page",
     ),
     (
+        "views/package/buy/duration.html",
+        "!root.querySelector('#buy-confirm')",
+        "package buy duration popup distinguished from acl shell id",
+    ),
+    (
+        "views/package/buy/index.html",
+        "window.buyPackageAlive = buyPackageAlive",
+        "package buy alive exported for duration partial",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "function refreshCertOpenLayer(popupId, titleKey)",
+        "cert list per-popup refresh gated on cert page",
+    ),
+    (
+        "views/site/site/edit.html",
+        "function refreshSiteEditOpenLayer(popupId, titleKey)",
+        "site edit per-popup title refresh gated on edit page",
+    ),
+    (
         "views/system/message/index.html",
         "form.render('select', 'system-message-search')",
         "system message search control skins on first load",
