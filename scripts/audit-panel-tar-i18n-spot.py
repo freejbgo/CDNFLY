@@ -1058,6 +1058,21 @@ SPOTS = (
         "site batch update field lookup uses popup root",
     ),
     (
+        "views/site/site/update_form.html",
+        "form.on('checkbox(check-all-asia)', function(data){\n      if (!siteUpdatePopupAlive()) return;",
+        "site batch update region check-all gated on popup",
+    ),
+    (
+        "views/site/site/edit.html",
+        "function siteEditBatchUpdatePopupRoot()",
+        "site edit ssl_mode batch popup shell disambiguation",
+    ),
+    (
+        "views/site/site/edit.html",
+        "form.on('checkbox(check-all-asia)', function(data){\n      if (!siteEditEventHere(data)) return;",
+        "site edit region check-all scoped to edit page",
+    ),
+    (
         "views/package/my/index.html",
         "if (!myPackageAlive() || !veikorI18n) return",
         "package my per-popup refresh gated on my-package page",
