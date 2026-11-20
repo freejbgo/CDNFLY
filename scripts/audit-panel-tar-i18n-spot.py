@@ -893,6 +893,16 @@ SPOTS = (
         "account sub lang reload uses control skins only",
     ),
     (
+        "views/account/personal/index.html",
+        "renderPersonalForms(true)",
+        "account personal lang-only form skins",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "if (!ccRuleAlive()",
+        "CC rule per-popup refresh gated on cc page",
+    ),
+    (
         "views/system/message/index.html",
         "form.render('select', 'system-message-search')",
         "system message search control skins on first load",
