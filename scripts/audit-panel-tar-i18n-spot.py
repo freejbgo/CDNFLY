@@ -1269,8 +1269,38 @@ SPOTS = (
     ),
     (
         "views/site/cert/dnsapi-add.html",
+        "if (!popup) return null",
+        "DNS API add form root scoped to node-add popup",
+    ),
+    (
+        "views/site/cert/dnsapi-add.html",
         "window.refreshDnsApiAddFormI18n",
         "DNS API add defers lang to dnsapi page open layer",
+    ),
+    (
+        "views/system/user/addform.html",
+        "getElementById('LAY-popup-node-add')",
+        "shell profile form scoped to node-add popup",
+    ),
+    (
+        "views/site/site/update-cname-mode.html",
+        "querySelector('#site_cname_mode')",
+        "site cname mode batch partial shell marker",
+    ),
+    (
+        "views/stream/stream/update-cname-mode.html",
+        "querySelector('#stream_cname_mode')",
+        "stream cname mode batch partial shell marker",
+    ),
+    (
+        "views/site/site/update-state.html",
+        "querySelector('#site_state')",
+        "site batch state partial shell marker",
+    ),
+    (
+        "views/stream/stream/update-state.html",
+        "querySelector('#stream_state')",
+        "stream batch state partial shell marker",
     ),
     (
         "views/site/group/addform.html",
