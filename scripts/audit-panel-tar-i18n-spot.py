@@ -713,6 +713,21 @@ SPOTS = (
         "package my renew open-layer guard",
     ),
     (
+        "views/package/my/renew.html",
+        "function packageRenewPopupRoot()",
+        "package renew popup root helper",
+    ),
+    (
+        "views/package/my/renew.html",
+        "packageRenewSelectAlive()",
+        "package renew duration handler alive gate",
+    ),
+    (
+        "views/package/my/up_down.html",
+        "if (upgradeRoot()) layer.close(index)",
+        "up_down layer close scoped to upgrade popup shell",
+    ),
+    (
         "views/package/my/index.html",
         "function myPackageOpenLayerShellOk(popupId, el)",
         "package my popup shell disambiguation",
@@ -1111,6 +1126,16 @@ SPOTS = (
         "views/site/acl/acllist-add.html",
         "function siteAclMatchPopupShellOk(el)",
         "acl match popup shell gate",
+    ),
+    (
+        "views/site/acl/acllist-add.html",
+        "siteAclMatchPopupShellOk(popRoot)) refreshRuleMatchFormI18n",
+        "acl match partial skips stream acl shell on load",
+    ),
+    (
+        "views/site/acl/acllist-add.html",
+        "!siteAclMatchPopupShellOk(root)) return",
+        "acl match refresh gated by site shell",
     ),
     (
         "views/stream/stream/acl-add.html",
