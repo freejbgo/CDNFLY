@@ -1473,6 +1473,16 @@ SPOTS = (
         "DNS API add defers lang to dnsapi page open layer",
     ),
     (
+        "views/node/dns/index.html",
+        "function nodeDnsApiAddShell()",
+        "node dns select(dns) disambiguates cert DNS API popup shell",
+    ),
+    (
+        "views/node/dns/index.html",
+        "data.elem.getAttribute('name') !== 'dns'",
+        "node dns select handler ignores cert DNS API type select",
+    ),
+    (
         "views/system/user/addform.html",
         "getElementById('LAY-popup-node-add')",
         "shell profile form scoped to node-add popup",
