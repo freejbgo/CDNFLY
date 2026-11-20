@@ -68,6 +68,11 @@ SPOTS = (
         "package my buy-upgrade i18n hook (#337)",
     ),
     (
+        "views/package/my/buy-upgrade.html",
+        "function packageBuyUpgradePopupRoot()",
+        "package buy-upgrade popup root helper",
+    ),
+    (
         "views/package/my/index.html",
         "refreshMyPackageRenamePrompt",
         "package my rename prompt title refresh",
@@ -1081,6 +1086,36 @@ SPOTS = (
         "views/package/buy/duration.html",
         "root.querySelector('[lay-filter=\"acl-add-form\"]')",
         "package buy duration popup rejects acl rule shell",
+    ),
+    (
+        "views/package/buy/duration.html",
+        "function packageBuyDurationPopupRoot()",
+        "package buy duration popup root helper",
+    ),
+    (
+        "views/package/buy/index.html",
+        "packageBuyDurationPopupRoot()",
+        "package buy open handler scoped to duration popup root",
+    ),
+    (
+        "views/package/my/index.html",
+        "packageRenewPopupRoot()",
+        "package my renew confirm scoped to renew popup root",
+    ),
+    (
+        "views/package/my/up_down.html",
+        "packageBuyUpgradePopupRoot()",
+        "package my up_down buy-upgrade confirm popup root",
+    ),
+    (
+        "views/stream/group/index.html",
+        "streamGroupAddFormRoot()",
+        "stream group edit des prefill via add-form root",
+    ),
+    (
+        "views/site/group/index.html",
+        "siteGroupAddFormRoot()",
+        "site group edit des prefill via add-form root",
     ),
     (
         "views/package/buy/index.html",
