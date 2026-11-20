@@ -1488,6 +1488,36 @@ SPOTS = (
         "shell profile form scoped to node-add popup",
     ),
     (
+        "views/system/user/addform.html",
+        "window.layoutProfileFormRoot = layoutProfileFormRoot",
+        "shell profile form root exported for submit guard",
+    ),
+    (
+        "views/layout.html",
+        "window.layoutProfileFormRoot()",
+        "shell profile submit uses layout profile root",
+    ),
+    (
+        "views/site/cert/dnsapi.html",
+        "window.siteDnsApiAddFormRoot()",
+        "dnsapi list submit gated on DNS API add shell",
+    ),
+    (
+        "views/site/site/index.html",
+        "var addRoot = siteAddRoot();",
+        "site add submit gated on node-add site shell",
+    ),
+    (
+        "views/site/site/edit.html",
+        "if (!siteEditAlive()) return;\n                  if (!data.elem || !$(layero)",
+        "site edit nested popup submit gated on edit page",
+    ),
+    (
+        "views/site/site/update_form.html",
+        "if (!siteUpdatePopupAlive()) return;\n                  if (!data.elem || !$(layero)",
+        "site batch nested popup submit gated on update popup",
+    ),
+    (
         "views/site/site/update-cname-mode.html",
         "querySelector('#site_cname_mode')",
         "site cname mode batch partial shell marker",
