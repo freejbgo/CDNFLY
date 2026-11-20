@@ -664,7 +664,7 @@ SPOTS = (
     ),
     (
         "views/site/site/update_form.html",
-        "LAY-popup-cache-add') && window.refreshSiteCacheFormI18n",
+        "siteUpdateNestedFormI18n('LAY-popup-cache-add'",
         "site batch update nested open-layer guard",
     ),
     (
@@ -674,12 +674,12 @@ SPOTS = (
     ),
     (
         "views/site/group/index.html",
-        "LAY-popup-site-group-form') && window.refreshSiteGroupAddFormI18n",
+        "pop.querySelector('.site-group-add-root')",
         "site group open-layer guard",
     ),
     (
         "views/stream/group/index.html",
-        "LAY-popup-stream-group-form') && window.refreshStreamGroupAddFormI18n",
+        "pop.querySelector('.stream-group-add-root')",
         "stream group open-layer guard",
     ),
     (
@@ -991,6 +991,21 @@ SPOTS = (
         "views/stream/stream/index.html",
         "popupId === 'LAY-popup-set-state') return !!el.querySelector('#stream_state')",
         "stream list state popup disambiguates site state shell",
+    ),
+    (
+        "views/site/site/update_form.html",
+        "function siteUpdateNestedOpenLayerShellOk(popupId, el)",
+        "site batch update nested popup shell markers",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "LAY-popup-cert-add' && !el.querySelector(\"input[name='count']\")",
+        "cert add open layer disambiguates node-add shells",
+    ),
+    (
+        "views/site/site/edit.html",
+        "function siteEditNestedShellOk(popupId, el)",
+        "site edit nested popup lang refresh shell markers",
     ),
     (
         "views/system/message/index.html",
