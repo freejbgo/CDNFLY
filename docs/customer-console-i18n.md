@@ -125,6 +125,8 @@ List/edit **open-layer partials** (site/stream/cert/ACL/group/**package** add po
 
 **Why duplicates appeared:** tri-lingual (zh/en/… ) work added `data-i18n`, table column rebuilds, and per-popup `refresh*` hooks in layers that Layui keeps on `document`. Page-level `reload*PageI18n` and partial-level `$(document).on('veikor:lang.*')` often targeted the same popup; removing the partial listener does **not** remove translations — the parent still calls the same `refresh*(true)` / `veikorI18n.applyDataI18n` / control skins. Standalone sub-routes (e.g. a full tab with its own `data-veikor-page`) keep a **single** page-level handler with an `*Alive()` guard.
 
+**Account/finance mirrors** (`account/balance`, `finance/balance`, `account/order`, `finance/order`): each HTML file registers the same `veikor:lang.*` scope, so alive guards must gate on **one** route prefix only (`account/*` vs `finance/*`), not both, to avoid double reloads when both views were opened in the session.
+
 **Finance balance** (`finance/balance`) mirrors **account/balance** but must gate `accountBalanceFormEl` on both `account/balance` and `finance/balance` routes (`balanceForm` scope).
 
 **Monitor realtime/usage** pages bind `veikor:lang.siteMonitor` / `streamMonitor`; chart controllers (`senior.js`, `*-usage-senior.js`) only export `window.refresh*I18n` and must not register duplicate lang listeners (views call them from `apply*PageChrome`). Each monitor sub-route guards lang refresh with `path[2]` matching its slug.

@@ -78,17 +78,37 @@ LIST_INDEX_ROUTE_GUARD = ("site/site/index.html", "stream/stream/index.html")
 LIST_INDEX_GUARD_NEEDLE = "third && third !== 'index'"
 EDIT_INDEX_ROUTE_GUARD = ("site/site/edit.html", "stream/stream/edit.html")
 EDIT_ROUTE_NEEDLE = "path[2] !== 'edit'"
-FINANCE_BALANCE_ROUTE_NEEDLE = "path[0] !== 'finance'"
+FINANCE_MIRROR_FILES = {
+    "finance/balance/index.html": "finance",
+    "finance/order/index.html": "finance",
+    "finance/order/count.html": "finance",
+}
+ACCOUNT_MIRROR_FILES = {
+    "account/balance/index.html": "account",
+    "account/order/index.html": "account",
+    "account/order/count.html": "account",
+}
 
 
 def _audit_finance_mirror_routes(rel: str, text: str) -> list[str]:
     bad: list[str] = []
     rel = rel.replace("\\", "/")
-    if rel == "finance/balance/index.html":
-        if FINANCE_BALANCE_ROUTE_NEEDLE not in text:
-            bad.append(f"{rel}: balance root must accept finance/balance route")
-        if "path[0] !== 'account' || path[1] !== 'balance'" in text.replace(" ", ""):
-            bad.append(f"{rel}: balance root must not be account-route-only")
+    compact = text.replace(" ", "")
+    prefix = FINANCE_MIRROR_FILES.get(rel)
+    if prefix:
+        needle = f"path[0]!=='{prefix}'"
+        if needle not in compact and f'path[0]!=="{prefix}"' not in compact:
+            bad.append(f"{rel}: alive guard must gate on {prefix}/* route only")
+        dual = "path[0]!=='account'&&path[0]!=='finance'"
+        if dual in compact or 'path[0]!=="account"&&path[0]!=="finance"' in compact:
+            bad.append(f"{rel}: finance mirror must not accept account+finance dual path")
+    prefix = ACCOUNT_MIRROR_FILES.get(rel)
+    if prefix:
+        needle = f"path[0]!=='{prefix}'"
+        if needle not in compact and f'path[0]!=="{prefix}"' not in compact:
+            bad.append(f"{rel}: alive guard must gate on {prefix}/* route only")
+        if "path[0]!=='finance'" in compact or 'path[0]!=="finance"' in compact:
+            bad.append(f"{rel}: account mirror must not accept finance route")
     return bad
 
 

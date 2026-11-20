@@ -813,6 +813,21 @@ SPOTS = (
         "finance order list lang-only search sync",
     ),
     (
+        "views/finance/order/index.html",
+        "path[0] !== 'finance'",
+        "finance order list route guard",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "if (!streamEditAlive()",
+        "stream edit open layers gated on edit route",
+    ),
+    (
+        "views/site/cc/rule.html",
+        "refreshCcRuleAddFormI18n(true)",
+        "CC rule group add lang-only on switch",
+    ),
+    (
         "views/system/message/index.html",
         "form.render('select', 'system-message-search')",
         "system message search control skins on first load",
