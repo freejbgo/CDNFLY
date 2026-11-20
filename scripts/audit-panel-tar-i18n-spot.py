@@ -1763,6 +1763,41 @@ SPOTS = (
         "shell profile submit uses layout profile root",
     ),
     (
+        "views/layout.html",
+        "veikorI18n.applyDataI18n(profileRoot)",
+        "shell profile popup i18n scoped to profile form root",
+    ),
+    (
+        "views/layout.html",
+        "veikorI18n.applyDataI18n(pwdRoot)",
+        "shell password popup i18n scoped to password form root",
+    ),
+    (
+        "views/site/cc/rulelist-add.html",
+        "window.ccRulelistAddPopupRoot = ccRulelistAddRoot",
+        "CC rulelist nested popup root export",
+    ),
+    (
+        "views/site/cc/matchlist-add.html",
+        "window.ccMatchlistAddPopupRoot = ccMatchlistAddRoot",
+        "CC matchlist nested popup root export",
+    ),
+    (
+        "views/site/cc/rule-add.html",
+        "ccRulelistAddPopupRoot()",
+        "CC rulelist AJAX fill scoped to nested popup root",
+    ),
+    (
+        "views/site/cc/match-add.html",
+        "ccMatchlistAddPopupRoot()",
+        "CC matchlist edit prefill scoped to nested popup root",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "if (!certListAlive()) return",
+        "cert edit detail AJAX alive gate",
+    ),
+    (
         "views/site/cert/dnsapi.html",
         "window.siteDnsApiAddFormRoot()",
         "dnsapi list submit gated on DNS API add shell",
