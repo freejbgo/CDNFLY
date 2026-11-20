@@ -54,6 +54,25 @@ I18N_JS = os.path.join(ROOT, "lib", "veikor-i18n.js")
 REQUIRED_API_LANGS = ("zh-CN", "zh-TW", "en")
 MIN_API_MSG_ENTRIES = 285
 
+# Popups/partials owned by parent refresh*OpenLayers must not bind veikor:lang.*
+OPEN_LAYER_PARTIAL_RE = re.compile(
+    r"(?:"
+    r"addform\.html$"
+    r"|-add\.html$"
+    r"|(?:unlock-ip|update-state|update-node-group|update-cname-mode|"
+    r"backend_form|cache_form|req_header_form|resp_header_form|"
+    r"url_rewrite_form|url_ratelimit_form)\.html$"
+    r"|package/(?:buy/duration|my/(?:renew|buy-upgrade|detail|up_down))\.html$"
+    r"|(?:site/site|stream/stream)/update_form\.html$"
+    r"|site/cert/update-cert-type\.html$"
+    r")"
+)
+
+
+def _is_open_layer_partial(rel: str) -> bool:
+    rel = rel.replace("\\", "/")
+    return bool(OPEN_LAYER_PARTIAL_RE.search(rel))
+
 
 def _is_customer_view(rel: str) -> bool:
     rel = rel.replace("\\", "/")
@@ -217,6 +236,7 @@ def main() -> int:
     bad_dynamic: list[str] = []
     bad_jobs_done: list[str] = []
     bad_bare_lang: list[str] = []
+    bad_open_partial_lang: list[str] = []
     form_render_null_advisory: list[str] = []
     form_render_bare_advisory: list[str] = []
     bad_i18n_js = _audit_veikor_i18n_js()
@@ -232,6 +252,8 @@ def main() -> int:
             text = open(path, encoding="utf-8", errors="replace").read()
             if BARE_LANG_LISTENER.search(text):
                 bad_bare_lang.append(rel)
+            if _is_open_layer_partial(rel) and SCOPED_LANG.search(text):
+                bad_open_partial_lang.append(rel)
             if _missing_global_lang(text):
                 bad_lang.append(rel)
             if LANG_HANDLER.search(text) and FORM_RENDER_NULL.search(text):
@@ -263,6 +285,14 @@ def main() -> int:
             file=sys.stderr,
         )
         for rel in sorted(bad_bare_lang):
+            print(" ", rel, file=sys.stderr)
+
+    if bad_open_partial_lang:
+        print(
+            "open-layer partials must not bind veikor:lang.* (parent refresh*OpenLayers):",
+            file=sys.stderr,
+        )
+        for rel in sorted(bad_open_partial_lang):
             print(" ", rel, file=sys.stderr)
 
     if bad_lang:
@@ -318,6 +348,7 @@ def main() -> int:
 
     if (
         bad_bare_lang
+        or bad_open_partial_lang
         or bad_lang
         or bad_layer
         or bad_res_msg
