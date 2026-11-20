@@ -28,7 +28,7 @@ if "refreshSelectElementNoCascade" in text:
     print("audit-panel-select-recurse: failed (removed helper should not exist)")
     sys.exit(1)
 
-if "PANEL_FORM_SKIN_BUILD" not in text or "20251120-528" not in text:
+if "PANEL_FORM_SKIN_BUILD" not in text or "20251120-529" not in text:
     print("audit-panel-select-recurse: failed (missing PANEL_FORM_SKIN_BUILD stamp)")
     sys.exit(1)
 
