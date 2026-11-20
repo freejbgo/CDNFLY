@@ -973,6 +973,21 @@ SPOTS = (
         "acl open layer skips package-buy duration shell",
     ),
     (
+        "views/site/acl/acl-add.html",
+        "function aclRuleChildPopupShellOk(el)",
+        "acl rule child popup disambiguates stream ACL shell",
+    ),
+    (
+        "views/site/acl/index.html",
+        "window.refreshAclAddFormI18n(true)",
+        "acl list lang reload refreshes open rule editor popup",
+    ),
+    (
+        "views/site/acl/acllist-add.html",
+        "function siteAclMatchPopupShellOk(el)",
+        "acl match popup shell gate",
+    ),
+    (
         "views/site/site/index.html",
         "function siteListOpenLayerShellOk(popupId, el)",
         "site list batch popup shell disambiguation",
