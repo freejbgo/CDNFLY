@@ -78,15 +78,14 @@ LIST_INDEX_ROUTE_GUARD = ("site/site/index.html", "stream/stream/index.html")
 LIST_INDEX_GUARD_NEEDLE = "third && third !== 'index'"
 EDIT_INDEX_ROUTE_GUARD = ("site/site/edit.html", "stream/stream/edit.html")
 EDIT_ROUTE_NEEDLE = "path[2] !== 'edit'"
-FINANCE_MIRROR_FILES = {
-    "finance/balance/index.html": "finance",
-    "finance/order/index.html": "finance",
-    "finance/order/count.html": "finance",
+FINANCE_ROUTE_ONLY = {
+    "finance/recharge/index.html": "finance",
 }
-ACCOUNT_MIRROR_FILES = {
-    "account/balance/index.html": "account",
-    "account/order/index.html": "account",
-    "account/order/count.html": "account",
+# account/balance|order → finance/* symlinks: one script, dual account|finance prefix.
+FINANCE_SYMLINK_ALIASES = {
+    "finance/balance/index.html",
+    "finance/order/index.html",
+    "finance/order/count.html",
 }
 
 
@@ -94,21 +93,18 @@ def _audit_finance_mirror_routes(rel: str, text: str) -> list[str]:
     bad: list[str] = []
     rel = rel.replace("\\", "/")
     compact = text.replace(" ", "")
-    prefix = FINANCE_MIRROR_FILES.get(rel)
-    if prefix:
-        needle = f"path[0]!=='{prefix}'"
-        if needle not in compact and f'path[0]!=="{prefix}"' not in compact:
-            bad.append(f"{rel}: alive guard must gate on {prefix}/* route only")
+    if rel in FINANCE_SYMLINK_ALIASES:
         dual = "path[0]!=='account'&&path[0]!=='finance'"
-        if dual in compact or 'path[0]!=="account"&&path[0]!=="finance"' in compact:
-            bad.append(f"{rel}: finance mirror must not accept account+finance dual path")
-    prefix = ACCOUNT_MIRROR_FILES.get(rel)
+        if dual not in compact and 'path[0]!=="account"&&path[0]!=="finance"' not in compact:
+            bad.append(
+                f"{rel}: symlink alias must accept account and finance route prefixes"
+            )
+        return bad
+    prefix = FINANCE_ROUTE_ONLY.get(rel)
     if prefix:
         needle = f"path[0]!=='{prefix}'"
         if needle not in compact and f'path[0]!=="{prefix}"' not in compact:
             bad.append(f"{rel}: alive guard must gate on {prefix}/* route only")
-        if "path[0]!=='finance'" in compact or 'path[0]!=="finance"' in compact:
-            bad.append(f"{rel}: account mirror must not accept finance route")
     return bad
 
 

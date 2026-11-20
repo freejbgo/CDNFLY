@@ -33,6 +33,11 @@ SPOTS = (
         "site batch update nested popups (#317)",
     ),
     (
+        "views/site/site/update_form.html",
+        "if (!siteUpdatePopupAlive()",
+        "site batch update nested layers gated on open popup",
+    ),
+    (
         "views/stream/stream/update_form.html",
         "veikorI18n.t('page.stream.stream.popup.updateForm')",
         "stream batch update popup title (#319)",
@@ -564,8 +569,8 @@ SPOTS = (
     ),
     (
         "views/finance/balance/index.html",
-        "path[0] !== 'finance'",
-        "finance balance route guard accepts finance menu",
+        "path[0] !== 'account' && path[0] !== 'finance'",
+        "balance symlink accepts account and finance routes",
     ),
     (
         "views/finance/balance/index.html",
@@ -814,8 +819,8 @@ SPOTS = (
     ),
     (
         "views/finance/order/index.html",
-        "path[0] !== 'finance'",
-        "finance order list route guard",
+        "path[0] !== 'account' && path[0] !== 'finance'",
+        "order symlink accepts account and finance routes",
     ),
     (
         "views/stream/stream/edit.html",
