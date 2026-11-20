@@ -583,6 +583,16 @@ SPOTS = (
         "site edit scoped lang only",
     ),
     (
+        "views/site/site/edit.html",
+        "path[2] !== 'edit'",
+        "site edit alive rejects list route",
+    ),
+    (
+        "views/site/site/index.html",
+        "third && third !== 'index'",
+        "site list alive rejects edit route",
+    ),
+    (
         "views/package/my/index.html",
         "$(document).on('veikor:lang.packageMy', reloadMyPackageI18n);",
         "package my scoped lang only",
