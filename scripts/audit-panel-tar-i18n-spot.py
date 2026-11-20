@@ -903,6 +903,11 @@ SPOTS = (
         "CC rule per-popup refresh gated on cc page",
     ),
     (
+        "views/stream/stream/update_form.html",
+        "if (!streamUpdatePopupAlive()",
+        "stream batch update i18n gated on open popup",
+    ),
+    (
         "views/system/message/index.html",
         "form.render('select', 'system-message-search')",
         "system message search control skins on first load",
