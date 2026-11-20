@@ -65,6 +65,22 @@ def main() -> int:
         print("audit-panel-cache-version: missing extended contrast rules in veikor-theme")
         return 1
 
+    if "layadmin-tabs-control" not in theme or "layui-tab-close" not in theme:
+        print("audit-panel-cache-version: missing pagetabs contrast rules in veikor-theme")
+        return 1
+
+    page_js = tar_cat("cdnfly-master-v5.1.13/master/panel/src/lib/veikor-page.js")
+    build_m = re.search(r"PANEL_FORM_SKIN_BUILD\s*=\s*'(\d{8}-\d+)'", page_js)
+    if not build_m:
+        print("audit-panel-cache-version: missing PANEL_FORM_SKIN_BUILD in veikor-page.js")
+        return 1
+    if not build_m.group(1).endswith("-" + panel_ver.rsplit("panel", 1)[-1]):
+        print(
+            "audit-panel-cache-version: PANEL_FORM_SKIN_BUILD "
+            f"{build_m.group(1)!r} out of sync with {panel_ver!r}"
+        )
+        return 1
+
     print("audit-panel-cache-version: ok")
     return 0
 
