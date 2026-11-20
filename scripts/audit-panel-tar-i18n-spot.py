@@ -904,18 +904,13 @@ SPOTS = (
     ),
     (
         "views/site/cc/rulelist-add.html",
-        "refreshCcRulelistAddI18n(true)",
-        "CC rulelist add lang-only sync",
+        "window.refreshCcRulelistAddI18n",
+        "CC rulelist partial defers lang to rule page open layers",
     ),
     (
         "views/site/cc/matchlist-add.html",
-        "refreshCcMatchlistAddI18n(true)",
-        "CC matchlist add lang-only sync",
-    ),
-    (
-        "views/site/cc/filter-add.html",
-        "refreshCcFilterAddFormI18n(true)",
-        "CC filter add lang-only sync",
+        "window.refreshCcMatchlistAddI18n",
+        "CC matchlist partial defers lang to rule page open layers",
     ),
     (
         "views/site/cert/dnsapi-add.html",
