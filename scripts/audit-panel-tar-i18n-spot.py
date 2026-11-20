@@ -838,6 +838,26 @@ SPOTS = (
         "CC rule group add lang-only on switch",
     ),
     (
+        "views/site/acl/index.html",
+        "if (!aclPageAlive()",
+        "ACL list open layer refresh gated",
+    ),
+    (
+        "views/site/cert/dnsapi.html",
+        "if (!dnsApiPageAlive()",
+        "DNS API open layer refresh gated",
+    ),
+    (
+        "views/site/group/index.html",
+        "if (!siteGroupAlive()",
+        "site group open layer refresh gated",
+    ),
+    (
+        "views/stream/group/index.html",
+        "if (!streamGroupAlive()",
+        "stream group open layer refresh gated",
+    ),
+    (
         "views/system/message/index.html",
         "form.render('select', 'system-message-search')",
         "system message search control skins on first load",
