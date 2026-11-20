@@ -46,6 +46,16 @@ def main() -> int:
         print("audit-panel-cache-version: view.js must bust templates with setter.version")
         return 1
 
+    index = tar_cat("cdnfly-master-v5.1.13/master/panel/src/index.js")
+    if "setter.version || admin.v" not in index and "setter.version" not in index:
+        print("audit-panel-cache-version: index.js should bust admin.css with setter.version")
+        return 1
+
+    layout = tar_cat("cdnfly-master-v5.1.13/master/panel/src/views/layout.html")
+    if "veikor-theme.css?v={{ layui.setter.version }}" not in layout:
+        print("audit-panel-cache-version: layout theme css must use setter.version")
+        return 1
+
     print("audit-panel-cache-version: ok")
     return 0
 
