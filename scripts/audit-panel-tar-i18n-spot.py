@@ -964,8 +964,13 @@ SPOTS = (
     ),
     (
         "views/package/buy/duration.html",
-        "!root.querySelector('#buy-confirm')",
-        "package buy duration popup distinguished from acl shell id",
+        "root.querySelector('[lay-filter=\"acl-add-form\"]')",
+        "package buy duration popup rejects acl rule shell",
+    ),
+    (
+        "views/package/buy/index.html",
+        "function buyPackageOpenLayerShellOk(el)",
+        "package buy popup shell disambiguation on LAY-popup-acl-add",
     ),
     (
         "views/package/buy/index.html",
@@ -1029,7 +1034,17 @@ SPOTS = (
     ),
     (
         "views/site/acl/index.html",
-        "pop.querySelector('#buy-confirm')",
+        "function aclRulePopupShellOk(el)",
+        "acl rule popup shell disambiguation",
+    ),
+    (
+        "views/site/acl/index.html",
+        "!(aclRulePop && aclRulePopupShellOk(aclRulePop))",
+        "acl list lang reload dedupes rule popup refresh",
+    ),
+    (
+        "views/site/acl/index.html",
+        "!el.querySelector('#buy-confirm')",
         "acl open layer skips package-buy duration shell",
     ),
     (
