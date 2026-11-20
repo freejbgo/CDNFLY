@@ -84,6 +84,19 @@ def scan_index_preload():
         fail("index.js: veikorLocalBatch not preloaded in main define()")
 
 
+def scan_shell_drawer_views():
+    if not os.path.isdir(VIEWS):
+        return
+    required = (
+        "system/theme.html",
+        "system/about.html",
+        "system/more.html",
+    )
+    for rel in required:
+        if not os.path.isfile(os.path.join(VIEWS, rel)):
+            fail(f"missing header drawer view: {rel}")
+
+
 def scan_view_menu_fail_handler():
     view_path = os.path.join(PANEL, "lib", "view.js")
     if not os.path.isfile(view_path):
@@ -257,6 +270,7 @@ def main():
         scan_views()
         scan_index_preload()
         scan_view_menu_fail_handler()
+        scan_shell_drawer_views()
     else:
         print("panel tree absent, skipped local view scan")
     import subprocess
