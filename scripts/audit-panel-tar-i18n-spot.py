@@ -638,6 +638,11 @@ SPOTS = (
         "site group open-layer guard",
     ),
     (
+        "views/stream/group/index.html",
+        "LAY-popup-stream-group-form') && window.refreshStreamGroupAddFormI18n",
+        "stream group open-layer guard",
+    ),
+    (
         "views/site/acl/acl-add.html",
         "getElementById('LAY-popup-acllist-add')",
         "ACL rule child popup lang guard",
