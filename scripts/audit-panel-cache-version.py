@@ -56,6 +56,11 @@ def main() -> int:
         print("audit-panel-cache-version: layout theme css must use setter.version")
         return 1
 
+    theme = tar_cat("cdnfly-master-v5.1.13/master/panel/src/style/veikor-theme.css")
+    if "layui-layout-admin .layui-logo a" not in theme or "#06172a" not in theme:
+        print("audit-panel-cache-version: missing logo contrast override in veikor-theme")
+        return 1
+
     print("audit-panel-cache-version: ok")
     return 0
 
