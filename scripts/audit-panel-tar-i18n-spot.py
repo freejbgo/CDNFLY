@@ -1692,6 +1692,46 @@ SPOTS = (
         "window.refreshSiteGroupAddFormI18n",
         "site group add defers lang to group list open layer",
     ),
+    (
+        "views/config/default/index.html",
+        "window.cacheFormRoot()",
+        "default config cache nested submit form root",
+    ),
+    (
+        "views/stream/stream/backend_form.html",
+        "window.streamBackendFormRoot = streamBackendFormRoot",
+        "stream edit backend popup form root export",
+    ),
+    (
+        "views/stream/stream/edit.html",
+        "window.streamBackendFormRoot()",
+        "stream edit backend submit gated on form root",
+    ),
+    (
+        "views/site/cc/rulelist-add.html",
+        "window.ccRulelistPopupFormRoot = ccRulelistPopupFormRoot",
+        "cc rulelist popup form root",
+    ),
+    (
+        "views/site/cc/rule-add.html",
+        "window.ccRulelistPopupFormRoot()",
+        "cc rulelist add submit gated on form root",
+    ),
+    (
+        "views/site/cc/matchlist-add.html",
+        "window.ccMatchlistPopupFormRoot = ccMatchlistPopupFormRoot",
+        "cc matchlist popup form root",
+    ),
+    (
+        "views/system/announcement/addform.html",
+        "window.announcementMessageFormRoot = announcementMessageFormRoot",
+        "announcement message popup form root",
+    ),
+    (
+        "views/system/announcement/index.html",
+        "window.announcementMessageFormRoot()",
+        "announcement submit gated on message form root",
+    ),
 )
 
 
