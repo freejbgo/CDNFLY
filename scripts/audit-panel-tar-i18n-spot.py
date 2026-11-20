@@ -728,6 +728,21 @@ SPOTS = (
         "up_down layer close scoped to upgrade popup shell",
     ),
     (
+        "views/package/sold/up_down.html",
+        "function upgradeRoot()",
+        "package sold upgrade popup root helper",
+    ),
+    (
+        "views/package/sold/up_down.html",
+        "soldUpDownPopupAlive()",
+        "package sold upgrade table reload alive gate",
+    ),
+    (
+        "views/package/sold/up_down.html",
+        "if (upgradeRoot()) layer.close(index)",
+        "package sold up_down layer close scoped",
+    ),
+    (
         "views/package/my/index.html",
         "function myPackageOpenLayerShellOk(popupId, el)",
         "package my popup shell disambiguation",
@@ -1116,6 +1131,16 @@ SPOTS = (
         "views/site/acl/acl-add.html",
         "function aclRuleChildPopupShellOk(el)",
         "acl rule child popup disambiguates stream ACL shell",
+    ),
+    (
+        "views/site/acl/acl-add.html",
+        "siteAclMatchPopupShellOk(pop))",
+        "acl rule add matcher refresh gated by site shell",
+    ),
+    (
+        "views/site/acl/acl-add.html",
+        "aclRuleChildPopupShellOk(pop)) return",
+        "acl rule matcher save gated by child shell",
     ),
     (
         "views/site/acl/index.html",
