@@ -404,6 +404,11 @@ SPOTS = (
     ),
     (
         "views/package/my/renew.html",
+        "querySelector('#renew-confirm')",
+        "package my renew partial shell marker",
+    ),
+    (
+        "views/package/my/renew.html",
         "window.refreshPackageRenewPopupI18n",
         "package renew partial i18n",
     ),
@@ -669,8 +674,13 @@ SPOTS = (
     ),
     (
         "views/package/my/index.html",
-        "LAY-popup-package-renew') && window.refreshPackageRenewPopupI18n",
+        "myPackageOpenLayerShellOk('LAY-popup-package-renew', renewPop)",
         "package my renew open-layer guard",
+    ),
+    (
+        "views/package/my/index.html",
+        "function myPackageOpenLayerShellOk(popupId, el)",
+        "package my popup shell disambiguation",
     ),
     (
         "views/site/group/index.html",
