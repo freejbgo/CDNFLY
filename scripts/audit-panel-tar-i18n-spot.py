@@ -703,9 +703,29 @@ SPOTS = (
         "site group open-layer guard",
     ),
     (
+        "views/site/group/addform.html",
+        "getElementById('LAY-popup-site-group-form')",
+        "site group addform scoped to popup shell",
+    ),
+    (
         "views/stream/group/index.html",
         "pop.querySelector('.stream-group-add-root')",
         "stream group open-layer guard",
+    ),
+    (
+        "views/stream/group/addform.html",
+        "getElementById('LAY-popup-stream-group-form')",
+        "stream group addform scoped to popup shell",
+    ),
+    (
+        "views/site/site/update-node-group.html",
+        "root.querySelector('#update-region')",
+        "site node-group partial shell marker",
+    ),
+    (
+        "views/stream/stream/update-node-group.html",
+        "root.querySelector('#update-region')",
+        "stream node-group partial shell marker",
     ),
     (
         "views/site/acl/acl-add.html",
