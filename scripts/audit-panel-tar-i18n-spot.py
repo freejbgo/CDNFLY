@@ -1343,6 +1343,31 @@ SPOTS = (
         "basic package sync click scoped to sync form root",
     ),
     (
+        "views/system/user/password.html",
+        "window.layoutPasswordFormRoot = layoutPasswordFormRoot",
+        "layout shell password popup form root",
+    ),
+    (
+        "views/layout.html",
+        "window.layoutPasswordFormRoot()",
+        "layout setmypass submit gated on password form root",
+    ),
+    (
+        "views/site/site/backend_form.html",
+        "window.backendFormRoot = backendFormRoot",
+        "site nested backend popup form root export",
+    ),
+    (
+        "views/site/site/edit.html",
+        "window.backendFormRoot()",
+        "site edit nested submits gated on backend form root",
+    ),
+    (
+        "views/site/site/update_form.html",
+        "window.cacheFormRoot()",
+        "site batch update nested cache submit form root",
+    ),
+    (
         "views/site/acl/index.html",
         "el.querySelector('#acllist') && !el.querySelector('#buy-confirm')",
         "acl rule popup shell disambiguates stream edit aclist",
@@ -1609,13 +1634,13 @@ SPOTS = (
     ),
     (
         "views/site/site/edit.html",
-        "if (!siteEditAlive()) return;\n                  if (!data.elem || !$(layero)",
-        "site edit nested popup submit gated on edit page",
+        "window.backendFormRoot()",
+        "site edit nested popup submit gated on form root",
     ),
     (
         "views/site/site/update_form.html",
-        "if (!siteUpdatePopupAlive()) return;\n                  if (!data.elem || !$(layero)",
-        "site batch nested popup submit gated on update popup",
+        "window.cacheFormRoot()",
+        "site batch nested popup submit gated on form root",
     ),
     (
         "views/site/group/addform.html",
