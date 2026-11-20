@@ -544,8 +544,18 @@ SPOTS = (
     ),
     (
         "views/site/site/edit.html",
+        'lay-filter="site-edit-block-region"',
+        "site edit shield-region form has dedicated lay-filter",
+    ),
+    (
+        "views/site/site/edit.html",
         'data-i18n-title="page.geo.country.cn"',
         "site edit block_region checkboxes use GEO_COUNTRY keys",
+    ),
+    (
+        "views/site/site/update_form.html",
+        'lay-filter="site-update-region"',
+        "site batch update shield-region form lay-filter",
     ),
     (
         "views/site/site/edit.html",
