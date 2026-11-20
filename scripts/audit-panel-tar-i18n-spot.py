@@ -1747,6 +1747,36 @@ SPOTS = (
         "var $pkgForm = pkgRoot ? $(pkgRoot) : $(layero)",
         "package basic popup init scopes region select to package form root",
     ),
+    (
+        "views/package/basic/index.html",
+        "var $pop = $pkgForm",
+        "package basic ajax fill scoped to package form root",
+    ),
+    (
+        "views/package/sold/index.html",
+        "var $soldForm = soldRoot ? $(soldRoot) : $(layero)",
+        "sold package edit popup scoped to edit form root",
+    ),
+    (
+        "views/package/sold/sync.html",
+        "window.packageSoldSyncFormRoot = packageSoldSyncFormRoot",
+        "sold package sync popup form root",
+    ),
+    (
+        "views/package/sold/index.html",
+        "window.packageSoldSyncFormRoot()",
+        "sold package sync click scoped to sync popup root",
+    ),
+    (
+        "views/site/cert/update-cert-type.html",
+        "window.certUpdateTypeFormRoot = certUpdateTypeRoot",
+        "cert batch type update popup form root export",
+    ),
+    (
+        "views/site/cert/cert.html",
+        "window.certUpdateTypeFormRoot()",
+        "cert batch update click scoped to cert type form root",
+    ),
 )
 
 
