@@ -908,6 +908,16 @@ SPOTS = (
         "stream batch update i18n gated on open popup",
     ),
     (
+        "views/site/site/update_form.html",
+        "if (!siteUpdatePopupAlive() || !veikorI18n) return",
+        "site batch update form i18n gated on open popup",
+    ),
+    (
+        "views/package/my/index.html",
+        "if (!myPackageAlive() || !veikorI18n) return",
+        "package my per-popup refresh gated on my-package page",
+    ),
+    (
         "views/system/message/index.html",
         "form.render('select', 'system-message-search')",
         "system message search control skins on first load",
