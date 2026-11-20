@@ -564,6 +564,11 @@ SPOTS = (
     ),
     (
         "views/finance/balance/index.html",
+        "path[0] !== 'finance'",
+        "finance balance route guard accepts finance menu",
+    ),
+    (
+        "views/finance/balance/index.html",
         "renderBalanceRechargeControlsI18n",
         "balance recharge pay-method checkbox lang skin",
     ),

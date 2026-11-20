@@ -78,6 +78,18 @@ LIST_INDEX_ROUTE_GUARD = ("site/site/index.html", "stream/stream/index.html")
 LIST_INDEX_GUARD_NEEDLE = "third && third !== 'index'"
 EDIT_INDEX_ROUTE_GUARD = ("site/site/edit.html", "stream/stream/edit.html")
 EDIT_ROUTE_NEEDLE = "path[2] !== 'edit'"
+FINANCE_BALANCE_ROUTE_NEEDLE = "path[0] !== 'finance'"
+
+
+def _audit_finance_mirror_routes(rel: str, text: str) -> list[str]:
+    bad: list[str] = []
+    rel = rel.replace("\\", "/")
+    if rel == "finance/balance/index.html":
+        if FINANCE_BALANCE_ROUTE_NEEDLE not in text:
+            bad.append(f"{rel}: balance root must accept finance/balance route")
+        if "path[0] !== 'account' || path[1] !== 'balance'" in text.replace(" ", ""):
+            bad.append(f"{rel}: balance root must not be account-route-only")
+    return bad
 
 
 def _audit_list_edit_lang_guards(rel: str, text: str) -> list[str]:
@@ -275,6 +287,7 @@ def main() -> int:
             if _is_open_layer_partial(rel) and SCOPED_LANG.search(text):
                 bad_open_partial_lang.append(rel)
             bad_list_edit_guard.extend(_audit_list_edit_lang_guards(rel, text))
+            bad_list_edit_guard.extend(_audit_finance_mirror_routes(rel, text))
             if _missing_global_lang(text):
                 bad_lang.append(rel)
             if LANG_HANDLER.search(text) and FORM_RENDER_NULL.search(text):
