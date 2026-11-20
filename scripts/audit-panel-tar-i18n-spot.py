@@ -163,6 +163,26 @@ SPOTS = (
         "stream usage charts i18n",
     ),
     (
+        "controller/useradmin.js",
+        "panelUserAddFormRoot()",
+        "demo useradmin edit submit scoped to user form root",
+    ),
+    (
+        "controller/useradmin.js",
+        "panelUserAdminAddFormRoot()",
+        "demo useradmin admin edit scoped to admin form root",
+    ),
+    (
+        "controller/useradmin.js",
+        "panelUserRoleFormRoot()",
+        "demo useradmin role edit scoped to role form root",
+    ),
+    (
+        "controller/workorder.js",
+        "LAY-popup-workorder-add",
+        "demo workorder submit gated on popup shell",
+    ),
+    (
         "views/package/buy/index.html",
         "refreshBuyPackageOpenLayers",
         "package buy duration popup title/body",

@@ -2,7 +2,11 @@
 
 Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel under `.veikor-build/.../panel/src`, then `sync-panel-to-master-tar.sh` + `verify-packages.sh`.
 
-**Batch delivered (through 2026-11-19, PR #298–#392):** **M1 customer panel signed off** @ `8c7eeca`（#387）；文档主线至 #392。U2B + alive guards (#298–#306); nested popup titles (#307–#323); finance/package/monitor (#325–#347); **78** tar i18n spots + partial export fixes `up_down` / `acl-add` / `acllist-add` (#349–#370); handoff doc (#371–#374); `site/refresh` lang scope (#381); package detail remain cells (#383); list lang scoped form render (#387). **Remaining:** P3 production `res.msg` → `API_MSG_BY_SOURCE`（见 dev report §P3；`python3 scripts/audit-customer-notify-resmsg-index.py` 列客户 API 路径；禁止臆造）；P4 admin popups (out of scope); API-authored titles (out of scope).
+**Batch delivered (through 2026-11-19, PR #298–#392):** **M1 customer panel signed off** @ `8c7eeca`（#387）；文档主线至 #392。U2B + alive guards (#298–#306); nested popup titles (#307–#323); finance/package/monitor (#325–#347); **78** tar i18n spots + partial export fixes `up_down` / `acl-add` / `acllist-add` (#349–#370); handoff doc (#371–#374); `site/refresh` lang scope (#381); package detail remain cells (#383); list lang scoped form render (#387).
+
+**Panel shared popup DOM (signed off 2026-11-20, PR #501–#505):** Business `views/**` no longer use `$(layero)`; `*FormRoot()` + `*Alive()` + `contains(data.elem)`; unused callback arg renamed `_layero`. Handoff: **`docs/panel-shared-popup-dom-handoff.md`**. Four panel audits → **0 issues**. Left as-is: framework `lib/admin.js` `layero`; demo `controller/useradmin.js` cleaned in same wave as handoff doc.
+
+**Remaining (customer i18n):** P3 production `res.msg` → `API_MSG_BY_SOURCE`（见 dev report §P3；`python3 scripts/audit-customer-notify-resmsg-index.py` 列客户 API 路径；禁止臆造）；API-authored titles (out of scope). **P4 admin popup DOM** is **done** for collision scope (see handoff above); further admin work is i18n/polish only, not shared-id DOM.
 
 **Legend**
 
@@ -42,6 +46,7 @@ Scope: **`user_type !== 1` only** (see `customer-console-i18n.md`). Edit panel u
 | `lib/view.js` — customer `reqErrorHtml` | — | Done | Keep mapping table in sync with M2 |
 | `index.js` — Layui **tab title** on lang change | P4 | Done | `bindLayuiTabTitleFromBody` + `applyLayuiTabTitlesI18n`; customer tab chip avoids stale `res.title` (#307) |
 | `scripts/audit-panel-customer-i18n.py` | P0 | CI | Ban `id` + `data-i18n` on same host; ban `form.render()` / `form.render(null)` on `veikor:lang` pages (#387) |
+| Shared popup DOM (`*FormRoot`, no `$(layero)`) | — | Done | #501–#505; `docs/panel-shared-popup-dom-handoff.md`; `audit-panel-deep.py` + `audit-panel-global-handlers.py` |
 
 ---
 
