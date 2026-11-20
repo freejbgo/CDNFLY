@@ -61,6 +61,10 @@ def main() -> int:
         print("audit-panel-cache-version: missing logo contrast override in veikor-theme")
         return 1
 
+    if "layui-layout-left" not in theme or "layui-layer-setwin .layui-layer-min cite" not in theme:
+        print("audit-panel-cache-version: missing extended contrast rules in veikor-theme")
+        return 1
+
     print("audit-panel-cache-version: ok")
     return 0
 
