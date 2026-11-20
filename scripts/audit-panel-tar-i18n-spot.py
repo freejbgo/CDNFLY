@@ -539,13 +539,13 @@ SPOTS = (
     ),
     (
         "views/site/site/backend_form.html",
-        "refreshSiteBackendFormI18n(true)",
-        "site backend partial lang handler langOnly",
+        "window.refreshSiteBackendFormI18n",
+        "site backend defers lang to edit open layers",
     ),
     (
         "views/stream/stream/backend_form.html",
-        "refreshStreamBackendFormI18n(true)",
-        "stream backend partial lang handler langOnly",
+        "window.refreshStreamBackendFormI18n",
+        "stream backend defers lang to edit open layers",
     ),
     (
         "views/stream/stream/edit.html",
@@ -588,14 +588,14 @@ SPOTS = (
         "package my scoped lang only",
     ),
     (
-        "views/site/group/addform.html",
-        "veikor:lang.siteGroup",
-        "site group add popup scoped lang",
+        "views/site/group/index.html",
+        "refreshSiteGroupAddFormI18n(true)",
+        "site group list owns add popup lang refresh",
     ),
     (
-        "views/stream/group/addform.html",
-        "veikor:lang.streamGroup",
-        "stream group add popup scoped lang",
+        "views/stream/group/index.html",
+        "refreshStreamGroupAddFormI18n(true)",
+        "stream group list owns add popup lang refresh",
     ),
     (
         "views/site/site/index.html",
@@ -843,19 +843,19 @@ SPOTS = (
         "stream monitor realtime chrome",
     ),
     (
-        "views/site/site/update-state.html",
+        "views/site/site/index.html",
         "refreshSiteStatePopupI18n(true)",
-        "site batch state popup lang-only sync",
+        "site list owns batch state popup lang refresh",
     ),
     (
-        "views/stream/stream/update-state.html",
+        "views/stream/stream/index.html",
         "refreshStreamStatePopupI18n(true)",
-        "stream batch state popup lang-only sync",
+        "stream list owns batch state popup lang refresh",
     ),
     (
-        "views/package/my/renew.html",
+        "views/package/my/index.html",
         "refreshPackageRenewPopupI18n(true)",
-        "package renew popup lang-only sync",
+        "package my list owns renew popup lang refresh",
     ),
     (
         "views/package/buy/duration.html",
@@ -874,33 +874,33 @@ SPOTS = (
     ),
     (
         "views/site/acl/acl-add.html",
-        "refreshAclAddFormI18n(true)",
-        "ACL add popup lang-only radio chrome",
+        "window.refreshAclAddFormI18n",
+        "ACL add partial defers lang to list page open layers",
     ),
     (
         "views/site/acl/acllist-add.html",
-        "refreshRuleMatchFormI18n(popRoot, true)",
-        "ACL rule matcher popup lang-only sync",
+        "window.refreshAclListAddPopupsI18n",
+        "ACL matcher child defers lang to acl-add/page reload",
     ),
     (
         "views/stream/stream/acl-add.html",
-        "refreshStreamAclAddFormI18n(true)",
-        "stream ACL add lang-only sync",
+        "window.refreshStreamAclAddFormI18n",
+        "stream ACL add defers lang to edit open layers",
     ),
     (
         "views/site/cert/addform.html",
-        "refreshCertAddFormI18n(true)",
-        "cert add popup lang-only sync",
+        "window.refreshCertAddFormI18n",
+        "cert add partial defers lang to cert list open layers",
     ),
     (
         "views/site/site/addform.html",
-        "refreshSiteAddFormI18n(true)",
-        "site add popup lang-only sync",
+        "window.refreshSiteAddFormI18n",
+        "site add partial defers lang to site list open layers",
     ),
     (
         "views/stream/stream/addform.html",
-        "refreshStreamAddFormI18n(true)",
-        "stream add popup lang-only sync",
+        "window.refreshStreamAddFormI18n",
+        "stream add partial defers lang to stream list open layers",
     ),
     (
         "views/site/cc/rulelist-add.html",
@@ -914,13 +914,13 @@ SPOTS = (
     ),
     (
         "views/site/cert/dnsapi-add.html",
-        "refreshDnsApiAddFormI18n(true)",
-        "DNS API add lang-only sync",
+        "window.refreshDnsApiAddFormI18n",
+        "DNS API add defers lang to dnsapi page open layer",
     ),
     (
         "views/site/group/addform.html",
-        "refreshSiteGroupAddFormI18n(true)",
-        "site group add lang-only sync",
+        "window.refreshSiteGroupAddFormI18n",
+        "site group add defers lang to group list open layer",
     ),
 )
 
