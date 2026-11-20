@@ -127,12 +127,7 @@ List/edit **open-layer partials** (site/stream/cert/ACL/group/**package** add po
 
 **Account/log symlink**: `views/account/log` → `system/log` in the package tree (one script serves `account/log/*` and `system/log/*` routes); alive guards keep **both** `account` and `system` prefixes.
 
-**Account/finance mirrors**
-
-
- (`account/balance`, `finance/balance`, `account/order`, `finance/order`): each HTML file registers the same `veikor:lang.*` scope, so alive guards must gate on **one** route prefix only (`account/*` vs `finance/*`), not both, to avoid double reloads when both views were opened in the session.
-
-**Finance balance** (`finance/balance`) mirrors **account/balance** but must gate `accountBalanceFormEl` on both `account/balance` and `finance/balance` routes (`balanceForm` scope).
+**Account/finance symlink aliases** (`account/balance`, `account/order` → `finance/*`): one physical template serves both URL prefixes — alive guards must accept **`account` or `finance`** on `path[0]` (same pattern as `account/log` → `system/log`). Do not split into duplicate HTML or single-prefix guards; `audit-panel-view-aliases.py` enforces the symlinks.
 
 **Monitor realtime/usage** pages bind `veikor:lang.siteMonitor` / `streamMonitor`; chart controllers (`senior.js`, `*-usage-senior.js`) only export `window.refresh*I18n` and must not register duplicate lang listeners (views call them from `apply*PageChrome`). Each monitor sub-route guards lang refresh with `path[2]` matching its slug.
 
