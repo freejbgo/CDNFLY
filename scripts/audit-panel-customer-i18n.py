@@ -129,6 +129,22 @@ BLOCK_REGION_I18N = re.compile(
 )
 
 
+DUP_I18N_TITLE = re.compile(
+    r"<input[^>]*\bdata-i18n-title=(?:\"[^\"]*\"|'[^']*')[^>]*\bdata-i18n-title=",
+    re.IGNORECASE,
+)
+
+
+def _audit_dup_i18n_title(rel: str, text: str) -> list[str]:
+    if not _is_customer_view(rel):
+        return []
+    bad: list[str] = []
+    for i, line in enumerate(text.splitlines(), 1):
+        if DUP_I18N_TITLE.search(line):
+            bad.append(f"{rel}:{i}: duplicate data-i18n-title on input")
+    return bad
+
+
 def _audit_block_region_geo_titles(rel: str, text: str) -> list[str]:
     """Shield-region checkboxes must carry data-i18n-title for first paint + lang skins."""
     rel = rel.replace("\\", "/")
@@ -337,6 +353,7 @@ def main() -> int:
             bad_dynamic.extend(_audit_dynamic_host_i18n(rel, text))
             bad_jobs_done.extend(_audit_jobs_done_alive(rel, text))
             bad_list_edit_guard.extend(_audit_block_region_geo_titles(rel, text))
+            bad_list_edit_guard.extend(_audit_dup_i18n_title(rel, text))
 
     bad_monitor_controller_lang: list[str] = []
     for fn in CUSTOMER_CONTROLLERS:
