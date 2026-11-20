@@ -913,6 +913,16 @@ SPOTS = (
         "CC rule nested form refresh gated on shell",
     ),
     (
+        "views/site/cc/rule.html",
+        "window.ccRuleOpenLayerShellOk = ccRuleOpenLayerShellOk",
+        "CC rule shell helper exported for nested partials",
+    ),
+    (
+        "views/site/cc/rule-add.html",
+        "window.ccRuleOpenLayerShellOk && !window.ccRuleOpenLayerShellOk(popupId, el)",
+        "CC rule group child popup shell gate",
+    ),
+    (
         "views/stream/stream/update_form.html",
         "if (!streamUpdatePopupAlive()",
         "stream batch update i18n gated on open popup",
