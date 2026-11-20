@@ -31,6 +31,8 @@ def main() -> int:
         "layui-layer-setwin",
         "select2-selection__clear",
         ".layui-table-tool",
+        "layadmin-tabs-control",
+        "layui-tab-close",
     ]
     for needle in required:
         if needle not in theme:
