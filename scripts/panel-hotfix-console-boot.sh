@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Apply console boot fixes from the published master tar onto a live install.
-# Fixes (through panel551):
+# Fixes (through panel552):
 #   - view.js boot syntax (panel543+)
 #   - veikor-page.js jquery + global bootTabChrome (panel544–550)
 #   - index.js tab form/date bootstrap, layout theme, user_home carousel
