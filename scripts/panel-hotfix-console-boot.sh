@@ -30,7 +30,11 @@ extract_one() {
 
 extract_one "$PREFIX/src/lib/view.js" "$PANEL_SRC/lib/view.js"
 extract_one "$PREFIX/src/lib/veikor-page.js" "$PANEL_SRC/lib/veikor-page.js"
+extract_one "$PREFIX/src/lib/admin.js" "$PANEL_SRC/lib/admin.js"
 extract_one "$PREFIX/src/config.js" "$PANEL_SRC/config.js"
+for v in system/more.html system/about.html; do
+  extract_one "$PREFIX/src/views/$v" "$PANEL_SRC/views/$v"
+done
 
 if grep -q "  ,view = function(id)" "$PANEL_SRC/lib/view.js"; then
   echo "ERROR: view.js still broken" >&2
