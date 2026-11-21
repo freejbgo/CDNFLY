@@ -313,6 +313,10 @@ def _audit_veikor_i18n_js() -> list[str]:
         bad.append("missing refreshLayuiTableDomChrome (Layui table/lang switch)")
     if "function uiText" not in text:
         bad.append("missing uiText() (UI locale lookup)")
+    if "function authUiText" not in text:
+        bad.append("missing authUiText() (auth portal layer labels)")
+    if "layui.layer.alert" not in text or "nativeAlert" not in text:
+        bad.append("missing layui.layer.alert i18n patch (auth popups)")
     ui_body = text.split("function uiText", 1)
     if len(ui_body) > 1 and "if (lang === 'en')" not in ui_body[1][:800]:
         bad.append("uiText must gate UI.en fallback on lang === 'en' (zh-TW vs #559)")
