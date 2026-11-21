@@ -325,6 +325,15 @@ def _audit_veikor_i18n_js() -> list[str]:
         vtext = open(view_js, encoding="utf-8", errors="replace").read()
         if "function portalResMsgI18n" not in vtext:
             bad.append("view.js missing portalResMsgI18n (auth admin.req errors)")
+    for auth_view in ("views/user/login.html", "views/user/reg.html", "views/user/forget.html"):
+        ap = os.path.join(ROOT, auth_view.replace("/", os.sep))
+        if not os.path.isfile(ap):
+            continue
+        vh = open(ap, encoding="utf-8", errors="replace").read()
+        if "veikor-login.css?v=cdnfly1.9" in vh:
+            bad.append(f"{auth_view} stale veikor-login.css cache bust (cdnfly1.9)")
+        if "layui.setter.version" not in vh or "veikor-login.css?v={{ layui.setter.version }}" not in vh:
+            bad.append(f"{auth_view} must link veikor-login.css with layui.setter.version")
     ui_body = text.split("function uiText", 1)
     if len(ui_body) > 1 and "if (lang === 'en')" not in ui_body[1][:800]:
         bad.append("uiText must gate UI.en fallback on lang === 'en' (zh-TW vs #559)")
