@@ -27,6 +27,24 @@ else
   ok "audit-panel-tab-form-skins"
 fi
 
+if ! python3 "$ROOT/scripts/audit-panel-cache-version.py"; then
+  bad "audit-panel-cache-version"
+else
+  ok "audit-panel-cache-version"
+fi
+
+if ! python3 "$ROOT/scripts/audit-panel-page-fluid-sibling.py"; then
+  bad "audit-panel-page-fluid-sibling"
+else
+  ok "audit-panel-page-fluid-sibling"
+fi
+
+if ! python3 "$ROOT/scripts/audit-panel-site-acl-rulelist-id.py"; then
+  bad "audit-panel-site-acl-rulelist-id"
+else
+  ok "audit-panel-site-acl-rulelist-id"
+fi
+
 if ! python3 "$ROOT/scripts/audit-panel-i18n-guards.py"; then
   bad "audit-panel-i18n-guards"
 else
