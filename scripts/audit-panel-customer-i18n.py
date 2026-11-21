@@ -57,6 +57,7 @@ REQUIRED_UI_KEYS = (
     "export.excel",
     "export.csv",
     "layer.title.info",
+    "layer.title.hint",
     "table.none",
     "layer.ok",
     "layer.cancel",
@@ -317,6 +318,13 @@ def _audit_veikor_i18n_js() -> list[str]:
         bad.append("missing authUiText() (auth portal layer labels)")
     if "layui.layer.alert" not in text or "nativeAlert" not in text:
         bad.append("missing layui.layer.alert i18n patch (auth popups)")
+    if "function translateResMsg" not in text or "authI18nSurfaceActive()" not in text.split("function translateResMsg", 1)[-1][:400]:
+        bad.append("translateResMsg must use authI18nSurfaceActive (auth submit popups)")
+    view_js = os.path.join(ROOT, "lib", "view.js")
+    if os.path.isfile(view_js):
+        vtext = open(view_js, encoding="utf-8", errors="replace").read()
+        if "function portalResMsgI18n" not in vtext:
+            bad.append("view.js missing portalResMsgI18n (auth admin.req errors)")
     ui_body = text.split("function uiText", 1)
     if len(ui_body) > 1 and "if (lang === 'en')" not in ui_body[1][:800]:
         bad.append("uiText must gate UI.en fallback on lang === 'en' (zh-TW vs #559)")
