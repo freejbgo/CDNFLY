@@ -67,6 +67,7 @@ REQUIRED_PAGE_KEYS = (
     "page.site.cert.search.selectPh",
     "page.finance.balance.pay.currencyUnit",
 )
+REQUIRED_AUTH_SHELL_PREFIX = "shell."
 
 # Popups/partials owned by parent refresh*OpenLayers must not bind veikor:lang.*
 OPEN_LAYER_PARTIAL_RE = re.compile(
@@ -363,6 +364,29 @@ def _audit_veikor_i18n_js() -> list[str]:
         if line.startswith("  var UI ="):
             ui_line = line
             break
+    auth_line = None
+    for line in open(I18N_JS, encoding="utf-8", errors="replace"):
+        if line.startswith("  var AUTH ="):
+            auth_line = line
+            break
+    if auth_line is None:
+        bad.append("AUTH assignment not found in veikor-i18n.js")
+    else:
+        raw = auth_line.split("=", 1)[1].strip().rstrip(";")
+        try:
+            auth = json.loads(raw)
+        except json.JSONDecodeError:
+            bad.append("AUTH JSON could not be parsed")
+        else:
+            zh_auth = auth.get("zh-CN") or {}
+            zh_shell = [k for k in zh_auth if k.startswith(REQUIRED_AUTH_SHELL_PREFIX)]
+            for loc in ("zh-TW", "en"):
+                block = auth.get(loc) or {}
+                gaps = [k for k in zh_shell if k not in block]
+                if gaps:
+                    bad.append(
+                        f"AUTH {loc} missing {len(gaps)} shell.* keys (e.g. {gaps[0]})"
+                    )
     if ui_line is None:
         bad.append("UI assignment not found in veikor-i18n.js")
     else:
