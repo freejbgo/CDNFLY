@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Apply console boot fixes from the published master tar onto a live install.
-# Fixes (through panel552):
+# Fixes (through panel553):
 #   - view.js boot syntax (panel543+)
 #   - veikor-page.js jquery + global bootTabChrome (panel544–550)
 #   - index.js tab form/date bootstrap, layout theme, user_home carousel
@@ -63,6 +63,14 @@ if ! grep -q "veikorGuardHeaderLangSelect" "$PANEL_SRC/lib/veikor-page.js"; then
 fi
 if ! grep -q "initUserHomeCarousels" "$PANEL_SRC/views/user_home.html"; then
   echo "ERROR: user_home.html missing carousel fix (need panel548+)" >&2
+  exit 1
+fi
+if ! grep -q "ensureTabsBodyShell" "$PANEL_SRC/index.js"; then
+  echo "ERROR: index.js missing ensureTabsBodyShell (need panel553+)" >&2
+  exit 1
+fi
+if ! grep -q "veikor view parse" "$PANEL_SRC/lib/view.js"; then
+  echo "ERROR: view.js missing parse try/finally (need panel553+)" >&2
   exit 1
 fi
 

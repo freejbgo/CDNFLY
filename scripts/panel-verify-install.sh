@@ -52,6 +52,14 @@ if ! grep -q "veikorGuardHeaderLangSelect" "$PANEL_SRC/lib/veikor-page.js" 2>/de
   bad "veikor-page.js missing header lang guard (panel551+ — top-right nav overlap)"
 fi
 
+if ! grep -q "ensureTabsBodyShell" "$PANEL_SRC/index.js" 2>/dev/null; then
+  bad "index.js missing ensureTabsBodyShell (panel553+ — 2nd sidebar click blank)"
+fi
+
+if ! grep -q "veikor view parse" "$PANEL_SRC/lib/view.js" 2>/dev/null; then
+  bad "view.js missing parse try/finally (panel553+ — stuck loading spinner)"
+fi
+
 if [[ -n "$PANEL_CONSOLE" && -f "$PANEL_CONSOLE/index.html" ]]; then
   CONSOLE_VER="$(grep -oP ",version: '\\K[^']+" "$PANEL_CONSOLE/index.html" | head -1 || true)"
   if [[ -z "$CONSOLE_VER" ]]; then
