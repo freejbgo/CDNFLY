@@ -46,6 +46,16 @@ def main() -> int:
         print("audit-panel-cache-version: view.js must bust templates with setter.version")
         return 1
 
+    if re.search(r"//对外接口\s*\r?\n\s*,view\s*=\s*function", view):
+        print(
+            "audit-panel-cache-version: view.js has broken boot syntax "
+            "(',view =' after helper functions; use 'var view =')"
+        )
+        return 1
+    if "var view = function(id)" not in view:
+        print("audit-panel-cache-version: view.js missing var view boot")
+        return 1
+
     index = tar_cat("cdnfly-master-v5.1.13/master/panel/src/index.js")
     if "setter.version || admin.v" not in index and "setter.version" not in index:
         print("audit-panel-cache-version: index.js should bust admin.css with setter.version")
