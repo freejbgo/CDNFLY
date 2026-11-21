@@ -60,6 +60,10 @@ if ! grep -q "veikor view parse" "$PANEL_SRC/lib/view.js" 2>/dev/null; then
   bad "view.js missing parse try/finally (panel553+ — stuck loading spinner)"
 fi
 
+if ! grep -q "function authBarePath" "$PANEL_SRC/lib/veikor-i18n.js" 2>/dev/null; then
+  bad "veikor-i18n.js missing authBarePath (panel554+ — login/reg lang switch)"
+fi
+
 if [[ -n "$PANEL_CONSOLE" && -f "$PANEL_CONSOLE/index.html" ]]; then
   CONSOLE_VER="$(grep -oP ",version: '\\K[^']+" "$PANEL_CONSOLE/index.html" | head -1 || true)"
   if [[ -z "$CONSOLE_VER" ]]; then
