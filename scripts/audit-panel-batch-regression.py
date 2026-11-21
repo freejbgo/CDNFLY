@@ -117,12 +117,37 @@ def scan_view_menu_fail_handler():
         fail("view.js: non-menu lay-url fail handler must not call veikorMenuLoadFailed")
 
 
+def scan_user_home_carousel():
+    path = os.path.join(VIEWS, "user_home.html")
+    if not os.path.isfile(path):
+        fail("missing views/user_home.html")
+        return
+    text = open(path, encoding="utf-8", errors="replace").read()
+    if "initUserHomeCarousels" not in text:
+        fail("user_home.html: missing initUserHomeCarousels")
+    if "veikorMarkerPageFluid" not in text:
+        fail("user_home.html: must resolve page root via veikorMarkerPageFluid")
+
+
+def scan_veikor_page_marker_fluid():
+    path = os.path.join(PANEL, "lib", "veikor-page.js")
+    if not os.path.isfile(path):
+        fail("missing lib/veikor-page.js")
+        return
+    text = open(path, encoding="utf-8", errors="replace").read()
+    if "function markerPageFluid" not in text:
+        fail("veikor-page.js: missing markerPageFluid")
+    if "window.veikorMarkerPageFluid = markerPageFluid" not in text:
+        fail("veikor-page.js: must export veikorMarkerPageFluid")
+
+
 def scan_panel_core_js_syntax():
     """Broken view.js prevents layui.use(['index','admin','view']) from booting."""
     rel_paths = (
         "index.js",
         "lib/admin.js",
         "lib/view.js",
+        "lib/veikor-page.js",
     )
     for rel in rel_paths:
         path = os.path.join(PANEL, rel)
@@ -301,6 +326,8 @@ def main():
         scan_index_preload()
         scan_view_menu_fail_handler()
         scan_panel_core_js_syntax()
+        scan_veikor_page_marker_fluid()
+        scan_user_home_carousel()
         scan_shell_drawer_views()
     else:
         print("panel tree absent, skipped local view scan")
