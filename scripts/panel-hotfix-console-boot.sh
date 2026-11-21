@@ -30,6 +30,7 @@ extract_one() {
 
 extract_one "$PREFIX/src/lib/view.js" "$PANEL_SRC/lib/view.js"
 extract_one "$PREFIX/src/lib/veikor-page.js" "$PANEL_SRC/lib/veikor-page.js"
+extract_one "$PREFIX/src/index.js" "$PANEL_SRC/index.js"
 extract_one "$PREFIX/src/lib/admin.js" "$PANEL_SRC/lib/admin.js"
 extract_one "$PREFIX/src/config.js" "$PANEL_SRC/config.js"
 extract_one "$PREFIX/src/views/layout.html" "$PANEL_SRC/views/layout.html"

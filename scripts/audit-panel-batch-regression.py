@@ -105,6 +105,19 @@ def scan_shell_drawer_views():
             fail("admin.js: more2 drawer must toggle close")
 
 
+def scan_view_tab_form_boot():
+    view_path = os.path.join(PANEL, "lib", "view.js")
+    index_path = os.path.join(PANEL, "index.js")
+    if os.path.isfile(view_path):
+        view_txt = open(view_path, encoding="utf-8", errors="replace").read()
+        if "veikorBootTabChrome" not in view_txt:
+            fail("view.js: missing veikorBootTabChrome after view render")
+    if os.path.isfile(index_path):
+        index_txt = open(index_path, encoding="utf-8", errors="replace").read()
+        if "bootTabChrome" not in index_txt:
+            fail("index.js: must call veikorPage.bootTabChrome on tab render/switch")
+
+
 def scan_view_menu_fail_handler():
     view_path = os.path.join(PANEL, "lib", "view.js")
     if not os.path.isfile(view_path):
@@ -137,6 +150,8 @@ def scan_veikor_search_date_bootstrap():
     text = open(path, encoding="utf-8", errors="replace").read()
     if "bootstrapSearchDateRanges" not in text:
         fail("veikor-page.js: missing bootstrapSearchDateRanges")
+    if "bootTabChrome" not in text:
+        fail("veikor-page.js: missing bootTabChrome")
     if "normalizeLayuiTextInputs" not in text:
         fail("veikor-page.js: missing normalizeLayuiTextInputs")
     op = os.path.join(VIEWS, "account", "log", "op.html")
@@ -341,6 +356,7 @@ def main():
     if os.path.isdir(VIEWS) and os.path.isfile(os.path.join(PANEL, "index.js")):
         scan_views()
         scan_index_preload()
+        scan_view_tab_form_boot()
         scan_view_menu_fail_handler()
         scan_panel_core_js_syntax()
         scan_veikor_search_date_bootstrap()
