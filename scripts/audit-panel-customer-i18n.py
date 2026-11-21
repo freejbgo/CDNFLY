@@ -98,6 +98,7 @@ REQUIRED_AUTH_POPUP_KEYS = (
     "reg.emailRequired",
     "forget.emailRequired",
     "reg.agreementRequired",
+    "auth.verify.codeRequired",
 )
 # Popups/partials owned by parent refresh*OpenLayers must not bind veikor:lang.*
 OPEN_LAYER_PARTIAL_RE = re.compile(
