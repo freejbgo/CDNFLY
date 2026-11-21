@@ -58,4 +58,11 @@ if "veikorReinitSelect2InScope" not in text:
     print("audit-panel-select-recurse: failed (missing select2 tab hook)")
     sys.exit(1)
 
+if not re.search(r"layui\.define\(\s*\[\s*['\"]form['\"]\s*,\s*['\"]jquery['\"]", text):
+    print("audit-panel-select-recurse: failed (veikor-page must declare jquery module)")
+    sys.exit(1)
+if "var $ = layui.jquery" not in text:
+    print("audit-panel-select-recurse: failed (veikor-page must bind $ = layui.jquery)")
+    sys.exit(1)
+
 print("audit-panel-select-recurse: ok")
