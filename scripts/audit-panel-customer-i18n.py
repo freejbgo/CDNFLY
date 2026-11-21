@@ -481,6 +481,15 @@ def _audit_auth_portal_popups() -> list[str]:
     ctrl_path = os.path.join(CONTROLLERS, AUTH_PORTAL_CTRL)
     if os.path.isfile(ctrl_path):
         paths.append((ctrl_path, os.path.join("controller", AUTH_PORTAL_CTRL)))
+    user_js = os.path.join(CONTROLLERS, "user.js")
+    if os.path.isfile(user_js):
+        utext = open(user_js, encoding="utf-8", errors="replace").read()
+        if "veikorAuthPortalRoute" not in utext:
+            bad.append("user.js missing veikorAuthPortalRoute (auth portal lay-verify guard)")
+    if os.path.isfile(ctrl_path):
+        ltext = open(ctrl_path, encoding="utf-8", errors="replace").read()
+        if "syncLoginCaptchaVerify" not in ltext:
+            bad.append("loginPage.js missing syncLoginCaptchaVerify (login captcha lay-verify)")
     for path, rel in paths:
         if not os.path.isfile(path):
             bad.append(f"missing auth portal file {rel}")
