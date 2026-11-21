@@ -24,6 +24,17 @@ def main() -> int:
             bad.append("veikor-i18n.js: missing resolveAuthPage() for auth apply fallback")
         if "function ensureLangPreference" not in text:
             bad.append("veikor-i18n.js: missing ensureLangPreference() for browser locale")
+        if "function detectBrowserLang" not in text:
+            bad.append("veikor-i18n.js: missing detectBrowserLang()")
+        else:
+            detect = text.split("function detectBrowserLang")[1].split("function ", 1)[0]
+            if "navigator.languages" not in detect and "navigator.language" not in detect:
+                bad.append("detectBrowserLang must read navigator.languages / navigator.language")
+            if "return 'en'" not in detect:
+                bad.append("detectBrowserLang must fall back to en for non zh/en locales")
+        norm = text.split("function normalize")[1].split("function ", 1)[0] if "function normalize" in text else ""
+        if "zh-hk" not in norm or "zh-tw" not in norm.lower():
+            bad.append("normalize must map zh-HK/zh-TW region tags")
         if "function authT(" not in text:
             bad.append("veikor-i18n.js: missing authT() for auth page copy from panel-lang")
         if "lay-filter=\"veikor-lang\"" not in open(
