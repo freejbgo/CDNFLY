@@ -53,6 +53,15 @@ API_MSG_ENTRY = re.compile(
 I18N_JS = os.path.join(ROOT, "lib", "veikor-i18n.js")
 REQUIRED_API_LANGS = ("zh-CN", "zh-TW", "en")
 MIN_API_MSG_ENTRIES = 285
+REQUIRED_UI_KEYS = (
+    "export.excel",
+    "export.csv",
+    "layer.title.info",
+    "table.none",
+    "layer.ok",
+    "layer.cancel",
+)
+REQUIRED_UI_LANGS = ("zh-CN", "zh-TW", "en")
 
 # Popups/partials owned by parent refresh*OpenLayers must not bind veikor:lang.*
 OPEN_LAYER_PARTIAL_RE = re.compile(
@@ -309,6 +318,27 @@ def _audit_veikor_i18n_js() -> list[str]:
                 bad.append(
                     f"PAGE {loc} missing {len(gaps)} page.* keys (e.g. {gaps[0]})"
                 )
+    ui_line = None
+    for line in open(I18N_JS, encoding="utf-8", errors="replace"):
+        if line.startswith("  var UI ="):
+            ui_line = line
+            break
+    if ui_line is None:
+        bad.append("UI assignment not found in veikor-i18n.js")
+    else:
+        import json
+
+        raw = ui_line.split("=", 1)[1].strip().rstrip(";")
+        try:
+            ui = json.loads(raw)
+        except json.JSONDecodeError:
+            bad.append("UI JSON could not be parsed")
+        else:
+            for loc in REQUIRED_UI_LANGS:
+                block = ui.get(loc) or {}
+                gaps = [k for k in REQUIRED_UI_KEYS if k not in block]
+                if gaps:
+                    bad.append(f"UI {loc} missing keys: {', '.join(gaps)}")
     return bad
 
 
