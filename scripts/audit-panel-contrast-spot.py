@@ -39,6 +39,8 @@ def main() -> int:
         "layui-layer-msg",
         "layui-nav-child a cite",
         "layui-layer-tips",
+        "flex-wrap: nowrap",
+        ".layui-layout-right > .layui-nav-item",
     ]
     for needle in required:
         if needle not in theme:
