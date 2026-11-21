@@ -357,6 +357,11 @@ def _audit_veikor_i18n_js() -> list[str]:
             missing = [k for k in REQUIRED_PAGE_KEYS if k not in block]
             if missing:
                 bad.append(f"PAGE {loc} missing keys: {', '.join(missing)}")
+        unit_en = (page.get("en") or {}).get("page.finance.balance.pay.currencyUnit") or ""
+        if " " in unit_en.strip() and len(unit_en) > 12:
+            bad.append(
+                "PAGE en page.finance.balance.pay.currencyUnit must be a short unit (e.g. ' CNY'), not a sentence"
+            )
     ui_line = None
     for line in open(I18N_JS, encoding="utf-8", errors="replace"):
         if line.startswith("  var UI ="):
