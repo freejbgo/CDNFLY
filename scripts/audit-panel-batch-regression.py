@@ -129,6 +129,23 @@ def scan_user_home_carousel():
         fail("user_home.html: must resolve page root via veikorMarkerPageFluid")
 
 
+def scan_veikor_search_date_bootstrap():
+    path = os.path.join(PANEL, "lib", "veikor-page.js")
+    if not os.path.isfile(path):
+        fail("missing lib/veikor-page.js")
+        return
+    text = open(path, encoding="utf-8", errors="replace").read()
+    if "bootstrapSearchDateRanges" not in text:
+        fail("veikor-page.js: missing bootstrapSearchDateRanges")
+    if "normalizeLayuiTextInputs" not in text:
+        fail("veikor-page.js: missing normalizeLayuiTextInputs")
+    op = os.path.join(VIEWS, "account", "log", "op.html")
+    if os.path.isfile(op):
+        op_txt = open(op, encoding="utf-8", errors="replace").read()
+        if 'data-veikor-date-table="test-table-toolbar"' not in op_txt:
+            fail("account/log/op.html: missing data-veikor-date-table on date field")
+
+
 def scan_veikor_page_marker_fluid():
     path = os.path.join(PANEL, "lib", "veikor-page.js")
     if not os.path.isfile(path):
@@ -326,6 +343,7 @@ def main():
         scan_index_preload()
         scan_view_menu_fail_handler()
         scan_panel_core_js_syntax()
+        scan_veikor_search_date_bootstrap()
         scan_veikor_page_marker_fluid()
         scan_user_home_carousel()
         scan_shell_drawer_views()
