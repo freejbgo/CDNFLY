@@ -93,6 +93,11 @@ REQUIRED_AUTH_POPUP_KEYS = (
     "forget.resetSuccess",
     "forget.phoneRequired",
     "auth.resendIn",
+    "auth.verify.required",
+    "auth.verify.passRule",
+    "reg.emailRequired",
+    "forget.emailRequired",
+    "reg.agreementRequired",
 )
 # Popups/partials owned by parent refresh*OpenLayers must not bind veikor:lang.*
 OPEN_LAYER_PARTIAL_RE = re.compile(
@@ -344,6 +349,8 @@ def _audit_veikor_i18n_js() -> list[str]:
         bad.append("missing authUiText() (auth portal layer labels)")
     if "function authFmt" not in text:
         bad.append("missing authFmt() (auth portal resend countdown)")
+    if "function bindAuthFormVerify" not in text:
+        bad.append("missing bindAuthFormVerify() (auth portal lay-verify i18n)")
     if "layui.layer.alert" not in text or "nativeAlert" not in text:
         bad.append("missing layui.layer.alert i18n patch (auth popups)")
     if "function translateResMsg" not in text or "authI18nSurfaceActive()" not in text.split("function translateResMsg", 1)[-1][:400]:
@@ -509,6 +516,8 @@ def _audit_auth_portal_popups() -> list[str]:
     i18n = open(I18N_JS, encoding="utf-8", errors="replace").read()
     if "function authFmt" not in i18n:
         bad.append("missing authFmt() (auth countdown/resend)")
+    if "function bindAuthFormVerify" not in i18n:
+        bad.append("missing bindAuthFormVerify() (auth portal lay-verify i18n)")
     return bad
 
 
