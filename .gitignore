@@ -1,3 +1,10 @@
 # Local unpack/edit trees — not committed; repack only when you ask for a release tarball.
 .veikor-build/
 __pycache__/
+# Accidental panel src unpack at repo root (real panel lives inside master tar)
+/config.js
+/index.js
+/controller/
+/lib/
+/style/
+/views/
