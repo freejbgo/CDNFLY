@@ -17,13 +17,19 @@ def main() -> int:
             bad.append("veikor-i18n.js: missing authBarePath()")
         if "function authBarePath()" in text and "authBarePath()" not in text.split("function currentAuthPage")[1][:400]:
             bad.append("currentAuthPage must use authBarePath()")
-        bind = text.split("function bindLangSelect")[1][:900] if "function bindLangSelect" in text else ""
-        if "if (authPage)" not in bind or ("authPageFromContext" not in bind and "currentAuthPage()" not in bind):
-            bad.append("bindLangSelect must apply auth i18n before admin-console guard")
+        handler = text.split("function handleLangSelectChange")[1][:900] if "function handleLangSelectChange" in text else ""
+        if "authPageFromContext" not in handler or "applyAuthPage" not in handler:
+            bad.append("handleLangSelectChange must apply auth i18n before admin-console guard")
         if "function resolveAuthPage" not in text:
             bad.append("veikor-i18n.js: missing resolveAuthPage() for auth apply fallback")
         if "function ensureLangPreference" not in text:
             bad.append("veikor-i18n.js: missing ensureLangPreference() for browser locale")
+        if "function authT(" not in text:
+            bad.append("veikor-i18n.js: missing authT() for auth page copy from panel-lang")
+        if "lay-filter=\"veikor-lang\"" not in open(
+            os.path.join(PANEL, "views", "user", "login.html"), encoding="utf-8", errors="replace"
+        ).read():
+            bad.append("login.html: #veikor-lang-select needs lay-filter=veikor-lang")
         if "function activeLang()" in text:
             active = text.split("function activeLang()")[1].split("function ", 1)[0]
             if "authPageFromContext()" not in active:
