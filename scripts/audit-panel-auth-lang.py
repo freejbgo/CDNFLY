@@ -24,6 +24,10 @@ def main() -> int:
             bad.append("veikor-i18n.js: missing resolveAuthPage() for auth apply fallback")
         if "function ensureLangPreference" not in text:
             bad.append("veikor-i18n.js: missing ensureLangPreference() for browser locale")
+        if "function activeLang()" in text:
+            active = text.split("function activeLang()")[1].split("function ", 1)[0]
+            if "authPageFromContext()" not in active:
+                bad.append("activeLang must treat auth DOM/hash fallbacks like currentAuthPage (use authPageFromContext)")
     else:
         bad.append("missing veikor-i18n.js under .veikor-build")
     if os.path.isfile(INDEX):
