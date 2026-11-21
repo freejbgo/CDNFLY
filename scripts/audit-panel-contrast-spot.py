@@ -41,6 +41,7 @@ def main() -> int:
         "layui-layer-tips",
         "white-space: nowrap",
         "layui-input-inline > input",
+        "#LAY_app_body input",
     ]
     for needle in required:
         if needle not in theme:
