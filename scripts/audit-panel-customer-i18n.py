@@ -62,6 +62,11 @@ REQUIRED_UI_KEYS = (
     "layer.cancel",
 )
 REQUIRED_UI_LANGS = ("zh-CN", "zh-TW", "en")
+REQUIRED_PAGE_KEYS = (
+    "page.userHome.currencySuffix",
+    "page.site.cert.search.selectPh",
+    "page.finance.balance.pay.currencyUnit",
+)
 
 # Popups/partials owned by parent refresh*OpenLayers must not bind veikor:lang.*
 OPEN_LAYER_PARTIAL_RE = re.compile(
@@ -286,6 +291,7 @@ def _audit_veikor_i18n_js() -> list[str]:
     bad: list[str] = []
     if not os.path.isfile(I18N_JS):
         return ["missing veikor-i18n.js"]
+    import json
     import subprocess
 
     for line in open(I18N_JS, encoding="utf-8", errors="replace"):
@@ -303,6 +309,35 @@ def _audit_veikor_i18n_js() -> list[str]:
     )
     if r.returncode:
         bad.append("veikor-i18n.js fails node --check (syntax)")
+    text = open(I18N_JS, encoding="utf-8", errors="replace").read()
+    if "function refreshLayuiTableDomChrome" not in text:
+        bad.append("missing refreshLayuiTableDomChrome (Layui table/lang switch)")
+    if "function uiText" not in text:
+        bad.append("missing uiText() (UI locale lookup)")
+    ui_body = text.split("function uiText", 1)
+    if len(ui_body) > 1 and "if (lang === 'en')" not in ui_body[1][:800]:
+        bad.append("uiText must gate UI.en fallback on lang === 'en' (zh-TW vs #559)")
+    layui_m = re.search(
+        r"var LAYUI_STATIC = (\{[\s\S]*?\});\s*\n\s*function translateLayuiStaticText",
+        text,
+    )
+    if not layui_m:
+        bad.append("LAYUI_STATIC block not found")
+    else:
+        block = layui_m.group(1)
+        for src in re.findall(r"'([^']+)':\s*\{", block):
+            snippet = re.search(
+                rf"'{re.escape(src)}':\s*\{{([^}}]+)\}}",
+                block,
+            )
+            if not snippet:
+                bad.append(f"LAYUI_STATIC[{src!r}] malformed")
+                continue
+            inner = snippet.group(1)
+            if "'zh-TW':" not in inner:
+                bad.append(f"LAYUI_STATIC[{src!r}] missing zh-TW")
+            if "'en':" not in inner:
+                bad.append(f"LAYUI_STATIC[{src!r}] missing en")
     page = _load_page_map()
     if page is None:
         bad.append("PAGE JSON could not be parsed")
@@ -318,6 +353,11 @@ def _audit_veikor_i18n_js() -> list[str]:
                 bad.append(
                     f"PAGE {loc} missing {len(gaps)} page.* keys (e.g. {gaps[0]})"
                 )
+        for loc in REQUIRED_API_LANGS:
+            block = page.get(loc) or {}
+            missing = [k for k in REQUIRED_PAGE_KEYS if k not in block]
+            if missing:
+                bad.append(f"PAGE {loc} missing keys: {', '.join(missing)}")
     ui_line = None
     for line in open(I18N_JS, encoding="utf-8", errors="replace"):
         if line.startswith("  var UI ="):
@@ -326,8 +366,6 @@ def _audit_veikor_i18n_js() -> list[str]:
     if ui_line is None:
         bad.append("UI assignment not found in veikor-i18n.js")
     else:
-        import json
-
         raw = ui_line.split("=", 1)[1].strip().rstrip(";")
         try:
             ui = json.loads(raw)
@@ -339,6 +377,14 @@ def _audit_veikor_i18n_js() -> list[str]:
                 gaps = [k for k in REQUIRED_UI_KEYS if k not in block]
                 if gaps:
                     bad.append(f"UI {loc} missing keys: {', '.join(gaps)}")
+            zh_ui = set((ui.get("zh-CN") or {}).keys())
+            for loc in ("zh-TW", "en"):
+                block = ui.get(loc) or {}
+                gaps = sorted(zh_ui - set(block.keys()))
+                if gaps:
+                    bad.append(
+                        f"UI {loc} missing {len(gaps)} keys from zh-CN (e.g. {gaps[0]})"
+                    )
     return bad
 
 
