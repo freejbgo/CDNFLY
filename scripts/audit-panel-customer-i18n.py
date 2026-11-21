@@ -68,6 +68,32 @@ REQUIRED_PAGE_KEYS = (
     "page.site.cert.search.selectPh",
     "page.finance.balance.pay.currencyUnit",
 )
+AUTH_PORTAL_VIEWS = (
+    os.path.join("user", "login.html"),
+    os.path.join("user", "reg.html"),
+    os.path.join("user", "forget.html"),
+)
+AUTH_PORTAL_CTRL = "loginPage.js"
+AUTH_LAYER_FALLBACK_CJK = re.compile(
+    r"layer\.(?:msg|alert)\([^)]*:\s*['\"][^'\"]*[\u4e00-\u9fff]"
+)
+REQUIRED_AUTH_POPUP_KEYS = (
+    "login.smsSent",
+    "login.emailSent",
+    "login.success",
+    "login.smsLayerPh",
+    "reg.smsSent",
+    "reg.emailSent",
+    "reg.passMismatch",
+    "reg.success",
+    "reg.phoneRequired",
+    "forget.smsSent",
+    "forget.emailSent",
+    "forget.passMismatch",
+    "forget.resetSuccess",
+    "forget.phoneRequired",
+    "auth.resendIn",
+)
 # Popups/partials owned by parent refresh*OpenLayers must not bind veikor:lang.*
 OPEN_LAYER_PARTIAL_RE = re.compile(
     r"(?:"
@@ -316,6 +342,8 @@ def _audit_veikor_i18n_js() -> list[str]:
         bad.append("missing uiText() (UI locale lookup)")
     if "function authUiText" not in text:
         bad.append("missing authUiText() (auth portal layer labels)")
+    if "function authFmt" not in text:
+        bad.append("missing authFmt() (auth portal resend countdown)")
     if "layui.layer.alert" not in text or "nativeAlert" not in text:
         bad.append("missing layui.layer.alert i18n patch (auth popups)")
     if "function translateResMsg" not in text or "authI18nSurfaceActive()" not in text.split("function translateResMsg", 1)[-1][:400]:
@@ -435,6 +463,55 @@ def _audit_veikor_i18n_js() -> list[str]:
     return bad
 
 
+def _audit_auth_portal_popups() -> list[str]:
+    import json
+
+    bad: list[str] = []
+    paths: list[tuple[str, str]] = [
+        (os.path.join(VIEWS, rel), rel) for rel in AUTH_PORTAL_VIEWS
+    ]
+    ctrl_path = os.path.join(CONTROLLERS, AUTH_PORTAL_CTRL)
+    if os.path.isfile(ctrl_path):
+        paths.append((ctrl_path, os.path.join("controller", AUTH_PORTAL_CTRL)))
+    for path, rel in paths:
+        if not os.path.isfile(path):
+            bad.append(f"missing auth portal file {rel}")
+            continue
+        text = open(path, encoding="utf-8", errors="replace").read()
+        for m in LAYER_CJK.finditer(text):
+            bad.append(f"{rel}: layer literal CJK {m.group(1)[:60]!r}")
+        if AUTH_LAYER_FALLBACK_CJK.search(text):
+            bad.append(f"{rel}: layer fallback string contains CJK (use authT)")
+        if RAW_RES_MSG.search(text):
+            bad.append(f"{rel}: layer.msg(res.msg) without translateResMsg")
+    auth_line = None
+    for line in open(I18N_JS, encoding="utf-8", errors="replace"):
+        if line.startswith("  var AUTH ="):
+            auth_line = line
+            break
+    if auth_line is None:
+        bad.append("AUTH assignment not found (auth portal popup keys)")
+    else:
+        raw = auth_line.split("=", 1)[1].strip().rstrip(";")
+        try:
+            auth = json.loads(raw)
+        except json.JSONDecodeError:
+            bad.append("AUTH JSON could not be parsed (auth portal popup keys)")
+            auth = {}
+        for loc in REQUIRED_API_LANGS:
+            block = auth.get(loc) or {}
+            missing = [k for k in REQUIRED_AUTH_POPUP_KEYS if k not in block]
+            if missing:
+                bad.append(
+                    f"AUTH {loc} missing popup keys: {', '.join(missing[:3])}"
+                    + (f" (+{len(missing) - 3})" if len(missing) > 3 else "")
+                )
+    i18n = open(I18N_JS, encoding="utf-8", errors="replace").read()
+    if "function authFmt" not in i18n:
+        bad.append("missing authFmt() (auth countdown/resend)")
+    return bad
+
+
 def main() -> int:
     bad_lang: list[str] = []
     bad_layer: list[tuple[str, str]] = []
@@ -447,6 +524,7 @@ def main() -> int:
     form_render_null_advisory: list[str] = []
     form_render_bare_advisory: list[str] = []
     bad_i18n_js = _audit_veikor_i18n_js()
+    bad_auth_portal = _audit_auth_portal_popups()
 
     for dirpath, _, files in os.walk(VIEWS):
         for fn in files:
@@ -554,6 +632,11 @@ def main() -> int:
         for line in bad_i18n_js:
             print(" ", line, file=sys.stderr)
 
+    if bad_auth_portal:
+        print("auth portal (login/reg/forget) popup i18n:", file=sys.stderr)
+        for line in sorted(bad_auth_portal):
+            print(" ", line, file=sys.stderr)
+
     if form_render_null_advisory:
         print(
             "customer pages with veikor:lang and form.render(null):",
@@ -586,6 +669,7 @@ def main() -> int:
         or bad_api
         or bad_dynamic
         or bad_i18n_js
+        or bad_auth_portal
         or form_render_null_advisory
         or form_render_bare_advisory
         or bad_jobs_done
