@@ -48,6 +48,10 @@ if ! grep -q "veikorBootTabChrome" "$PANEL_SRC/index.js" 2>/dev/null; then
   bad "index.js missing tab form bootstrap (panel550+)"
 fi
 
+if ! grep -q "veikorGuardHeaderLangSelect" "$PANEL_SRC/lib/veikor-page.js" 2>/dev/null; then
+  bad "veikor-page.js missing header lang guard (panel551+ — top-right nav overlap)"
+fi
+
 if [[ -n "$PANEL_CONSOLE" && -f "$PANEL_CONSOLE/index.html" ]]; then
   CONSOLE_VER="$(grep -oP ",version: '\\K[^']+" "$PANEL_CONSOLE/index.html" | head -1 || true)"
   if [[ -z "$CONSOLE_VER" ]]; then
