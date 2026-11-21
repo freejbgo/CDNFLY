@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Apply console boot fixes from the published master tar onto a live install.
-# Fixes:
-#   - view.js ',view =' syntax error (panel543+)
-#   - veikor-page.js missing layui.jquery (panel544+)
+# Fixes (through panel550):
+#   - view.js boot syntax (panel543+)
+#   - veikor-page.js jquery + global bootTabChrome (panel544–550)
+#   - index.js tab form/date bootstrap, layout theme, user_home carousel
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TAR="$ROOT/cdnfly/cdnfly-master-v5.1.13-centos-7.tar.gz"
@@ -46,6 +47,18 @@ if grep -q "  ,view = function(id)" "$PANEL_SRC/lib/view.js"; then
 fi
 if ! grep -q "var \$ = layui.jquery" "$PANEL_SRC/lib/veikor-page.js"; then
   echo "ERROR: veikor-page.js missing var \$ = layui.jquery" >&2
+  exit 1
+fi
+if ! grep -q "bootTabChrome" "$PANEL_SRC/lib/veikor-page.js"; then
+  echo "ERROR: veikor-page.js missing bootTabChrome (need panel550+)" >&2
+  exit 1
+fi
+if ! grep -q "veikorBootTabChrome" "$PANEL_SRC/index.js"; then
+  echo "ERROR: index.js missing veikorBootTabChrome wiring (need panel550+)" >&2
+  exit 1
+fi
+if ! grep -q "initUserHomeCarousels" "$PANEL_SRC/views/user_home.html"; then
+  echo "ERROR: user_home.html missing carousel fix (need panel548+)" >&2
   exit 1
 fi
 
