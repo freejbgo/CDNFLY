@@ -96,6 +96,13 @@ def scan_shell_drawer_views():
     for rel in required:
         if not os.path.isfile(os.path.join(VIEWS, rel)):
             fail(f"missing header drawer view: {rel}")
+    admin_path = os.path.join(PANEL, "lib", "admin.js")
+    if os.path.isfile(admin_path):
+        admin_txt = open(admin_path, encoding="utf-8", errors="replace").read()
+        if "closeRightDrawer" not in admin_txt:
+            fail("admin.js: missing closeRightDrawer for header drawer dismiss")
+        if "closeLayerByContentId('LAY_adminPopupMore')" not in admin_txt:
+            fail("admin.js: more2 drawer must toggle close")
 
 
 def scan_view_menu_fail_handler():
