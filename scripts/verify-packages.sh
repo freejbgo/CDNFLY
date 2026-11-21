@@ -21,6 +21,12 @@ else
   ok "audit-panel-monitor-scope"
 fi
 
+if ! python3 "$ROOT/scripts/audit-panel-tab-form-skins.py"; then
+  bad "audit-panel-tab-form-skins"
+else
+  ok "audit-panel-tab-form-skins"
+fi
+
 if ! python3 "$ROOT/scripts/audit-panel-i18n-guards.py"; then
   bad "audit-panel-i18n-guards"
 else
