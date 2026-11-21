@@ -2,6 +2,7 @@
 """Regression checks for Veikor cross-page table bulk (CheckedMap / veikorLocalBatch)."""
 import os
 import re
+import subprocess
 import sys
 import tarfile
 
@@ -107,6 +108,28 @@ def scan_view_menu_fail_handler():
         text,
     ):
         fail("view.js: non-menu lay-url fail handler must not call veikorMenuLoadFailed")
+
+
+def scan_panel_core_js_syntax():
+    """Broken view.js prevents layui.use(['index','admin','view']) from booting."""
+    rel_paths = (
+        "index.js",
+        "lib/admin.js",
+        "lib/view.js",
+    )
+    for rel in rel_paths:
+        path = os.path.join(PANEL, rel)
+        if not os.path.isfile(path):
+            fail(f"missing panel core js: {rel}")
+            continue
+        proc = subprocess.run(
+            ["node", "--check", path],
+            capture_output=True,
+            text=True,
+        )
+        if proc.returncode != 0:
+            detail = (proc.stderr or proc.stdout or "").strip().splitlines()[-3:]
+            fail(f"{rel} syntax error: {' | '.join(detail)}")
 
 
 # A new search or filter is a different result set. Cross-page ids from the previous query must not stay selected.
@@ -270,6 +293,7 @@ def main():
         scan_views()
         scan_index_preload()
         scan_view_menu_fail_handler()
+        scan_panel_core_js_syntax()
         scan_shell_drawer_views()
     else:
         print("panel tree absent, skipped local view scan")
