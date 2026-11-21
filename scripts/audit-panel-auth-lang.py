@@ -17,8 +17,13 @@ def main() -> int:
             bad.append("veikor-i18n.js: missing authBarePath()")
         if "function authBarePath()" in text and "authBarePath()" not in text.split("function currentAuthPage")[1][:400]:
             bad.append("currentAuthPage must use authBarePath()")
-        if "var authPage = currentAuthPage();" not in text or "if (authPage)" not in text.split("bindLangSelect")[1][:600]:
+        bind = text.split("function bindLangSelect")[1][:900] if "function bindLangSelect" in text else ""
+        if "if (authPage)" not in bind or ("authPageFromContext" not in bind and "currentAuthPage()" not in bind):
             bad.append("bindLangSelect must apply auth i18n before admin-console guard")
+        if "function resolveAuthPage" not in text:
+            bad.append("veikor-i18n.js: missing resolveAuthPage() for auth apply fallback")
+        if "function ensureLangPreference" not in text:
+            bad.append("veikor-i18n.js: missing ensureLangPreference() for browser locale")
     else:
         bad.append("missing veikor-i18n.js under .veikor-build")
     if os.path.isfile(INDEX):
